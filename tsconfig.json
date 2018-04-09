@@ -24,5 +24,6 @@
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
-  }
+  },
+  "WORDPRESS_REST_API_URL":"http://umjinsun.cafe24.com/"
 }

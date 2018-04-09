@@ -1,14 +1,36 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+  <ion-header no-shadow>
+    <ion-navbar>
+      
+    <button ion-button menuToggle color="grapefruit">
+      <ion-icon name="md-menu"></ion-icon>
+    </button>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
-</ion-content>
+    <ion-title>
+      <img src="../../assets/imgs/drawable-xxxhdpi/logo.png" height=40>
+    </ion-title>
+        <ion-buttons end padding>
+            <small class="point">0</small>
+            <img src="../../assets/imgs/drawable-xxxhdpi/action_b_point_icon.png" height=10>
+        </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+
+
+
+  <ion-content>
+        
+          
+      <ion-list>
+          
+          <div class="product-list animated fadeInUp" [ngClass]="{'list-view': layout && layout=='list'}" >
+            <ul>
+              <li class="list-item" *ngFor="let item of products">
+                <div class="product-image" [ngStyle]="{'background-image': 'url(' + item.images[0].src + ')', 'background-size':'cover'}">
+                </div>
+                <h6>{{item.name}}</h6>
+                <small class="category-name">{{item.categories[0].name}}</small>
+              </li>
+            </ul>
+          </div>
+        </ion-list>
+  </ion-content>

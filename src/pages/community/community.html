@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar>
+    
+  <button ion-button menuToggle color="grapefruit">
+    <ion-icon name="md-menu"></ion-icon>
+  </button>
+  <ion-title color="grapefruit">
+    커뮤니티
+  </ion-title>
+  <ion-buttons end padding>
+      <small class="point">0</small>
+      <img src="../../assets/imgs/drawable-xxxhdpi/action_b_point_icon.png" height=10>
+  </ion-buttons>
+  </ion-navbar>
+</ion-header>
+   
+<ion-content>
+    <ion-segment menuClose [(ngModel)]="topTab" (ionChange)="segmentChanged()">
+        <ion-segment-button value="tab1Root">메인</ion-segment-button>
+        <ion-segment-button value="tab2Root">부부클리닉</ion-segment-button>
+        <ion-segment-button value="tab3Root">중고장터</ion-segment-button>
+        <ion-segment-button value="tab4Root">자랑거리</ion-segment-button>
+    </ion-segment>
+    
+    <div [ngSwitch]="topTab">
+        <div *ngSwitchCase="'tab1Root'">
+        </div>
+        <div *ngSwitchCase="'tab2Root'">
+            부부클리닉
+        </div>
+        <div *ngSwitchCase="'tab3Root'">
+            중고장터
+        </div>
+        <div *ngSwitchCase="'tab4Root'">
+            자랑거리
+        </div>
+    </div>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-card *ngFor="let post of posts" >
+      <ion-card-content >
+        <ion-card-title [innerHTML]="post.title.rendered"></ion-card-title>
+        <p [innerHTML]="post.excerpt.rendered"></p>
+      </ion-card-content>
+      <ion-row no-padding>
+         <ion-col>
+           <button ion-button clear small color="primary" icon-start>
+             {{post.date.split('T')[0]}}
+           </button>
+         </ion-col>
+         <ion-col text-right>
+           <button ion-button small color="primary" (click)="postTapped($event, post)" icon-start>
+              Read More
+           </button>
+         </ion-col>
+       </ion-row>
+    </ion-card>
+    <ion-infinite-scroll [enabled]="morePagesAvailable" (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more posts ...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    
+</ion-content>
+
+
+
