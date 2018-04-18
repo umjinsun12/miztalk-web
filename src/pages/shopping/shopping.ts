@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
+import { Service } from '../../services/shopping-services/service';
+import { Values } from '../../services/shopping-services/values';
 
 /**
  * Generated class for the ShoppingPage page.
@@ -15,11 +17,73 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ShoppingPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  status: any;
+    items: any;
+    product: any;
+    options: any;
+    id: any;
+    variationID: any;
+    time: any;
+    has_more_items: boolean = true;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ShoppingPage');
-  }
+    constructor(public nav: NavController, public service: Service, public values: Values) {
+        this.items = [];
+        this.options = [];
+        this.service.getProducts();
+    }
 
+  
+
+  getCategory(id, slug, name) {
+    this.items.id = id;
+    this.items.slug = slug;
+    this.items.name = name;
+    this.items.categories = this.service.categories;
+    console.log(this.service.categories);
+    //this.nav.push(ProductsPage, this.items);
+    }
+    getCart() {
+        //this.nav.push(CartPage);
+    }
+    getSearch() {
+        //this.nav.push(SearchPage);
+    }
+    mySlideOptions = {
+        initialSlide: 1,
+        loop: true,
+        autoplay: 5800,
+        pager: true
+    }
+
+    getId() {
+        var i;
+        if (this.options.length >= 1)
+            var resa = this.options[0].split(":");
+        if (this.options.length >= 2)
+            var resb = this.options[1].split(":");
+        if (this.options.length >= 1)
+            for (i = 0; i < this.product.product.variations.length; i++) {
+                if (this.product.product.variations[i].attributes[0].option == resa[1]) {
+                    if (this.options.length == 1) {
+                        break;
+                    }
+                    else if (this.product.product.variations[i].attributes[1].option == resb[1]) {
+                        break;
+                    }
+                }
+            }
+    }
+
+    doInfinite(infiniteScroll) {
+        this.service.loadMore().then((results) => this.handleMore(results, infiniteScroll));
+    }
+    handleMore(results, infiniteScroll) {
+        if (!results) {
+            this.has_more_items = false;
+        }
+        infiniteScroll.complete();
+    }
+    getProduct(id) {
+        //this.nav.push(ProductPage, id);
+    }
 }

@@ -13,6 +13,8 @@ export class WordpressService {
     //if we want to query posts by category
     let category_url = categoryId? ("&categories=" + categoryId): "";
 
+  
+    console.log(Config.WORDPRESS_REST_API_URL+ 'posts?page=' + page+ category_url);
     return this.http.get(
       Config.WORDPRESS_REST_API_URL
       + 'posts?page=' + page

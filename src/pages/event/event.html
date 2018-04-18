@@ -14,6 +14,10 @@
   </ion-navbar>
 </ion-header>
    
-  <ion-content padding>
-    This page has no tabs!
+  <ion-content no-padding>
+      <ion-card *ngFor="let post of posts" >
+          <ion-card-content >
+          <ion-card-title [innerHTML]="post.title.rendered"></ion-card-title>
+          </ion-card-content>
+        </ion-card>
   </ion-content>

@@ -1,5 +1,7 @@
+import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Nav, LoadingController} from 'ionic-angular';
+import { AuthenticationService } from '../../services/authentication.service';
 
 /**
  * Generated class for the EventPage page.
@@ -15,11 +17,45 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EventPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  posts: Array<any> = new Array<any>();
+  morePagesAvailable: boolean = true;
+  loggedUser: boolean = false;
+
+  categoryId: number;
+  categoryTitle: string;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public wordpressService: WordpressService,
+    public loadingCtrl: LoadingController) { 
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EventPage');
+  }
+
+  ionViewWillEnter() {
+    this.morePagesAvailable = true;
+    //if we are browsing a category
+    this.categoryId = this.navParams.get('id');
+    this.categoryTitle = this.navParams.get('title');
+
+    if(!(this.posts.length > 0)){
+      let loading = this.loadingCtrl.create();
+      loading.present();
+
+      this.wordpressService.getRecentPosts(this.categoryId)
+      .subscribe(data => {
+        for(let post of data){
+          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
+          this.posts.push(post);
+          console.log(post);
+        }
+        loading.dismiss();
+      });
+      
+    }
   }
 
 }

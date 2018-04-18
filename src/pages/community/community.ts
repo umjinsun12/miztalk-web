@@ -65,8 +65,6 @@ export class CommunityPage {
 
 
   ionViewWillEnter() {
-
-
     this.morePagesAvailable = true;
     //if we are browsing a category
     this.categoryId = this.navParams.get('id');
@@ -85,6 +83,7 @@ export class CommunityPage {
         }
         loading.dismiss();
       });
+      
     }
   }
 
