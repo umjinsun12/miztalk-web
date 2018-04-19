@@ -30,17 +30,22 @@ export class ShoppingPage {
         this.items = [];
         this.options = [];
         this.service.getProducts();
+        this.service.mainCategories[0].icon = "ios-contact-outline";
+        this.service.mainCategories[1].icon = "ios-color-wand-outline";
+        this.service.mainCategories[2].icon = "ios-desktop-outline";
+        this.service.mainCategories[3].icon = "ios-leaf-outline";
+        console.log(this.service.mainCategories);
     }
 
   
 
-  getCategory(id, slug, name) {
-    this.items.id = id;
-    this.items.slug = slug;
-    this.items.name = name;
-    this.items.categories = this.service.categories;
-    console.log(this.service.categories);
-    //this.nav.push(ProductsPage, this.items);
+    getCategory(id, slug, name) {
+        this.items.id = id;
+        this.items.slug = slug;
+        this.items.name = name;
+        this.items.categories = this.service.categories;
+        console.log(this.items.name);
+        //this.nav.push(ProductsPage, this.items);
     }
     getCart() {
         //this.nav.push(CartPage);
@@ -52,7 +57,7 @@ export class ShoppingPage {
         initialSlide: 1,
         loop: true,
         autoplay: 5800,
-        pager: true
+        pager: false
     }
 
     getId() {

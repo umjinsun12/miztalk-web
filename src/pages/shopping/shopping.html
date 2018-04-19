@@ -4,40 +4,35 @@
   <button ion-button menuToggle color="grapefruit">
     <ion-icon name="md-menu"></ion-icon>
   </button>
-  <ion-title>
-    쇼핑몰
-  </ion-title>
   <ion-buttons class="md-search" end>
-      <ion-icon name="md-search" item-width="24px"></ion-icon>
+      <ion-icon color="primary" name="ios-search"></ion-icon>
   </ion-buttons>
-  <ion-buttons end>
-    <button ion-button clear icon-only class="button button-cart">
-        <i><img color="grapefruit" src="../../assets/imgs/drawable-xxxhdpi/sp_cart_icon.png" width="24px"></i>
-    </button>
+  <ion-buttons class="ios-cart" end>
+        <ion-icon color="primary" name="ios-cart-outline"></ion-icon>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
    
   <ion-content no-padding>
-      <div *ngIf="service?.banners" class="home-banners">
-          <ion-slides pager="true" loop="true" autoplay="5800">
+        <div *ngIf="service?.banners" class="home-banners">
+          <ion-slides pager="false" loop="true" autoplay="15800" >
             <ion-slide *ngFor='let value of service.banners'>
               <img src="{{value}}">
             </ion-slide>
           </ion-slides>
         </div>
         
-      <div *ngIf="service?.categories">
+      <div class="categories" *ngIf="service?.categories">
           <div *ngIf="service.mainCategories" class="main-categories">
             <ion-row class="row unlimited-items">
               <ion-col class="col" *ngFor="let item of service.mainCategories">
-                <a (click)="getCategory(item.id, item.slug, item.name)">
-                  <ion-card>
+                <a class="shop-category" (click)="getCategory(item.id, item.slug, item.name)">
                     <div text-center>
-                      <ion-label text-uppercase><span [innerHTML]="item.name"></span>
-                      </ion-label>
+                      <ion-icon color="category-color" name="{{item.icon}}" class="shop-category-icon"  text-center></ion-icon>
+                    </div>  
+                    <div text-center>
+                      <span [innerHTML]="item.name"></span>
                     </div>
-                  </ion-card>
                 </a>
               </ion-col>
             </ion-row>
