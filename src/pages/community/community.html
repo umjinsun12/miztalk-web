@@ -44,9 +44,10 @@
         <ion-row no-padding>
           <ion-col col-9>
             <h3 [innerHTML]="post.title.rendered"></h3>
-            <p>{{post.date.split('T')[0]}}</p>
+            <p class="post-author">{{post.authordata.name}}</p>
+            <p class="post-date">{{post.date | date : 'HH:mm'}}</p>
           </ion-col>
-          <ion-col col-3 text-center>
+          <ion-col class="post-commentbox" col-3 text-center>
               <div small color="primary" (click)="postTapped($event, post)" icon-start>
                 <p>0</p>
                 <h6>댓글</h6>

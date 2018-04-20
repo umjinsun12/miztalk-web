@@ -47,8 +47,8 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
     ShoppingProductPage,
+    MyApp,
     MenuPage
   ],
   providers: [

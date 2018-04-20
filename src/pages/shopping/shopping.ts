@@ -89,7 +89,7 @@ export class ShoppingPage {
         infiniteScroll.complete();
     }
     getProduct(id) {
-      console.log("asdfasdfasd????");
+      console.log("adsfsdf");
         this.nav.push(ShoppingProductPage, id);
     }
 }

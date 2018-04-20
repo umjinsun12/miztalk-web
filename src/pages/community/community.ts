@@ -3,6 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, LoadingController} from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthenticationService } from '../../services/authentication.service';
+import { PromiseObservable } from 'rxjs/observable/PromiseObservable';
+import {Observable} from 'rxjs/Rx';
+import { forkJoin } from "rxjs/observable/forkJoin";
 
 /**
  * Generated class for the CommunityPage page.
@@ -76,13 +79,24 @@ export class CommunityPage {
 
       this.wordpressService.getRecentPosts(this.categoryId)
       .subscribe(data => {
-        for(let post of data){
+        var authordatas = [];
+        for(let post of data){          
+          authordatas.push(this.wordpressService.getAuthor(post.author));
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-          this.posts.push(post);
-          console.log(post);
         }
-        loading.dismiss();
+
+        forkJoin(authordatas).subscribe(results => {
+          for(var i= 0 ; i < data.length ; i++){
+            data[i].authordata = results[i];
+            this.posts.push(data[i]);
+            console.log(this.posts);
+          }
+          loading.dismiss();
+        });
       });
+
+      
+      
       
     }
   }

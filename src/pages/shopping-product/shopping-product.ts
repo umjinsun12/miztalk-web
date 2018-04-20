@@ -116,7 +116,7 @@ export class ShoppingProductPage {
     handleReview(a) {
         this.reviews = a;
         for (let item in this.reviews.product_reviews) {
-            this.reviews.product_reviews[item].avatar = md5(this.reviews.product_reviews[item].reviewer_email);
+            this.reviews.product_reviews[item].avatar = this.reviews.product_reviews[item].reviewer_email;
             console.log(this.reviews.product_reviews[item].avatar);
         }
     }
