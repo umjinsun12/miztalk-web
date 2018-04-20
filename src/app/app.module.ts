@@ -28,6 +28,7 @@ import { Config } from './../services/shopping-services/config';
 import { CheckoutService } from './../services/shopping-services/checkout-service';
 import { CategoryService } from './../services/shopping-services/category-service';
 import { CartService } from './../services/shopping-services/cart-service';
+import { ShoppingProductPage } from '../pages/shopping-product/shopping-product';
 
 
 
@@ -36,7 +37,8 @@ import { CartService } from './../services/shopping-services/cart-service';
 @NgModule({
   declarations: [
     MyApp,
-    MenuPage
+    MenuPage,
+    ShoppingProductPage
   ],
   imports: [
     HttpModule,
@@ -46,6 +48,7 @@ import { CartService } from './../services/shopping-services/cart-service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    ShoppingProductPage,
     MenuPage
   ],
   providers: [

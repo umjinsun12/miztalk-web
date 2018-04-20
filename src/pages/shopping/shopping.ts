@@ -1,3 +1,4 @@
+import { ShoppingProductPage } from './../shopping-product/shopping-product';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Service } from '../../services/shopping-services/service';
@@ -44,8 +45,7 @@ export class ShoppingPage {
         this.items.slug = slug;
         this.items.name = name;
         this.items.categories = this.service.categories;
-        console.log(this.items.name);
-        //this.nav.push(ProductsPage, this.items);
+        this.nav.push(ShoppingProductPage, this.items);
     }
     getCart() {
         //this.nav.push(CartPage);
@@ -89,6 +89,7 @@ export class ShoppingPage {
         infiniteScroll.complete();
     }
     getProduct(id) {
-        //this.nav.push(ProductPage, id);
+      console.log("asdfasdfasd????");
+        this.nav.push(ShoppingProductPage, id);
     }
 }

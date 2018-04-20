@@ -12,6 +12,7 @@
 .categories{
     padding-bottom: 6px;
     border-bottom: 1px solid #dcdddd;
+    margin-bottom: 10px;
 }
 .shop-category{
     color:#6e6e6e;
@@ -20,4 +21,59 @@
 .shop-category-icon{
     padding-bottom: 10px;
     font-size: 28px;
+}
+
+.wishlist-wrapper{
+    float:right;
+}
+
+.card-name{
+    margin-left: 10px;
+}
+.card-wrapper{
+    padding-bottom: 20px;
+}
+
+
+.wishlist-button-grid{
+    font-size:30px;
+}
+
+.price-wrapper{
+    padding : 5px;
+}
+
+.price-list {
+    margin: 0px;
+    padding: 10px;
+    box-shadow: none;
+    ion-label {
+        margin: 0px;
+        font-size: 14px;
+        white-space: inherit;
+    }
+    button {
+        margin: 0px;
+    }
+    .price-regular {
+        font-weight: 500;
+        color: #f53d3d;
+        margin-top: 0px;
+        float: left;
+    }
+    .price-special {
+        font-weight: 900;
+        color: #141414;
+        margin-top: 0px;
+        font-size:25px;
+        float: left;
+    }
+    .price-delete {
+        color: #c8c8c8;
+        opacity: 60;
+        padding-left: 8px;
+        font-size:15px;
+        margin-top:10px;
+        float:left
+    }
 }
