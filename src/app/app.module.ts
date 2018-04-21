@@ -1,3 +1,5 @@
+import { HeaderColor } from '@ionic-native/header-color';
+import { HomeDetailPage } from './../pages/home-detail/home-detail';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { OneSignal } from '@ionic-native/onesignal';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,6 +16,7 @@ import { AuthenticationService } from '../services/authentication.service';
 
 import { MyApp } from './app.component';
 import { MenuPage } from './../pages/menu/menu';
+
 
 
 
@@ -38,7 +41,8 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
   declarations: [
     MyApp,
     MenuPage,
-    ShoppingProductPage
+    ShoppingProductPage,
+    HomeDetailPage
   ],
   imports: [
     HttpModule,
@@ -47,11 +51,13 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    HomeDetailPage,
     ShoppingProductPage,
     MyApp,
     MenuPage
   ],
   providers: [
+    HeaderColor,
     NativeStorage,
     OneSignal,
     CartService,

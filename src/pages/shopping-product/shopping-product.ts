@@ -11,7 +11,6 @@ import {md5} from './md5';
   templateUrl: 'shopping-product.html',
 })
 export class ShoppingProductPage {
-
   @ViewChild(Content) content: Content;
     product: any;
     id: any;
@@ -29,7 +28,13 @@ export class ShoppingProductPage {
     disableSubmit: boolean = false;
     wishlistIcon: boolean = false;
 
-    constructor(public nav: NavController, public service: ProductService, params: NavParams, public functions: Functions, public values: Values) {
+    constructor(
+      public nav: NavController, 
+      public service: ProductService, 
+      params: NavParams, 
+      public functions: Functions, 
+      public values: Values) {
+      
         console.log(values);
         this.id = params.data;
         this.options = [];
@@ -38,7 +43,7 @@ export class ShoppingProductPage {
         this.service.getProduct(this.id)
             .then((results) => this.handleProductResults(results));
         this.getReviews();
-
+        
     }
     handleProductResults(results) {
         this.product = results;

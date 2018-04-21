@@ -1,6 +1,8 @@
+import { HomeDetailPage } from './../home-detail/home-detail';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController ,Nav} from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import { WordpressService } from '../../services/wordpress.service';
 
 /**
@@ -33,6 +35,8 @@ export class HomePage {
 
   categoryId: number;
   categoryTitle: string;
+
+
   http: Http;
 
 
@@ -43,7 +47,7 @@ export class HomePage {
     public navParams: NavParams, 
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController) {
-    
+  
 
     this.products = [
       {
@@ -106,19 +110,47 @@ export class HomePage {
     if(!(this.posts.length > 0)){
       let loading = this.loadingCtrl.create();
       loading.present();
+      let categoryArray = {};
 
-      this.wordpressService.getPostbyCategory(this.homeCategoryId)
-      .subscribe(data => {
-        for(let post of data){
+      let homePosts  = this.wordpressService.getPostEmbedbyCategory(this.homeCategoryId);
+      let allCategorys = this.wordpressService.getAllCategory();
+
+      Observable.forkJoin([homePosts, allCategorys]).subscribe(datas => {
+        let posts = datas[0];
+        let categorydatas = datas[1];
+        let categoryArray = {};
+
+        categorydatas.forEach(function(item){
+          categoryArray[item.id] = item.name;
+        })
+
+
+        for(let post of posts){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-          post.thumnnail = post.content.rendered.split('<img')[0];
+          if(post._embedded['wp:featuredmedia'] != undefined)
+            post.thumnail = post._embedded['wp:featuredmedia'][0].source_url;
+          
+          for(let categoryID of post.categories){
+            if(categoryID == 20)
+              continue;
+            else{
+              post.categoryName = categoryArray[categoryID];
+              break;
+            }
+          }
           this.posts.push(post);
-          console.log(post);
         }
-        loading.dismiss();
-      });
 
+        loading.dismiss()
+      });
     }
+  }
+
+  getPostConent(postId:number, postName:string){
+    let passData = {name:'', id:0};
+    passData.name = postName;
+    passData.id = postId;
+    this.navCtrl.push(HomeDetailPage, passData);
   }
 
 

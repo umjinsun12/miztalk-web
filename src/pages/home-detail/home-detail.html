@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="home-detail-title">{{postName}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <ion-slides loop="true" style="background-color: white">
+        <ion-slide *ngFor="let item of posts">
+          <img data-src="{{item.guid.rendered}}">
+        </ion-slide>
+      </ion-slides>
+</ion-content>

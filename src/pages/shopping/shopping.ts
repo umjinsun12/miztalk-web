@@ -38,7 +38,6 @@ export class ShoppingPage {
         console.log(this.service.mainCategories);
     }
 
-  
 
     getCategory(id, slug, name) {
         this.items.id = id;

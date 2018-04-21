@@ -1,0 +1,19 @@
+ion-navbar{
+    background-color: black;
+}
+
+.home-detail-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 50px 1px;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    text-align: center;
+  }
+
+  .toolbar-title-md{
+    font-size:15px;
+    font-weight: 500;
+  }

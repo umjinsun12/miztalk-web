@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { Http, Headers } from '@angular/http';
-import * as Config from '../config';
+import * as Config from '../wordpress.config';
 
 @Injectable()
 export class AuthenticationService {

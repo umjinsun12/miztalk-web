@@ -45,7 +45,7 @@
           <ion-col col-9>
             <h2 class="post-title" [innerHTML]="post.title.rendered"></h2>
             <p class="post-author">{{post.authordata.name}}</p>
-            <p class="post-date">{{post.date | date : 'HH:mm'}}</p>
+            <p class="post-date">{{post.date | date : 'MM-dd HH:mm'}}</p>
             <ion-icon name="ios-text" class="post-comment"> 0</ion-icon>
             <ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>
           </ion-col>
