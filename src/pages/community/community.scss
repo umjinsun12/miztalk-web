@@ -4,19 +4,35 @@ ion-tabs{
 
 .label-md{
     margin : 0px;
+    padding : 6px;
 }
 
 .item-md.item-block .item-inner{
     padding-right: 0px;
 }
+
+
+
+.post-title{
+    font-weight: 500 !important;
+}
 .post-author{
     float : left;
-    padding-right : 5px;
+    padding-right : 10px;
+    font-size:14px !important;
 }
-
 .post-date{
     float : left;
+    padding-right : 10px;
+    font-size:14px !important;
 }
+.post-comment{
+    float: left;
+    color : #f53d3d;
+    padding-right: 10px;
+    font-size:14px !important;
+}
+
 
 [col-3]{
     padding : 0px;

@@ -43,16 +43,18 @@
       <ion-item *ngFor="let post of posts" no-padding>
         <ion-row no-padding>
           <ion-col col-9>
-            <h3 [innerHTML]="post.title.rendered"></h3>
+            <h2 class="post-title" [innerHTML]="post.title.rendered"></h2>
             <p class="post-author">{{post.authordata.name}}</p>
             <p class="post-date">{{post.date | date : 'HH:mm'}}</p>
+            <ion-icon name="ios-text" class="post-comment"> 0</ion-icon>
+            <ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>
           </ion-col>
-          <ion-col class="post-commentbox" col-3 text-center>
+          <!--<ion-col class="post-commentbox" col-3 text-center>
               <div small color="primary" (click)="postTapped($event, post)" icon-start>
                 <p>0</p>
                 <h6>댓글</h6>
               </div>
-          </ion-col>
+          </ion-col>-->
         </ion-row>
       </ion-item>
     </ion-list>

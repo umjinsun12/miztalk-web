@@ -15,6 +15,8 @@ export class WordpressService {
 
   
     console.log(Config.WORDPRESS_REST_API_URL+ 'posts?page=' + page+ category_url);
+
+
     return this.http.get(
       Config.WORDPRESS_REST_API_URL
       + 'posts?page=' + page
@@ -60,6 +62,11 @@ export class WordpressService {
       post: postId,
       content: comment
     },{ headers: header })
+    .map(res => res.json());
+  }
+  
+  getPostbyCategory(category){
+    return this.http.get(Config.WORDPRESS_REST_API_URL + "posts?categories=" + category)
     .map(res => res.json());
   }
 }

@@ -1,10 +1,10 @@
 import { WordpressService } from './../../services/wordpress.service';
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, LoadingController} from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthenticationService } from '../../services/authentication.service';
 import { PromiseObservable } from 'rxjs/observable/PromiseObservable';
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 import { forkJoin } from "rxjs/observable/forkJoin";
 
 /**
@@ -63,7 +63,6 @@ export class CommunityPage {
 
   segmentChanged(){
     console.log(this.topTab);
-    
   }
 
 
@@ -95,9 +94,6 @@ export class CommunityPage {
         });
       });
 
-      
-      
-      
     }
   }
 
