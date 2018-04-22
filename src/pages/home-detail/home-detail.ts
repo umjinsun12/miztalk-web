@@ -2,8 +2,8 @@ import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { HeaderColor } from '@ionic-native/header-color';
 
+import {ImgCacheService} from '../../services/img-util';
 /**
  * Generated class for the HomeDetailPage page.
  *
@@ -25,11 +25,10 @@ export class HomeDetailPage {
     public navParams: NavParams,
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController,
-    private headerColor: HeaderColor) {
+    imgCacheService: ImgCacheService) {
       console.log(navParams.data);
       this.postId = navParams.data.id;
       this.postName = navParams.data.name;
-      this.headerColor.tint('black');
   }
 
   ionViewDidLoad() {
@@ -51,9 +50,14 @@ export class HomeDetailPage {
         }
 
         Observable.forkJoin(pagereqeusts).subscribe(datas => {
+
           for(let i=0; i < pagesize-1 ;i++){
             let posts = datas[0];
-            for(let post of posts){
+            var postsArray = Object.keys(posts).map(function(postindex){
+              let postarr = posts[postindex];
+              return postarr;
+            });
+            for(let post of postsArray){
               this.posts.push(post);
             }
           }

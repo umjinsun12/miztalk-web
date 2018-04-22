@@ -1,4 +1,3 @@
-import { HeaderColor } from '@ionic-native/header-color';
 import { HomeDetailPage } from './../pages/home-detail/home-detail';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { OneSignal } from '@ionic-native/onesignal';
@@ -8,6 +7,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http';
+import { File } from '@ionic-native/file';
 
 
 import { WordpressService } from '../services/wordpress.service';
@@ -17,7 +17,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { MyApp } from './app.component';
 import { MenuPage } from './../pages/menu/menu';
 
-
+import { CacheImgModule } from '../services/img-util';
 
 
 // shopping service
@@ -47,7 +47,8 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
   imports: [
     HttpModule,
     BrowserModule,
-    IonicModule.forRoot(MyApp,{tabsPlacement: 'bottom'})
+    IonicModule.forRoot(MyApp,{tabsPlacement: 'bottom'}),
+    CacheImgModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -57,7 +58,7 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
     MenuPage
   ],
   providers: [
-    HeaderColor,
+    File,
     NativeStorage,
     OneSignal,
     CartService,
