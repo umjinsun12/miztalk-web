@@ -18,7 +18,7 @@ import { Values } from '../../services/shopping-services/values';
 })
 export class ShoppingPage {
 
-  status: any;
+    status: any;
     items: any;
     product: any;
     options: any;
@@ -31,10 +31,6 @@ export class ShoppingPage {
         this.items = [];
         this.options = [];
         this.service.getProducts();
-        this.service.mainCategories[0].icon = "ios-contact-outline";
-        this.service.mainCategories[1].icon = "ios-color-wand-outline";
-        this.service.mainCategories[2].icon = "ios-desktop-outline";
-        this.service.mainCategories[3].icon = "ios-leaf-outline";
         console.log(this.service.mainCategories);
     }
 

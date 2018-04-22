@@ -28,7 +28,7 @@
               <ion-col class="col" *ngFor="let item of service.mainCategories">
                 <a class="shop-category" (click)="getCategory(item.id, item.slug, item.name)">
                     <div text-center>
-                      <ion-icon color="category-color" name="{{item.icon}}" class="shop-category-icon"  text-center></ion-icon>
+                      <ion-icon color="category-color" name="{{item.description}}" class="shop-category-icon"  text-center></ion-icon>
                     </div>  
                     <div text-center>
                       <span [innerHTML]="item.name"></span>
