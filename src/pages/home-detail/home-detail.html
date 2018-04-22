@@ -1,12 +1,18 @@
-<ion-header>
+<!--<ion-header>
   <ion-navbar>
     <ion-title class="home-detail-title">{{postName}}</ion-title>
   </ion-navbar>
-</ion-header>
+</ion-header>-->
 
 
-<ion-content>
-    <ion-slides loop="true" style="background-color: white">
+<ion-content style="background-color: black">
+
+
+    <button class="button-dark" ion-button navPop icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+    </button>
+
+    <ion-slides loop="false">
         <ion-slide *ngFor="let item of posts">
           <img data-src="{{item.guid.rendered}}">
         </ion-slide>

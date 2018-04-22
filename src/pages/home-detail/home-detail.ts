@@ -1,5 +1,5 @@
 import { WordpressService } from './../../services/wordpress.service';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { HeaderColor } from '@ionic-native/header-color';
@@ -52,7 +52,7 @@ export class HomeDetailPage {
 
         Observable.forkJoin(pagereqeusts).subscribe(datas => {
           for(let i=0; i < pagesize-1 ;i++){
-            let posts = datas[i];
+            let posts = datas[0];
             for(let post of posts){
               this.posts.push(post);
             }
