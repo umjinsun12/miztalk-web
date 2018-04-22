@@ -9,7 +9,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { MenuPage } from '../pages/menu/menu';
 
 
-import { ImgCacheService } from '../services/img-util';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,15 +16,13 @@ import { ImgCacheService } from '../services/img-util';
 export class MyApp {
   rootPage:any = MenuPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,public service: Service, imgCacheService: ImgCacheService) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,public service: Service) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      imgCacheService.initImgCache()
-      .subscribe((v) => console.log('init'), () => console.log('fail init'));
-      
+
     });
     this.service.load().then((results) => {});
   }

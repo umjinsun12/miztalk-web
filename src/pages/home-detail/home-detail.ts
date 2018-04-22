@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
-import {ImgCacheService} from '../../services/img-util';
 /**
  * Generated class for the HomeDetailPage page.
  *
@@ -24,8 +23,7 @@ export class HomeDetailPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     public wordpressService: WordpressService,
-    public loadingCtrl: LoadingController,
-    imgCacheService: ImgCacheService) {
+    public loadingCtrl: LoadingController) {
       console.log(navParams.data);
       this.postId = navParams.data.id;
       this.postName = navParams.data.name;
