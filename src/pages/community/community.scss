@@ -14,7 +14,9 @@ ion-tabs{
 
 
 .post-title{
+    color:black !important;
     font-weight: 500 !important;
+    padding : 5px 0px 5px 0px;
 }
 .post-author{
     float : left;
@@ -40,4 +42,13 @@ ion-tabs{
 
 .post-commentbox{
     background-color: #f0f0f0;
+}
+
+
+.community-slider {
+    height: auto;
+}
+  
+.swiper-pagination {
+   bottom: 0px;
 }

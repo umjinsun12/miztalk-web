@@ -1,6 +1,6 @@
 import { WordpressService } from './../../services/wordpress.service';
 import { Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams, Nav, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides} from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthenticationService } from '../../services/authentication.service';
 import { PromiseObservable } from 'rxjs/observable/PromiseObservable';
@@ -28,6 +28,10 @@ export interface CommunityPageInterface {
   templateUrl: 'community.html',
 })
 export class CommunityPage {
+
+  @ViewChild('mySlider') slider: Slides;
+  selectedSegment: string;
+  slides: any;
 
 
   tab1Root: any = 'CommunityMainPage';
@@ -57,7 +61,31 @@ export class CommunityPage {
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController) { 
     this.myIndex = navParams.data.tabIndex || 0;
-    this.topTab = 'tab1Root';
+
+    this.selectedSegment = 'main';
+    this.slides = [
+      {
+        id: "main",
+        title: "메인",
+        categoryid: 23
+      },
+      {
+        id: "clinic",
+        title: "부부클리닉",
+        categoryid: 25
+      },
+      {
+        id: "usedmarket",
+        title: "중고장터",
+        categoryid: 26
+      },
+      {
+        id: "boast",
+        title: "자랑거리",
+        categoryid: 24
+      }
+    ];
+    
   }
 
 
@@ -66,34 +94,48 @@ export class CommunityPage {
   }
 
 
+  onSegmentChanged(segmentButton) {
+    console.log("Segment changed to", segmentButton.value);
+    const selectedIndex = this.slides.findIndex((slide) => {
+      return slide.id === segmentButton.value;
+    });
+    this.slider.slideTo(selectedIndex);
+  }
+
+  onSlideChanged(slider) {
+    console.log('Slide changed');
+    console.log(slider.getActiveIndex());
+    if(slider.getActiveIndex()>=4)
+      return;
+    
+    const currentSlide = this.slides[slider.getActiveIndex()];
+    this.selectedSegment = currentSlide.id;
+  }
+
+
+
+
+
+
   ionViewWillEnter() {
     this.morePagesAvailable = true;
     //if we are browsing a category
-    this.categoryId = this.navParams.get('id');
+    this.categoryId = 23;
     this.categoryTitle = this.navParams.get('title');
 
     if(!(this.posts.length > 0)){
       let loading = this.loadingCtrl.create();
       loading.present();
 
-      this.wordpressService.getRecentPosts(this.categoryId)
-      .subscribe(data => {
-        var authordatas = [];
-        for(let post of data){          
-          authordatas.push(this.wordpressService.getAuthor(post.author));
-          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
+      this.wordpressService.getPostEmbedbyCategory(this.categoryId).subscribe(data=>{
+        console.log(data);
+        for(let post of data){
+          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
+          post.author = post._embedded['author'][0].name;
+          this.posts.push(post);
         }
-
-        forkJoin(authordatas).subscribe(results => {
-          for(var i= 0 ; i < data.length ; i++){
-            data[i].authordata = results[i];
-            this.posts.push(data[i]);
-            console.log(this.posts);
-          }
-          loading.dismiss();
-        });
+        loading.dismiss();
       });
-
     }
   }
 
@@ -147,13 +189,14 @@ export class CommunityPage {
   }
 
   doRefresh(refresher) {
-
-    console.log('reload');
-    console.log(this.posts);
-    this.wordpressService.getRecentPosts(this.categoryId)
-      .subscribe(data => {
+      console.log('reload');
+      console.log(this.posts);
+      this.wordpressService.getPostEmbedbyCategory(this.categoryId).subscribe(data=>{
+        console.log(data);
+        this.posts = [];
         for(let post of data){
-          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
+          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
+          post.author = post._embedded['author'][0].name;
           this.posts.push(post);
         }
         refresher.complete();

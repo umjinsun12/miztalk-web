@@ -13,30 +13,55 @@
   </ion-buttons>
   </ion-navbar>
 </ion-header>
+
+
    
 <ion-content>
-    <ion-segment menuClose [(ngModel)]="topTab" (ionChange)="segmentChanged()">
-        <ion-segment-button value="tab1Root">메인</ion-segment-button>
-        <ion-segment-button value="tab2Root">부부클리닉</ion-segment-button>
-        <ion-segment-button value="tab3Root">중고장터</ion-segment-button>
-        <ion-segment-button value="tab4Root">자랑거리</ion-segment-button>
+    <ion-segment mode="md" [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged($event)">
+      <ion-segment-button value="main">
+        메인
+      </ion-segment-button>
+      <ion-segment-button value="clinic">
+        부부클리닉
+      </ion-segment-button>
+      <ion-segment-button value="usedmarket">
+        중고장터
+      </ion-segment-button>
+      <ion-segment-button value="boast">
+        자랑거리
+      </ion-segment-button>
     </ion-segment>
     
-    <div [ngSwitch]="topTab">
-        <div *ngSwitchCase="'tab1Root'">
-        </div>
-        <div *ngSwitchCase="'tab2Root'">
-            부부클리닉
-        </div>
-        <div *ngSwitchCase="'tab3Root'">
-            중고장터
-        </div>
-        <div *ngSwitchCase="'tab4Root'">
-            자랑거리
-        </div>
-    </div>
-
     <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    
+    <ion-slides class="community-slider" #mySlider (ionSlideDidChange)="onSlideChanged($event)">
+        <ion-slide *ngFor="let slide of slides">
+            <ion-list>
+                <ion-item *ngFor="let post of posts" no-padding>
+                  <ion-row no-padding>
+                    <ion-col col-9>
+                      <p class="post-title" [innerHTML]="post.title.rendered"></p>
+                      <p class="post-author">{{post.author}}</p>
+                      <p class="post-date">{{post.date | date : 'MM-dd HH:mm'}}</p>
+                      <ion-icon name="ios-text" class="post-comment"> 0</ion-icon>
+                      <ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>
+                    </ion-col>
+                    <!--<ion-col class="post-commentbox" col-3 text-center>
+                        <div small color="primary" (click)="postTapped($event, post)" icon-start>
+                          <p>0</p>
+                          <h6>댓글</h6>
+                        </div>
+                    </ion-col>-->
+                  </ion-row>
+                </ion-item>
+              </ion-list>
+        </ion-slide>
+    </ion-slides>
+
+      
+    <!--<ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-list>
@@ -48,14 +73,14 @@
             <p class="post-date">{{post.date | date : 'MM-dd HH:mm'}}</p>
             <ion-icon name="ios-text" class="post-comment"> 0</ion-icon>
             <ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>
-          </ion-col>
+          </ion-col>-->
           <!--<ion-col class="post-commentbox" col-3 text-center>
               <div small color="primary" (click)="postTapped($event, post)" icon-start>
                 <p>0</p>
                 <h6>댓글</h6>
               </div>
           </ion-col>-->
-        </ion-row>
+        <!--</ion-row>
       </ion-item>
     </ion-list>
     <ion-infinite-scroll [enabled]="morePagesAvailable" (ionInfinite)="doInfinite($event)">
@@ -63,7 +88,7 @@
         loadingSpinner="bubbles"
         loadingText="Loading more posts ...">
         </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
+      </ion-infinite-scroll>-->
 
     <!--
 
@@ -91,4 +116,4 @@
     <ion-toolbar position="bottom">
       <button ion-button full>글 쓰 기</button>
     </ion-toolbar>
-  </ion-footer>
+</ion-footer>
