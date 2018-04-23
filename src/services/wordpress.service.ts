@@ -69,6 +69,11 @@ export class WordpressService {
     },{ headers: header })
     .map(res => res.json());
   }
+
+  getPostbyId(postId){
+    return this.http.get(Config.WORDPRESS_REST_API_URL + "posts/" + postId)
+    .map(res => res.json());
+  }
   
   getPostbyCategory(category){
     return this.http.get(Config.WORDPRESS_REST_API_URL + "posts?categories=" + category)

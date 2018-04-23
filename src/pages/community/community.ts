@@ -3,9 +3,8 @@ import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides} from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthenticationService } from '../../services/authentication.service';
-import { PromiseObservable } from 'rxjs/observable/PromiseObservable';
-import { Observable } from 'rxjs/Rx';
-import { forkJoin } from "rxjs/observable/forkJoin";
+import * as moment from 'moment';
+import { CommunityDetailPage } from '../community-detail/community-detail';
 
 /**
  * Generated class for the CommunityPage page.
@@ -61,8 +60,8 @@ export class CommunityPage {
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController) { 
     this.myIndex = navParams.data.tabIndex || 0;
-
     this.selectedSegment = 'main';
+    moment.locale('ko');
     this.slides = [
       {
         id: "main",
@@ -132,6 +131,7 @@ export class CommunityPage {
         for(let post of data){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
           post.author = post._embedded['author'][0].name;
+          post.reltime = moment(post.date).fromNow();
           this.posts.push(post);
         }
         loading.dismiss();
@@ -197,6 +197,7 @@ export class CommunityPage {
         for(let post of data){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
           post.author = post._embedded['author'][0].name;
+          post.reltime = moment(post.date).fromNow();
           this.posts.push(post);
         }
         refresher.complete();
@@ -221,6 +222,13 @@ export class CommunityPage {
     }, err => {
       this.morePagesAvailable = false;
     })
+  }
+
+  getPostConent(postId:number, postName:string){
+    let passData = {name:'', id:0};
+    passData.name = postName;
+    passData.id = postId;
+    this.navCtrl.push(CommunityDetailPage, passData);
   }
 
 }

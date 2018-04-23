@@ -1,7 +1,7 @@
 import { HomeDetailPage } from './../home-detail/home-detail';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController ,Nav} from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { WordpressService } from '../../services/wordpress.service';
 

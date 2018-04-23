@@ -2,7 +2,6 @@ import { MypagePage } from './../mypage/mypage';
 import { CommunityPage } from './../community/community';
 import { EventPage } from './../event/event';
 import { ShoppingPage } from './../shopping/shopping';
-import { HomePage } from './../home/home';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Nav } from 'ionic-angular';
 

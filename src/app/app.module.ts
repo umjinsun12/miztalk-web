@@ -1,3 +1,4 @@
+import { CommunityDetailPage } from './../pages/community-detail/community-detail';
 import { HomeDetailPage } from './../pages/home-detail/home-detail';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { OneSignal } from '@ionic-native/onesignal';
@@ -37,6 +38,7 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
 
 @NgModule({
   declarations: [
+    CommunityDetailPage,
     MyApp,
     MenuPage,
     ShoppingProductPage,
@@ -45,10 +47,16 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
   imports: [
     HttpModule,
     BrowserModule,
-    IonicModule.forRoot(MyApp,{tabsPlacement: 'bottom'})
+    IonicModule.forRoot(MyApp,{
+      tabsPlacement: 'bottom',
+      backButtonText: '',
+      backButtonIcon: 'ios-arrow-back',
+      iconMode: 'md'
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    CommunityDetailPage,
     HomeDetailPage,
     ShoppingProductPage,
     MyApp,
