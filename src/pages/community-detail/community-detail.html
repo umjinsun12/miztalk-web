@@ -12,6 +12,28 @@
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
+  <ion-list>
+    <ion-list-header>
+      <div>[{{post.categoryName}}]</div>
+      <h3>{{post.title.rendered}}</h3>
+      <div>{{post.author}} {{post.date}}</div>
+    </ion-list-header>
+    <div style="border-bottom: 0.55px solid #c8c7cc" padding>
+      {{post.content.rendered}}
+    </div>
+    <ion-list-header>
+      댓글 2
+    </ion-list-header>
+    <ion-item>
+      <div>예지맘</div>
+      <div>전 하루에 한번씩은 꼭 전화통화 하려고 노력해요.</div>
+      <div>23:40</div>
+    </ion-item>
+    <ion-item>
+      <div>기럭맘</div>
+      <div>2번이상은 꼭해요.</div>
+      <div>23:40</div>
+    </ion-item>
+  </ion-list>
 </ion-content>

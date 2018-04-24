@@ -1,6 +1,7 @@
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import * as moment from 'moment';
 
 /**
  * Generated class for the CommunityDetailPage page.
@@ -27,6 +28,17 @@ export class CommunityDetailPage {
       console.log(navParams.data);
       this.postId = navParams.data.id;
       this.postName = navParams.data.name;
+      this.post = {
+        categoryName : "",
+        content : {
+          rendered : ""
+        },
+        date : "",
+        title :{
+          rendered : ""
+        },
+        author : ""
+      }
   }
 
   ionViewDidLoad() {
@@ -34,6 +46,10 @@ export class CommunityDetailPage {
     loading.present();
     this.wordpressService.getPostbyId(this.postId).subscribe(data =>{
       this.post = data;
+      this.post.categoryName = data._embedded['wp:term'][0][0].name.replace("커뮤니티-","");
+      this.post.author = data._embedded['author'][0].name;
+      this.post.content.rendered = data.content.rendered.replace("<p>","").replace("</p>","");
+      this.post.date = moment(data.date).fromNow()
       console.log(this.post);
       loading.dismiss();
     });

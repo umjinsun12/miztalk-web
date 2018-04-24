@@ -3,7 +3,6 @@ import { Values } from './../../services/shopping-services/values';
 import { ProductService } from './../../services/shopping-services/product-service';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Content, IonicPage } from 'ionic-angular';
-import {md5} from './md5';
 //import { CartPage } from '../cart/cart';
 
 

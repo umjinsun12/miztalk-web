@@ -1,7 +1,7 @@
 import { WordpressService } from './../../services/wordpress.service';
 import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides} from 'ionic-angular';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import { AuthenticationService } from '../../services/authentication.service';
 import * as moment from 'moment';
 import { CommunityDetailPage } from '../community-detail/community-detail';

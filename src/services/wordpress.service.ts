@@ -71,7 +71,7 @@ export class WordpressService {
   }
 
   getPostbyId(postId){
-    return this.http.get(Config.WORDPRESS_REST_API_URL + "posts/" + postId)
+    return this.http.get(Config.WORDPRESS_REST_API_URL + "posts/" + postId + "?_embed")
     .map(res => res.json());
   }
   

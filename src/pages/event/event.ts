@@ -1,6 +1,6 @@
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Nav, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
 import { AuthenticationService } from '../../services/authentication.service';
 
 /**
