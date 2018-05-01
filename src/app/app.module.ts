@@ -1,6 +1,10 @@
+import { Storage } from '@ionic/storage';
+import { CommunityWritePage } from './../pages/community-write/community-write';
+import { TabsPage } from './../pages/tabs/tabs';
 import { CommunityDetailPage } from './../pages/community-detail/community-detail';
 import { HomeDetailPage } from './../pages/home-detail/home-detail';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { IonicStorageModule } from '@ionic/storage';
 import { OneSignal } from '@ionic-native/onesignal';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -42,7 +46,8 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
     MyApp,
     MenuPage,
     ShoppingProductPage,
-    HomeDetailPage
+    HomeDetailPage,
+    CommunityWritePage
   ],
   imports: [
     HttpModule,
@@ -52,10 +57,12 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
       backButtonText: '',
       backButtonIcon: 'ios-arrow-back',
       iconMode: 'md'
-    })
+    }),
+    IonicStorageModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    CommunityWritePage,
     CommunityDetailPage,
     HomeDetailPage,
     ShoppingProductPage,

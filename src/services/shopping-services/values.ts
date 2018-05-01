@@ -22,6 +22,7 @@ export class Values {
   deviceId: any;
   platform: any;
   wishlistId: any = [];
+  point: any = 0;
 
   constructor() {
   	this.filter = {};
@@ -45,5 +46,8 @@ export class Values {
          this.cart[crt[item].product_id] = parseInt(crt[item].quantity);
          this.count += parseInt(crt[item].quantity);
      }
+ }
+ updatePoint(point){
+     this.point = point;
  }
  }

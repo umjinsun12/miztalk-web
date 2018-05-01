@@ -23,17 +23,12 @@
       {{post.content.rendered}}
     </div>
     <ion-list-header>
-      댓글 2
+      댓글 {{post.replies.length}}
     </ion-list-header>
-    <ion-item>
-      <div>예지맘</div>
-      <div>전 하루에 한번씩은 꼭 전화통화 하려고 노력해요.</div>
-      <div>23:40</div>
-    </ion-item>
-    <ion-item>
-      <div>기럭맘</div>
-      <div>2번이상은 꼭해요.</div>
-      <div>23:40</div>
+    <ion-item *ngFor="let reply of post.replies">
+      <div>{{reply.author_name}}</div>
+      <div>{{reply.content.rendered}}</div>
+      <div>{{reply.date}}</div>
     </ion-item>
   </ion-list>
 </ion-content>

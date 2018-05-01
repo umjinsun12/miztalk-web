@@ -5,6 +5,7 @@ import { Config } from './config';
 import { Values } from './values';
 import { URLSearchParams } from '@angular/http';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 
@@ -31,7 +32,13 @@ export class Service {
     dir: any = 'left';
     filter: any = {};
     has_more_items: boolean = true;
-    constructor(private http: Http, private config: Config, private values: Values, public loadingCtrl: LoadingController, private nativeStorage: NativeStorage) {
+    constructor(
+        private http: Http, 
+        private config: Config, 
+        private values: Values, 
+        public loadingCtrl: LoadingController, 
+        private nativeStorage: NativeStorage, 
+        private storage: Storage) {
         this.mainCategories = [];
         this.filter.page = 1;
     }
@@ -73,7 +80,13 @@ export class Service {
                                 });
                             resolve(this.categories);
                         });
+                    console.log(this.config);
+                    this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mshop-point-ex-get_mypoint', this.config.options).map(res => res.json())
+                        .subscribe(data => {
+                           this.values.point = data.free_point;
+                        });
                 });
+                
         });
     }
     getNonce() {
@@ -122,6 +135,10 @@ export class Service {
                                 data => console.log('Login Details Stored'),
                                 error => console.error(error)
                             );
+                        this.storage.set('loginData',{
+                            username: a.username,
+                            password: a.password
+                        });
                     }
                     resolve(data);
                 }, err => {resolve(JSON.parse(err._body));console.log(err._body)});
@@ -293,7 +310,7 @@ export class Service {
    loadMore() {
        this.filter.page += 1;
        return new Promise(resolve => {
-           this.http.get(this.config.setUrl('GET', '/wc-api/v3/products?', this.filter), this.config.options).map(res => res.json()).subscribe(data => {
+           this.http.get(this.config.setUrl('GET', '/wc-api/v3/products?', false), this.config.options).map(res => res.json()).subscribe(data => {
                this.handleMore(data);
                resolve(true);
            });
@@ -308,5 +325,15 @@ export class Service {
        if (results.length == 0) {
            this.has_more_items = false;
        }
+   }
+   submitPost(){
+       var params = {
+           content : "adsfadsf"
+       };
+       return new Promise(resolve => {
+            this.http.post(this.config.url + '/wp-json/wp/v2/posts' , params,this.config.options).map(res => res.json()).subscribe(data =>{
+                console.log(data);
+            });
+       });
    }
 }

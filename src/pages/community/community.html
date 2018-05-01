@@ -8,7 +8,7 @@
     커뮤니티
   </ion-title>
   <ion-buttons end padding>
-      <small class="point">0</small>
+      <small class="point">{{values.point | number: '1.0-0'}}</small>
       <img src="../../assets/imgs/drawable-xxxhdpi/action_b_point_icon.png" height=10>
   </ion-buttons>
   </ion-navbar>
@@ -45,7 +45,7 @@
                       <p class="post-title" [innerHTML]="post.title.rendered"></p>
                       <p class="post-author">{{post.author}}</p>
                       <p class="post-date">{{post.reltime}}</p>
-                      <ion-icon name="ios-text" class="post-comment"> 0</ion-icon>
+                      <ion-icon name="ios-text" class="post-comment"> {{post.replies}}</ion-icon>
                       <ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>
                     </ion-col>
                     <!--<ion-col class="post-commentbox" col-3 text-center>
@@ -114,6 +114,6 @@
 
 <ion-footer no-shadow>
     <ion-toolbar position="bottom">
-      <button ion-button full>글 쓰 기</button>
+      <button ion-button full (click)="doWrite()">글 쓰 기</button>
     </ion-toolbar>
 </ion-footer>

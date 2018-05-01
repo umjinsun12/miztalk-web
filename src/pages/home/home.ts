@@ -1,9 +1,13 @@
+import { Storage } from '@ionic/storage';
+import { NativeStorage } from '@ionic-native/native-storage';
+import { Values } from './../../services/shopping-services/values';
 import { HomeDetailPage } from './../home-detail/home-detail';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController ,Nav} from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { WordpressService } from '../../services/wordpress.service';
+
 
 /**
  * Generated class for the HomePage page.
@@ -46,8 +50,10 @@ export class HomePage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams, 
     public wordpressService: WordpressService,
-    public loadingCtrl: LoadingController) {
-  
+    public loadingCtrl: LoadingController,
+    public values : Values,
+    public nativeStorage : NativeStorage,
+    public storage : Storage) {
 
     this.products = [
       {
@@ -107,6 +113,8 @@ export class HomePage {
     this.categoryId = this.navParams.get('id');
     this.categoryTitle = this.navParams.get('title');
 
+
+    console.log(this.storage.get('loginData'));
     if(!(this.posts.length > 0)){
       let loading = this.loadingCtrl.create();
       loading.present();

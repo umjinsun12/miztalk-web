@@ -1,3 +1,4 @@
+import { Values } from './../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
@@ -28,7 +29,8 @@ export class EventPage {
     public navCtrl: NavController, 
     public navParams: NavParams, 
     public wordpressService: WordpressService,
-    public loadingCtrl: LoadingController) { 
+    public loadingCtrl: LoadingController,
+    public values : Values) { 
   }
 
   ionViewDidLoad() {

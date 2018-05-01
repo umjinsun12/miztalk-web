@@ -37,7 +37,8 @@ export class CommunityDetailPage {
         title :{
           rendered : ""
         },
-        author : ""
+        author : "",
+        replies : []
       }
   }
 
@@ -49,7 +50,16 @@ export class CommunityDetailPage {
       this.post.categoryName = data._embedded['wp:term'][0][0].name.replace("커뮤니티-","");
       this.post.author = data._embedded['author'][0].name;
       this.post.content.rendered = data.content.rendered.replace("<p>","").replace("</p>","");
-      this.post.date = moment(data.date).fromNow()
+      this.post.date = moment(data.date).fromNow();
+      if(data._embedded.replies != undefined){
+        this.post.replies = data._embedded.replies[0];
+        for(var i= 0; i < this.post.replies.length ; i++){
+          this.post.replies[i].content.rendered = this.post.replies[i].content.rendered.replace("<p>","").replace("</p>","");
+          this.post.replies[i].date = moment(this.post.replies[i].date).fromNow();
+        }
+      }
+      else
+        this.post.replies = [];
       console.log(this.post);
       loading.dismiss();
     });

@@ -1,3 +1,5 @@
+import { CommunityWritePage } from './../community-write/community-write';
+import { Values } from './../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides} from 'ionic-angular';
@@ -58,7 +60,8 @@ export class CommunityPage {
     public navCtrl: NavController, 
     public navParams: NavParams, 
     public wordpressService: WordpressService,
-    public loadingCtrl: LoadingController) { 
+    public loadingCtrl: LoadingController,
+    public values: Values) { 
     this.myIndex = navParams.data.tabIndex || 0;
     this.selectedSegment = 'main';
     moment.locale('ko');
@@ -89,14 +92,42 @@ export class CommunityPage {
 
 
   segmentChanged(){
+    console.log("adsfsdfs");
     console.log(this.topTab);
+  }
+
+  getPostCategory(categoryid){
+      let loading = this.loadingCtrl.create();
+      loading.present();
+
+      this.posts = [];
+      this.wordpressService.getPostEmbedbyCategory(categoryid).subscribe(data=>{
+        console.log(data);
+        this.posts = [];
+        for(let post of data){
+          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
+          post.author = post._embedded['author'][0].name;
+          post.reltime = moment(post.date).fromNow();
+          post.replies = 0;
+          if(post._embedded.replies != undefined)
+            post.replies = post._embedded.replies[0].length;
+          else
+            post.replies = 0;
+          this.posts.push(post);
+        }
+        loading.dismiss();
+      });
   }
 
 
   onSegmentChanged(segmentButton) {
     console.log("Segment changed to", segmentButton.value);
     const selectedIndex = this.slides.findIndex((slide) => {
-      return slide.id === segmentButton.value;
+      if(slide.id === segmentButton.value){
+        this.categoryId = slide.categoryid;
+        this.getPostCategory(slide.categoryid);
+        return slide.id === segmentButton.value;
+      }
     });
     this.slider.slideTo(selectedIndex);
   }
@@ -121,23 +152,10 @@ export class CommunityPage {
     //if we are browsing a category
     this.categoryId = 23;
     this.categoryTitle = this.navParams.get('title');
-
-    if(!(this.posts.length > 0)){
-      let loading = this.loadingCtrl.create();
-      loading.present();
-
-      this.wordpressService.getPostEmbedbyCategory(this.categoryId).subscribe(data=>{
-        console.log(data);
-        for(let post of data){
-          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
-          post.author = post._embedded['author'][0].name;
-          post.reltime = moment(post.date).fromNow();
-          this.posts.push(post);
-        }
-        loading.dismiss();
-      });
-    }
+    this.getPostCategory(this.categoryId);
   }
+
+  
 
 
   getRecentPosts(categoryId:number, page:number = 1) {
@@ -198,6 +216,11 @@ export class CommunityPage {
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
           post.author = post._embedded['author'][0].name;
           post.reltime = moment(post.date).fromNow();
+          post.replies = 0;
+          if(post._embedded.replies != undefined)
+            post.replies = post._embedded.replies[0].length;
+          else
+            post.replies = 0;
           this.posts.push(post);
         }
         refresher.complete();
@@ -229,6 +252,10 @@ export class CommunityPage {
     passData.name = postName;
     passData.id = postId;
     this.navCtrl.push(CommunityDetailPage, passData);
+  }
+
+  doWrite(){
+    this.navCtrl.push(CommunityWritePage);
   }
 
 }

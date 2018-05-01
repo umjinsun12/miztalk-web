@@ -39,6 +39,7 @@ export class MenuPage {
     { title: 'Tab 3', pageName: 'TabsPage', tabComponent: 'ShoppingPage', index: 1, icon: 'contacts' },
     { title: 'Tab 4', pageName: 'TabsPage', tabComponent: 'EventPage', index: 1, icon: 'contacts' },
     { title: 'Tab 5', pageName: 'TabsPage', tabComponent: 'MypagePage', index: 1, icon: 'contacts' },
+    { title: 'Tab 6', pageName: 'TabsPage', tabComponent: 'MypagePage', index: 1, icon: 'contacts' },
   ];
  
   constructor(public navCtrl: NavController) { }
