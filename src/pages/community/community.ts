@@ -51,6 +51,8 @@ export class CommunityPage {
   categoryTitle: string;
   http: Http;
 
+  activeIndex: any = 0;
+
  
   // Reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -129,12 +131,14 @@ export class CommunityPage {
         return slide.id === segmentButton.value;
       }
     });
+    this.activeIndex = selectedIndex;
     this.slider.slideTo(selectedIndex);
   }
 
   onSlideChanged(slider) {
     console.log('Slide changed');
     console.log(slider.getActiveIndex());
+    this.activeIndex = slider.getActiveIndex();
     if(slider.getActiveIndex()>=4)
       return;
     
@@ -150,7 +154,8 @@ export class CommunityPage {
   ionViewWillEnter() {
     this.morePagesAvailable = true;
     //if we are browsing a category
-    this.categoryId = 23;
+    this.categoryId = this.slides[this.activeIndex].categoryid;
+    console.log(this.categoryId);
     this.categoryTitle = this.navParams.get('title');
     this.getPostCategory(this.categoryId);
   }

@@ -7,11 +7,45 @@
 <ion-header>
 
   <ion-navbar>
+      <ion-title color="grapefruit">
+          글쓰기
+      </ion-title>
+      <ion-buttons end padding>
+          <div class="community_submit" (click)="doWrite()">등록</div>
+      </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-글쓰기페이지 입니다.
+  <ion-list>
+
+      <ion-item>
+          <ion-label>게시판 선택</ion-label>
+          <ion-select [(ngModel)]="selectCategory" multiple="false" cancelText="취소" okText="확인">
+              <ion-option value="0" selected="true">
+                메인
+              </ion-option>
+              <ion-option value="1">
+                부부클리닉
+              </ion-option>
+              <ion-option value="3">
+                중고장터
+              </ion-option>
+              <ion-option value="2">
+                자랑하기
+              </ion-option>
+          </ion-select>
+      </ion-item>
+      
+    <ion-item>
+      <ion-input [(ngModel)]="title" type="text" placeholder="제목"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-textarea [(ngModel)]="content" style="height:400px" type="text" placeholder="내용"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  
 </ion-content>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { LoadingController } from 'ionic-angular';
 import { Config } from './config';
 import { Values } from './values';
@@ -13,6 +13,7 @@ import 'rxjs/add/observable/forkJoin';
 export class Service {
     data: any;
     categories: any;
+    communityCategories: any;
     banners: any;
     orders: any;
     order: any;
@@ -32,6 +33,9 @@ export class Service {
     dir: any = 'left';
     filter: any = {};
     has_more_items: boolean = true;
+    postoptions: any = {};
+
+
     constructor(
         private http: Http, 
         private config: Config, 
@@ -80,11 +84,34 @@ export class Service {
                                 });
                             resolve(this.categories);
                         });
+
+                    this.http.get(this.config.setUrl('GET', '/wp-json/wp/v2/categories?', false), this.config.options).map(res => res.json())
+                        .subscribe(data => {
+                            this.communityCategories = data;
+                        });
+
                     console.log(this.config);
                     this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mshop-point-ex-get_mypoint', this.config.options).map(res => res.json())
                         .subscribe(data => {
                            this.values.point = data.free_point;
                         });
+                    this.storage.get('loginData').then(data => {
+                       let params = new URLSearchParams();
+                       params.append("username", data.username);
+                       params.append("password", data.password);
+                       this.http.post(this.config.url + '/wp-json/jwt-auth/v1/token', params, this.config.options).map(res => res.json())
+                            .subscribe(respdata => {
+                                this.storage.set('tokenData', respdata);
+                                this.nativeStorage.setItem('tokenData', respdata)
+                                .then(
+                                    respdata => console.log('Login Details Stored'),
+                                    error => console.error(error)
+                                );
+                                
+                                this.values.token = respdata.token;
+                                console.log(this.values.token);
+                            });
+                    });
                 });
                 
         });
@@ -139,6 +166,20 @@ export class Service {
                             username: a.username,
                             password: a.password
                         });
+
+                        params = new URLSearchParams();
+                        params.append("username", a.username);
+                        params.append("password", a.password);
+
+                        this.http.post(this.config.url + '/wp-json/jwt-auth/v1/token', params, this.config.options).map(res => res.json())
+                            .subscribe(data => {
+                                this.storage.set('tokenData', data);
+                                this.nativeStorage.setItem('tokenData', data)
+                                .then(
+                                    data => console.log('Login Details Stored'),
+                                    error => console.error(error)
+                                );
+                            });
                     }
                     resolve(data);
                 }, err => {resolve(JSON.parse(err._body));console.log(err._body)});
@@ -326,13 +367,24 @@ export class Service {
            this.has_more_items = false;
        }
    }
-   submitPost(){
+   submitPost(posttitle, postcontent, postcategoryid){
        var params = {
-           content : "adsfadsf"
+           title : posttitle,
+           content : postcontent,
+           categories : postcategoryid,
+           status : 'publish',
        };
+       var headers = new Headers({
+        'Content-Type' :'application/json; charset=UTF-8',
+        'Authorization' : 'Bearer ' + this.values.token
+       });
+       this.postoptions.headers = headers;
+       this.postoptions.withCredentials = true;
+
+       console.log(this.postoptions);
        return new Promise(resolve => {
-            this.http.post(this.config.url + '/wp-json/wp/v2/posts' , params,this.config.options).map(res => res.json()).subscribe(data =>{
-                console.log(data);
+            this.http.post(this.config.url + '/wp-json/wp/v2/posts' , params, this.postoptions).subscribe(data =>{
+                resolve(data);
             });
        });
    }

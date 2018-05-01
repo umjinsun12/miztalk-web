@@ -114,7 +114,11 @@ export class HomePage {
     this.categoryTitle = this.navParams.get('title');
 
 
-    console.log(this.storage.get('loginData'));
+    this.storage.get('tokenData').then(data => {
+      console.log(data.token);
+    });
+
+
     if(!(this.posts.length > 0)){
       let loading = this.loadingCtrl.create();
       loading.present();

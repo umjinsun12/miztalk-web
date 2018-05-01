@@ -23,6 +23,7 @@ export class Values {
   platform: any;
   wishlistId: any = [];
   point: any = 0;
+  token: any = "";
 
   constructor() {
   	this.filter = {};
