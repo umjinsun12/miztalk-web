@@ -7,8 +7,13 @@
   <ion-buttons class="md-search" end>
       <ion-icon color="primary" name="ios-search"></ion-icon>
   </ion-buttons>
-  <ion-buttons class="ios-cart" end>
-        <ion-icon color="primary" name="ios-cart-outline"></ion-icon>
+  <ion-buttons end>
+      <button ion-button icon-only light class="has-icon icon-only has-badge" (click)="getCart()">
+        <ion-icon color="primary" class="ion-ios-cart-outline item-icon product-cart">
+        </ion-icon>
+        <ion-badge class="badge badge-light" *ngIf="values.count">{{values.count}}
+        </ion-badge>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -54,8 +59,6 @@
                           <button ion-button color="danger" *ngIf="!item.in_stock">OUTOFSTOCK
                           </button>
     
-        
-                  
                       </div>
 
                       <div class="price-wrapper">

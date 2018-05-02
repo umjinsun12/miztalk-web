@@ -95,23 +95,24 @@ export class Service {
                         .subscribe(data => {
                            this.values.point = data.free_point;
                         });
-                    this.storage.get('loginData').then(data => {
-                       let params = new URLSearchParams();
-                       params.append("username", data.username);
-                       params.append("password", data.password);
-                       this.http.post(this.config.url + '/wp-json/jwt-auth/v1/token', params, this.config.options).map(res => res.json())
-                            .subscribe(respdata => {
-                                this.storage.set('tokenData', respdata);
-                                this.nativeStorage.setItem('tokenData', respdata)
-                                .then(
-                                    respdata => console.log('Login Details Stored'),
-                                    error => console.error(error)
-                                );
-                                
-                                this.values.token = respdata.token;
-                                console.log(this.values.token);
-                            });
-                    });
+                    
+                        this.storage.get('loginData').then(data => {
+                            let params = new URLSearchParams();
+                            params.append("username", data.username);
+                            params.append("password", data.password);
+                            this.http.post(this.config.url + '/wp-json/jwt-auth/v1/token', params, this.config.options).map(res => res.json())
+                                 .subscribe(respdata => {
+                                     this.storage.set('tokenData', respdata);
+                                     this.nativeStorage.setItem('tokenData', respdata)
+                                     .then(
+                                         respdata => console.log('Login Details Stored'),
+                                         error => console.error(error)
+                                     );
+                                     
+                                     this.values.token = respdata.token;
+                                     console.log(this.values.token);
+                                 });
+                         });    
                 });
                 
         });
@@ -344,10 +345,14 @@ export class Service {
        });
    }
    getProducts() {
-       this.http.get(this.config.setUrl('GET', '/wc-api/v3/products?', false), this.config.options).map(res => res.json()).subscribe(data => {
+    return new Promise(resolve => {this.http.get(this.config.setUrl('GET', '/wc-api/v3/products?', false), this.config.options).map(res => res.json()).subscribe(data => {
            this.products = data;
+           resolve(this.product);
        });
+    });
    }
+
+   
    loadMore() {
        this.filter.page += 1;
        return new Promise(resolve => {
@@ -388,4 +393,31 @@ export class Service {
             });
        });
    }
+
+   addToWishlist(id) {
+    return new Promise(resolve => {
+      var params = new URLSearchParams();
+      params.append("product_id", id);
+      params.append("customer_id", this.values.customerId.toString());
+      this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-add_wishlist', params, this.config.options).map(res => res.json())
+        .subscribe(data => {
+          this.status = data;
+          resolve(this.status);
+        });
+    });
+    }
+
+    deleteItem(id){
+        var params = new URLSearchParams();
+        params.append("product_id", id);
+        params.append("customer_id", this.values.customerId.toString());
+          return new Promise(resolve => {
+          this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-remove_wishlist', params, this.config.options).map(res => res.json())
+            .subscribe(data => {
+              
+              resolve(data);
+            });
+        });
+      }
+      
 }

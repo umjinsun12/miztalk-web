@@ -3,10 +3,18 @@ page-community-write {
 }
 
 
-.item-md{
+.community_submit{
+    color : #8c8c8c;
+}
+
+.community-content-item{
     padding-left: 0px;
 }
 
-.community_submit{
-    color : #8c8c8c;
+.community-textarea{
+    height : 100%;
+}
+
+textarea.text-input{
+    height : 500px;
 }

@@ -1,9 +1,8 @@
 <ion-header>
     <ion-navbar color="header">
-
       <ion-buttons end>
         <button ion-button icon-only light class="has-icon icon-only has-badge" (click)="getCart()">
-          <ion-icon class="ion-ios-basket-outline item-icon">
+          <ion-icon color="primary" class="ion-ios-cart-outline item-icon product-cart">
           </ion-icon>
           <ion-badge class="badge badge-light" *ngIf="values.count">{{values.count}}
           </ion-badge>
@@ -14,6 +13,17 @@
 
 
   <ion-content class="product-page">
+
+      <ion-segment mode="md" [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged($event)">
+          <ion-segment-button value="info">
+            상품정보
+          </ion-segment-button>
+          <ion-segment-button value="review">
+            상품후기
+          </ion-segment-button>
+      </ion-segment>
+
+
     <ion-spinner *ngIf="!product" name="crescent">
     </ion-spinner>
     <div *ngIf="product" class="product-details">
@@ -26,39 +36,30 @@
           </ion-slide>
         </ion-slides>
       </div>
-      <ion-item class="product-name">
-        <ion-label>
+      
+      
+      <div class="product-title">
+        <div class="product-title-inner">
           {{product.product.title}}
-        </ion-label>
-        <span item-right *ngIf='product.product.average_rating' class="rating">
-          <span class="star-icon" [ngClass]="{full: product.product.average_rating >= 1, half: product.product.average_rating == 0.5}">&#x2605;
-          </span>
-          <span class="star-icon" [ngClass]="{full: product.product.average_rating >= 2, half: product.product.average_rating == 1.5}">&#x2605;
-          </span>
-          <span class="star-icon" [ngClass]="{full: product.product.average_rating >= 3, half: product.product.average_rating == 2.5}">&#x2605;
-          </span>
-          <span class="star-icon" [ngClass]="{full: product.product.average_rating >= 4, half: product.product.average_rating == 3.5}">&#x2605;
-          </span>
-          <span class="star-icon" [ngClass]="{full: product.product.average_rating >= 5, half: product.product.average_rating == 4.5}">&#x2605;
-          </span>
-        </span>
-      </ion-item>
+        </div>
+      </div>
+      
+
       <ion-item class="stock-label" no-lines>
         
-        <ion-label class="price-regular" *ngIf="!product.product.sale_price">{{1*product.product.price | currency:values.currency:true:'1.2-2'}}
+        <ion-label class="price-regular" *ngIf="!product.product.sale_price">{{(1*product.product.price | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
         </ion-label>
-                      <ion-label class="price-special" *ngIf="product.product.sale_price"><span>{{1*product.product.sale_price | currency:values.currency:true:'1.2-2'}}</span>
-                        <span class="price-delete"><del>{{1*product.product.regular_price | currency:values.currency:true:'1.2-2'}}</del></span>
-  
-                          <span text-wrap class="price-off-tag">{{(product.product.regular_price - product.product.sale_price) / product.product.regular_price*100 | number : '1.0-0'}}% {{"OFF"}}</span>
-                        
+                      <ion-label class="price-special" *ngIf="product.product.sale_price">
+                        <span text-wrap class="price-off-tag">{{(product.product.regular_price - product.product.sale_price) / product.product.regular_price*100 | number : '1.0-0'}}%</span>
+                        <span class="price-off">{{(1*product.product.sale_price | currency:values.currency:false:'1.0-0').replace('KRW','')}}원</span>
+                        <span class="price-delete"><del>{{(1*product.product.regular_price | currency:values.currency:false:'1.0-0').replace('KRW','')}}원</del></span>
                       </ion-label>
   
         <h2 *ngIf="values.wishlistId[product.product.id]" item-right class="wishlist" color="danger" (click)="removeFromWishlist(product.product.id)">
-        <ion-icon ios="ios-heart" md="md-heart"></ion-icon>
+        <ion-icon color="primary" ios="ios-heart" md="md-heart"></ion-icon>
         </h2>
         <h2 *ngIf="!values.wishlistId[product.product.id]" item-right class="wishlist" color="danger" (click)="addToWishlist(product.product.id)">
-        <ion-icon ios="ios-heart-outline" md="md-heart-outline"></ion-icon>
+        <ion-icon color="primary" ios="ios-heart-outline" md="md-heart-outline"></ion-icon>
         </h2>
        
       </ion-item>
@@ -90,14 +91,10 @@
           </ion-select>           
         </ion-item>
       </div>
-      <div class="add-to-cart-button">
-        <button ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="addToCart(product.product.id)">
-          {{AddToCart}}
-        </button>
-      </div>
+      
       <div *ngIf="product.product.short_description">
-      <ion-item no-lines class="item-background">
-        {{"ShortDescription"}} :
+      <ion-item class="item-background">
+        요약정보
       </ion-item>
       <ion-item text-wrap  no-lines>
         <div [innerHTML]="product.product.short_description">
@@ -105,8 +102,8 @@
       </ion-item>
       </div>
       <div *ngIf="product.product.description">
-      <ion-item no-lines class="item-background">
-        {{"Description"}} :
+      <ion-item class="item-background">
+          상세정보
       </ion-item>
       <ion-item text-wrap  no-lines>
         <div [innerHTML]="product.product.description">
@@ -114,17 +111,18 @@
       </ion-item>
       </div>
       
+      
       <div *ngIf="reviews?.product_reviews.length">
         <ion-row class="item-background">
           <ion-col>
-            <!--button ion-button  *ngIf="!reviews" color="button-color" button small clear (click)="getReviews()" style="margin-bottom:0px">{{"ShowReviews" | translate}}
-            </button-->
-            <button ion-button *ngIf="reviews" color="button-color" button small clear class="review-title">{{"Reviews"}}
+            <button ion-button *ngIf="reviews" color="button-color" button small clear class="review-title">{{"상품후기"}}
             </button>
           </ion-col>
           <ion-col>
           </ion-col>
         </ion-row>
+
+        
         <div  *ngFor="let item of reviews.product_reviews" class="reviews">
             <ion-item no-lines>
               <ion-avatar item-start style="margin:8px">
@@ -139,13 +137,31 @@
                <span class="star-icon" [ngClass]="{full: item.rating >= 5, half: item.rating == 4.5}">&#x2605;</span>
                </span></h3>
       
-               <!--h3 style="color:#9e9898">{{item.email}}</h3-->
                <h3 style="color:#9e9898;margin-bottom:4px">{{item.created_at | date:'medium'}}</h3>
             </ion-item>
             <p text-wrap>{{item.review}}</p>
-        </div>    
+        </div>
       </div>
     </div>
+
     <br>
   </ion-content>
+
+  <ion-footer no-shadow>
+      <ion-toolbar position="bottom">
+        <ion-row>
+          <button col-3 ion-button full color="dark" text-uppercase [disabled]='disableSubmit' (click)="addToCart(product.product.id)">
+            제품문의
+          </button>
+          <button col-9 ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="addToCart(product.product.id)">
+            구매하기
+          </button>
+        </ion-row>
+      </ion-toolbar>
+  </ion-footer>
   
+  <!--<div class="add-to-cart-button">
+      <button ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="addToCart(product.product.id)">
+        {{AddToCart}}
+      </button>
+    </div>-->

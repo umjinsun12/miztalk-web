@@ -21,7 +21,7 @@
 <ion-content padding>
   <ion-list>
 
-      <ion-item>
+      <ion-item class="community-content-item">
           <ion-label>게시판 선택</ion-label>
           <ion-select [(ngModel)]="selectCategory" multiple="false" cancelText="취소" okText="확인">
               <ion-option value="0" selected="true">
@@ -39,11 +39,11 @@
           </ion-select>
       </ion-item>
       
-    <ion-item>
+    <ion-item class="community-content-item">
       <ion-input [(ngModel)]="title" type="text" placeholder="제목"></ion-input>
     </ion-item>
   
-    <ion-item>
+    <ion-item class="community-content-item community-textarea">
       <ion-textarea [(ngModel)]="content" style="height:400px" type="text" placeholder="내용"></ion-textarea>
     </ion-item>
   </ion-list>

@@ -95,6 +95,20 @@ ion-header{
    Product List
 *****************************/
 
+.badge {
+    position: absolute;
+    top: -8%;
+    right: 4%;
+    right: calc(10% - 5px);
+    padding: 1px 6px;
+    height: auto;
+    font-size: 12px;
+    line-height: 16px;
+    color: #fff;
+    background-color: #e83d4d;
+    border-radius: 100%;
+}
+
 .product-list {
     // position: relative;
    

@@ -2,7 +2,7 @@ import { Functions } from './../../services/shopping-services/functions';
 import { Values } from './../../services/shopping-services/values';
 import { ProductService } from './../../services/shopping-services/product-service';
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Content, IonicPage } from 'ionic-angular';
+import { NavController, NavParams, Content, IonicPage, Slides } from 'ionic-angular';
 //import { CartPage } from '../cart/cart';
 
 
@@ -27,6 +27,13 @@ export class ShoppingProductPage {
     disableSubmit: boolean = false;
     wishlistIcon: boolean = false;
 
+    selectedSegment: string;
+
+    @ViewChild('mySlider') slider: Slides;
+    slides: any;
+    activeIndex: string;
+    myIndex : any;
+
     constructor(
       public nav: NavController, 
       public service: ProductService, 
@@ -34,6 +41,19 @@ export class ShoppingProductPage {
       public functions: Functions, 
       public values: Values) {
       
+        this.myIndex = params.data.tabIndex || 0;
+        this.selectedSegment = 'info';
+        this.slides = [
+            {
+              id: "info",
+              title: "상품정보"
+            },
+            {
+              id: "review",
+              title: "상품후기"
+            }
+        ]
+
         console.log(values);
         this.id = params.data;
         this.options = [];
@@ -147,6 +167,28 @@ export class ShoppingProductPage {
         if (results.status == "success") {
             this.values.wishlistId[id] = false;
         }
+    }
+
+    onSlideChanged(slider) {
+        console.log('Slide changed');
+        console.log(slider.getActiveIndex());
+        this.activeIndex = slider.getActiveIndex();
+        if(slider.getActiveIndex()>=4)
+          return;
+        
+        const currentSlide = this.slides[slider.getActiveIndex()];
+        this.selectedSegment = currentSlide.id;
+    }
+
+    onSegmentChanged(segmentButton) {
+        console.log("Segment changed to", segmentButton.value);
+        const selectedIndex = this.slides.findIndex((slide) => {
+          if(slide.id === segmentButton.value){
+            return slide.id === segmentButton.value;
+          }
+        });
+        this.activeIndex = selectedIndex;
+        //this.slider.slideTo(selectedIndex);
     }
 
 }

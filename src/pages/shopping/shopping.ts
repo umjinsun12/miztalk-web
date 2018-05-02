@@ -1,7 +1,8 @@
+import { Service } from './../../services/shopping-services/service';
+import { Functions } from './../../services/shopping-services/functions';
 import { ShoppingProductPage } from './../shopping-product/shopping-product';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { Service } from '../../services/shopping-services/service';
 import { Values } from '../../services/shopping-services/values';
 
 /**
@@ -27,11 +28,14 @@ export class ShoppingPage {
     time: any;
     has_more_items: boolean = true;
 
-    constructor(public nav: NavController, public service: Service, public values: Values) {
+    constructor(
+        public nav: NavController, 
+        public service: Service, 
+        public values: Values,
+        public functions: Functions) {
         this.items = [];
         this.options = [];
-        this.service.getProducts();
-        console.log(this.service.mainCategories);
+        this.service.getProducts().then((results) => this.handleProductResults(results));
     }
 
 
@@ -53,6 +57,10 @@ export class ShoppingPage {
         loop: true,
         autoplay: 5800,
         pager: false
+    }
+
+    handleProductResults(results) {
+        this.product = results;
     }
 
     getId() {
@@ -87,4 +95,45 @@ export class ShoppingPage {
       console.log("adsfsdf");
         this.nav.push(ShoppingProductPage, id);
     }
+
+    addToWishlist(id){
+        if(this.values.isLoggedIn){
+        this.values.wishlistId[id] = true;
+         this.service.addToWishlist(id)
+        .then((results) => this.update(results, id));
+        }
+        else{
+            this.functions.showAlert("Warning", "You must login to add product to wishlist");
+        }
+    }
+
+    update(results, id){
+        if(results.success == "Success"){
+            //this.functions.showAlert(a.success, a.message);
+        this.values.wishlistId[id] = true;
+        }
+        else {
+
+        }
+     }
+
+    removeFromWishlist(id){
+    this.values.wishlistId[id] = false;
+    this.service.deleteItem(id)
+    .then((results) => this.updateWish(results, id));
+ 
+    }
+
+    updateWish(results, id){
+
+        if(results.status == "success"){
+
+            this.values.wishlistId[id] = false;
+        
+        }
+
+    }
+
+
+
 }
