@@ -35,6 +35,7 @@ import { CheckoutService } from './../services/shopping-services/checkout-servic
 import { CategoryService } from './../services/shopping-services/category-service';
 import { CartService } from './../services/shopping-services/cart-service';
 import { ShoppingProductPage } from '../pages/shopping-product/shopping-product';
+import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 
 
 
@@ -47,7 +48,8 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
     MenuPage,
     ShoppingProductPage,
     HomeDetailPage,
-    CommunityWritePage
+    CommunityWritePage,
+    ShoppingCartPage
   ],
   imports: [
     HttpModule,
@@ -62,6 +64,7 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    ShoppingCartPage,
     CommunityWritePage,
     CommunityDetailPage,
     HomeDetailPage,

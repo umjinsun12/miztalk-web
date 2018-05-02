@@ -4,6 +4,7 @@ import { ShoppingProductPage } from './../shopping-product/shopping-product';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Values } from '../../services/shopping-services/values';
+import { ShoppingCartPage } from '../shopping-cart/shopping-cart';
 
 /**
  * Generated class for the ShoppingPage page.
@@ -47,7 +48,7 @@ export class ShoppingPage {
         this.nav.push(ShoppingProductPage, this.items);
     }
     getCart() {
-        //this.nav.push(CartPage);
+        this.nav.push(ShoppingCartPage);
     }
     getSearch() {
         //this.nav.push(SearchPage);
@@ -103,7 +104,7 @@ export class ShoppingPage {
         .then((results) => this.update(results, id));
         }
         else{
-            this.functions.showAlert("Warning", "You must login to add product to wishlist");
+            this.functions.showAlert("에러", "로그인이 필요한 서비스입니다.");
         }
     }
 
