@@ -39,8 +39,8 @@ export class ShoppingCartPage {
     public values: Values, 
     public params: NavParams, 
     public functions: Functions) {
-      this.Apply = "Apply";
-      this.Checkout = "Checkout";
+      this.Apply = "적용";
+      this.Checkout = "주문하기";
       this.quantity = 1;
       this.options = [];
       this.obj = params.data;
@@ -48,6 +48,7 @@ export class ShoppingCartPage {
           .then((results) => this.handleCartInit(results));
   }
   handleCartInit(results) {
+      console.log(results);
       this.cart = results;
       this.shipping = results.zone_shipping;
       this.chosen_shipping = results.chosen_shipping;
@@ -61,13 +62,13 @@ export class ShoppingCartPage {
   }
   checkout() {
       this.disableSubmit = true;
-      this.Checkout = "PleaseWait";
+      this.Checkout = "잠시만 기다려 주세요";
       this.service.checkout()
           .then((results) => this.handleBilling(results));
   }
   handleBilling(results) {
       this.disableSubmit = false;
-      this.Checkout = "Checkout";
+      this.Checkout = "주문하기";
       //this.nav.push(BillingAddressForm, results);
   }
   deleteFromCart(id, key) {
@@ -96,7 +97,7 @@ export class ShoppingCartPage {
   submitCoupon() {
       if (this.cart.coupon != undefined) {
           this.disableSubmitCoupon = true;
-          this.Apply = "Apply";
+          this.Apply = "적용";
           this.service.submitCoupon(this.cart.coupon)
               .then((results) => this.handleCoupon(results));
       }
@@ -108,7 +109,7 @@ export class ShoppingCartPage {
   handleCoupon(results) {
       console.log(results);
       this.disableSubmitCoupon = false;
-      this.Apply = "Apply";
+      this.Apply = "적용";
       this.functions.showAlert("STATUS", results._body);
       this.service.loadCart()
           .then((results) => this.handleCart(results));

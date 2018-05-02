@@ -3,6 +3,7 @@ import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
 import { AuthenticationService } from '../../services/authentication.service';
+import { EventDetailPage } from '../event-detail/event-detail';
 
 /**
  * Generated class for the EventPage page.
@@ -22,8 +23,8 @@ export class EventPage {
   morePagesAvailable: boolean = true;
   loggedUser: boolean = false;
 
-  categoryId: number;
-  categoryTitle: string;
+  categoryId: number = 27;
+  categoryTitle: string = "이벤트";
 
   constructor(
     public navCtrl: NavController, 
@@ -39,16 +40,13 @@ export class EventPage {
 
   ionViewWillEnter() {
     this.morePagesAvailable = true;
-    //if we are browsing a category
-    this.categoryId = this.navParams.get('id');
-    this.categoryTitle = this.navParams.get('title');
 
     if(!(this.posts.length > 0)){
       let loading = this.loadingCtrl.create();
       loading.present();
 
-      this.wordpressService.getRecentPosts(this.categoryId)
-      .subscribe(data => {
+      this.wordpressService.getPostEmbedbyCategory(this.categoryId)
+      .subscribe(data =>{
         for(let post of data){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
           this.posts.push(post);
@@ -59,5 +57,14 @@ export class EventPage {
       
     }
   }
+
+
+  getPostConent(postId:number, postName:string){
+    let passData = {name:'', id:0};
+    passData.name = postName;
+    passData.id = postId;
+    this.navCtrl.push(EventDetailPage, passData);
+  }
+
 
 }

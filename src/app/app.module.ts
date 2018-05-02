@@ -12,6 +12,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http';
+import { KeysPipe } from '../services/pipe/pipe';
 
 
 import { WordpressService } from '../services/wordpress.service';
@@ -36,6 +37,7 @@ import { CategoryService } from './../services/shopping-services/category-servic
 import { CartService } from './../services/shopping-services/cart-service';
 import { ShoppingProductPage } from '../pages/shopping-product/shopping-product';
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
+import { EventDetailPage } from '../pages/event-detail/event-detail';
 
 
 
@@ -43,13 +45,15 @@ import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 
 @NgModule({
   declarations: [
+    EventDetailPage,
     CommunityDetailPage,
     MyApp,
     MenuPage,
     ShoppingProductPage,
     HomeDetailPage,
     CommunityWritePage,
-    ShoppingCartPage
+    ShoppingCartPage,
+    KeysPipe,
   ],
   imports: [
     HttpModule,
@@ -64,6 +68,7 @@ import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    EventDetailPage,
     ShoppingCartPage,
     CommunityWritePage,
     CommunityDetailPage,

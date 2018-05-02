@@ -3,6 +3,7 @@ import { Values } from './../../services/shopping-services/values';
 import { ProductService } from './../../services/shopping-services/product-service';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, Content, IonicPage, Slides } from 'ionic-angular';
+import { ShoppingCartPage } from '../shopping-cart/shopping-cart';
 //import { CartPage } from '../cart/cart';
 
 
@@ -114,7 +115,7 @@ export class ShoppingProductPage {
         this.AddToCart = "AddToCart";
     }
     getCart() {
-        //this.nav.push(CartPage);
+        this.nav.push(ShoppingCartPage);
     }
     buyNow(id) {
         var text = '{';
@@ -126,7 +127,7 @@ export class ShoppingProductPage {
         text += '"product":"' + id + '",';
         text += '"qty":"' + this.quantity + '"}';
         var obj = JSON.parse(text);
-        //this.nav.push(CartPage, obj);
+        this.nav.push(ShoppingCartPage, obj);
     }
     mySlideOptions = {
         initialSlide: 1,

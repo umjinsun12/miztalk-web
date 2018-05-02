@@ -96,8 +96,11 @@ export class Service {
                            this.values.point = data.free_point;
                         });
                     
+
                         this.storage.get('loginData').then(data => {
+                            if(data !=null){
                             let params = new URLSearchParams();
+                            console.log(data);
                             params.append("username", data.username);
                             params.append("password", data.password);
                             this.http.post(this.config.url + '/wp-json/jwt-auth/v1/token', params, this.config.options).map(res => res.json())
@@ -112,7 +115,8 @@ export class Service {
                                      this.values.token = respdata.token;
                                      console.log(this.values.token);
                                  });
-                         });    
+                            }
+                         });   
                 });
                 
         });
