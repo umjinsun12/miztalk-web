@@ -2,7 +2,6 @@ import { Values } from './../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
-import { AuthenticationService } from '../../services/authentication.service';
 import { EventDetailPage } from '../event-detail/event-detail';
 
 /**

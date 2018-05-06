@@ -2,7 +2,7 @@ import { Functions } from './../../services/shopping-services/functions';
 import { Values } from './../../services/shopping-services/values';
 import { CartService } from './../../services/shopping-services/cart-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 /**
  * Generated class for the ShoppingCartPage page.

@@ -4,7 +4,6 @@ import { WordpressService } from './../../services/wordpress.service';
 import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides} from 'ionic-angular';
 import { Http } from '@angular/http';
-import { AuthenticationService } from '../../services/authentication.service';
 import * as moment from 'moment';
 import { CommunityDetailPage } from '../community-detail/community-detail';
 
@@ -165,7 +164,7 @@ export class CommunityPage {
 
   getRecentPosts(categoryId:number, page:number = 1) {
     //if we want to query posts by category
-    let category_url = categoryId? ("&categories=" + categoryId): "";
+    //let category_url = categoryId? ("&categories=" + categoryId): "";
   
     
   }

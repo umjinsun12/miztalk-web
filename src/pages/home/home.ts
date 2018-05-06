@@ -59,44 +59,44 @@ export class HomePage {
       {
         name: "계란요리 레시피",
         categories: [{name: "간단한 레시피"}],
-        images: [{src: "../assets/imgs/reci1.png"}]
+        images: [{src: "../assets/img/reci1.png"}]
       },
       {
         name: "윤식당 닭강정 만들기",
         categories: [{name: "간단한 레시피"}],
-        images: [{src: "../../assets/imgs/reci2.png"}]
+        images: [{src: "../../assets/img/reci2.png"}]
       },
       {
         name: "스마트폰 중독과 예방",
         categories: [{name: "비너스 육아팁"}],
         price: 33,
-        images: [{src: "../../assets/imgs/reci3.png"}]
+        images: [{src: "../../assets/img/reci3.png"}]
       },
       {
         name: "은우엄마 뚝딱뚝딱",
         categories: [{name: "간단한 레시피"}],
-        images: [{src: "../../assets/imgs/reci4.png"}]
+        images: [{src: "../../assets/img/reci4.png"}]
       },
       {
         name: "계란요리 레시피",
         categories: [{name: "간단한 레시피"}],
-        images: [{src: "../assets/imgs/reci1.png"}]
+        images: [{src: "../assets/img/reci1.png"}]
       },
       {
         name: "윤식당 닭강정 만들기",
         categories: [{name: "간단한 레시피"}],
-        images: [{src: "../../assets/imgs/reci2.png"}]
+        images: [{src: "../../assets/img/reci2.png"}]
       },
       {
         name: "스마트폰 중독과 예방",
         categories: [{name: "비너스 육아팁"}],
         price: 33,
-        images: [{src: "../../assets/imgs/reci3.png"}]
+        images: [{src: "../../assets/img/reci3.png"}]
       },
       {
         name: "은우엄마 뚝딱뚝딱",
         categories: [{name: "간단한 레시피"}],
-        images: [{src: "../../assets/imgs/reci4.png"}]
+        images: [{src: "../../assets/img/reci4.png"}]
       }
     ]
   }
@@ -118,7 +118,7 @@ export class HomePage {
     if(!(this.posts.length > 0)){
       let loading = this.loadingCtrl.create();
       loading.present();
-      let categoryArray = {};
+      //let categoryArray = {};
 
       let homePosts  = this.wordpressService.getPostEmbedbyCategory(this.homeCategoryId);
       let allCategorys = this.wordpressService.getAllCategory();

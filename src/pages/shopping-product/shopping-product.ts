@@ -2,7 +2,7 @@ import { Functions } from './../../services/shopping-services/functions';
 import { Values } from './../../services/shopping-services/values';
 import { ProductService } from './../../services/shopping-services/product-service';
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, Content, IonicPage, Slides } from 'ionic-angular';
+import { NavController, NavParams, Content, Slides } from 'ionic-angular';
 import { ShoppingCartPage } from '../shopping-cart/shopping-cart';
 //import { CartPage } from '../cart/cart';
 

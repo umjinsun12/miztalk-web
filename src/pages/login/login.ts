@@ -3,7 +3,7 @@ import { Values } from './../../services/shopping-services/values';
 import { Functions } from './../../services/shopping-services/functions';
 import { Service } from './../../services/shopping-services/service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController} from 'ionic-angular';
 
 /**
  * Generated class for the LoginPage page.
