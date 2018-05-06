@@ -9,7 +9,7 @@ headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8
 @Injectable()
 export class Config {
     
-    url: any = 'http://umjinsun.cafe24.com';
+    url: any = 'http://genjo1517.cafe24.com';
     consumerKey: any = 'ck_407c0bdc2fee5bf2a2da3b53647f0b1dbbbaad16';
     consumerSecret: any = 'cs_ee70b2e939e5d38e5ca9f1003bfea2e32ef1f586';
 
