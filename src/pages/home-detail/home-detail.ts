@@ -73,7 +73,7 @@ export class HomeDetailPage {
 
   sortPost(){
     this.posts.sort((a,b) => {
-      return a.title.rendered.localeCompare(b.title.rendered);
+          return a.title.rendered-b.title.rendered;
     })
   }
 
