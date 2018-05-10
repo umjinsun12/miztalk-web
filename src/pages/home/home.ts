@@ -1,3 +1,4 @@
+import { Functions } from './../../services/shopping-services/functions';
 import { Storage } from '@ionic/storage';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { Values } from './../../services/shopping-services/values';
@@ -30,12 +31,14 @@ export interface HomePageInterface {
 })
 export class HomePage {
 
-  products:any = []
-
+  products:any = [];
+  cardnews_order: any = [];
+  cardpos:number = 1;
   posts: Array<any> = new Array<any>();
+  
   morePagesAvailable: boolean = true;
   loggedUser: boolean = false;
-  homeCategoryId : number = 21;
+  homeCategoryId : number = 20;
 
   categoryId: number;
   categoryTitle: string;
@@ -53,7 +56,8 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     public values : Values,
     public nativeStorage : NativeStorage,
-    public storage : Storage) {
+    public storage : Storage,
+    public functions: Functions) {
 
     this.products = [
       {
@@ -114,44 +118,11 @@ export class HomePage {
     this.categoryTitle = this.navParams.get('title');
 
 
-
     if(!(this.posts.length > 0)){
-      let loading = this.loadingCtrl.create();
-      loading.present();
-      //let categoryArray = {};
-
-      let homePosts  = this.wordpressService.getPostEmbedbyCategory(this.homeCategoryId);
-      let allCategorys = this.wordpressService.getAllCategory();
-
-      Observable.forkJoin([homePosts, allCategorys]).subscribe(datas => {
-        let posts = datas[0];
-        let categorydatas = datas[1];
-        let categoryArray = {};
-
-        categorydatas.forEach(function(item){
-          categoryArray[item.id] = item.name;
-        })
-
-
-        for(let post of posts){
-          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-          if(post._embedded['wp:featuredmedia'] != undefined)
-            post.thumnail = post._embedded['wp:featuredmedia'][0].source_url;
-          
-          for(let categoryID of post.categories){
-            if(categoryID == 20)
-              continue;
-            else{
-              post.categoryName = categoryArray[categoryID];
-              break;
-            }
-          }
-          this.posts.push(post);
-        }
-
-        loading.dismiss()
-      });
+      this.getRecentPosts('start');
     }
+
+
   }
 
   getPostConent(postId:number, postName:string){
@@ -161,18 +132,85 @@ export class HomePage {
     this.navCtrl.push(HomeDetailPage, passData);
   }
 
+  
 
-  getRecentPosts(categoryId:number, page:number = 1) {
-    //if we want to query posts by category
-    let category_url = categoryId? ("&categories=" + categoryId): "";
-    
+  getRecentPosts(mode, event:any = undefined) {
+      let loading = this.loadingCtrl.create();
+      
+      if(mode == 'start')
+        loading.present();
+      //let categoryArray = {};
+
+
+      this.wordpressService.getAllCategory().subscribe(categoryData =>{
+        let categorydatas = categoryData;
+        let categoryArray = {};
+        let cardnews_order = [];
+        function shuffle(a) {
+          for (let i = a.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [a[i], a[j]] = [a[j], a[i]];
+          }
+          return a;
+        }
+
+        categorydatas.forEach(function(item){
+          categoryArray[item.id] = item.name;
+          if(item.id == 20){
+            let pagenum = Math.ceil(item.count/10);
+            for(let i=0; i < pagenum-1; i++){
+              cardnews_order.push(i+1);
+            }
+            shuffle(cardnews_order);
+            cardnews_order.push(pagenum);
+            console.log(cardnews_order);
+          }
+        })
+        this.cardnews_order = cardnews_order;
+
+        this.wordpressService.getPostEmbedbyCategory(this.homeCategoryId, cardnews_order[0]).subscribe(posts =>{
+          let tmppost: Array<any> = new Array<any>();
+          for(let post of posts){
+            post.thumbnail = {
+              source_url : "dd"
+            };
+            post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
+            if(post._embedded['wp:featuredmedia'] != undefined){
+              post.thumnail = post._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url;
+            }
+              
+            
+            for(let categoryID of post.categories){
+              if(categoryID == 20)
+                continue;
+              else{
+                post.categoryName = categoryArray[categoryID];
+                break;
+              }
+            }
+            tmppost.push(post);
+            //this.posts.push(post);
+          }
+          
+          shuffle(tmppost);
+          if(mode == 'refresh')
+            this.posts = [];
+          this.posts = this.posts.concat(tmppost);
+
+          console.log(this.posts);
+          if(mode == 'start')
+            loading.dismiss();
+          else if(mode == 'refresh')
+            event.complete();
+        });
+
+      });
   }
 
   
   openPage(page: HomePageInterface) {
     let params = {};
  
-    // The index is equal to the order of our tabs inside tabs.ts
     if (page.index) {
       params = { tabIndex: page.index };
     }
@@ -210,37 +248,83 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-
-    console.log('reload');
-    console.log(this.posts);
-    this.wordpressService.getRecentPosts(this.categoryId)
-      .subscribe(data => {
-        for(let post of data){
-          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-          this.posts.push(post);
-        }
-        refresher.complete();
-      });
-    };
+    this.morePagesAvailable = true;
+    this.cardpos = 1;
+    this.getRecentPosts('refresh', refresher);
+  };
   
 
   doInfinite(infiniteScroll) {
-    let page = (Math.ceil(this.posts.length/10)) + 1;
-    let loading = true;
+    console.log(infiniteScroll);
+    this.loadMore(infiniteScroll);
+  }
 
-    this.wordpressService.getRecentPosts(this.categoryId, page)
-    .subscribe(data => {
-      for(let post of data){
-        if(!loading){
-          infiniteScroll.complete();
+  loadMore(infiniteScroll){
+    let page = this.cardnews_order.length;
+    console.log(page);
+    console.log(this.cardpos);
+    console.log(this.cardnews_order[this.cardpos]);
+    if(page <= this.cardpos){
+      this.morePagesAvailable = false;
+      infiniteScroll.complete();
+      return;
+    }
+      
+    
+
+    let homePosts  = this.wordpressService.getPostEmbedbyCategory(this.homeCategoryId, this.cardnews_order[this.cardpos]);
+    let allCategorys = this.wordpressService.getAllCategory();
+    this.cardpos++;
+    
+
+    Observable.forkJoin([homePosts, allCategorys]).subscribe(datas => {
+
+      function shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
         }
-        post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-        this.posts.push(post);
-        loading = false;
+        return a;
       }
+
+
+      let posts = datas[0];
+      let categorydatas = datas[1];
+      let categoryArray = {};
+      let tmppost = [];
+
+      categorydatas.forEach(function(item){
+        categoryArray[item.id] = item.name;
+      })
+
+      for(let post of posts){
+        post.thumbnail = {
+          source_url : "dd"
+        };
+        post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
+        if(post._embedded['wp:featuredmedia'] != undefined){
+          post.thumnail = post._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url;
+        }
+          
+        for(let categoryID of post.categories){
+          if(categoryID == 20)
+            continue;
+          else{
+            post.categoryName = categoryArray[categoryID];
+            break;
+          }
+        }
+        
+        tmppost.push(post);
+      }
+      shuffle(tmppost);
+      this.posts = this.posts.concat(tmppost);
+      infiniteScroll.complete();
     }, err => {
       this.morePagesAvailable = false;
     })
+
+  
   }
 
 

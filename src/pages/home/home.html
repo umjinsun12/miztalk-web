@@ -19,10 +19,13 @@
 
   <ion-content>
         
-          
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+      
       <ion-list>
-          
-          <div class="product-list animated fadeInUp" [ngClass]="{'list-view': layout && layout=='list'}" >
+          <ion-item class="product-list animated fadeInUp" [ngClass]="{'list-view': layout && layout=='list'}" >
             <ul>
               <li class="list-item" *ngFor="let item of posts" (click)="getPostConent(item.id, item.title.rendered)">
                 <div class="product-image" [ngStyle]="{'background-image': 'url(' + item.thumnail + ')', 'background-size':'cover'}">
@@ -31,6 +34,12 @@
                 <small class="category-name">{{item.categoryName}}</small>
               </li>
             </ul>
-          </div>
+          </ion-item>
         </ion-list>
+
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="morePagesAvailable">
+            <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 카드뉴스를 로딩 중입니다."> </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
   </ion-content>
+
+  

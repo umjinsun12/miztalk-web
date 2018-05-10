@@ -80,8 +80,8 @@ export class WordpressService {
     .map(res => res.json());
   }
 
-  getPostEmbedbyCategory(category){
-    return this.http.get(Config.WORDPRESS_REST_API_URL + "posts?_embed&categories=" + category)
+  getPostEmbedbyCategory(category, page:number = 1){
+    return this.http.get(Config.WORDPRESS_REST_API_URL + "posts?_embed&categories=" + category + "&page=" + page)
     .map(res => res.json());
   }
 
