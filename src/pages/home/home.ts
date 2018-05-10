@@ -176,7 +176,7 @@ export class HomePage {
             };
             post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
             if(post._embedded['wp:featuredmedia'] != undefined){
-              post.thumnail = post._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url;
+              post.thumnail = post._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
             }
               
             
@@ -303,7 +303,7 @@ export class HomePage {
         };
         post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
         if(post._embedded['wp:featuredmedia'] != undefined){
-          post.thumnail = post._embedded['wp:featuredmedia'][0].media_details.sizes.thumbnail.source_url;
+          post.thumnail = post._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
         }
           
         for(let categoryID of post.categories){
