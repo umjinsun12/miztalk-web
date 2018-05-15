@@ -213,6 +213,7 @@ export class CommunityPage {
   doRefresh(refresher) {
       console.log('reload');
       console.log(this.posts);
+      this.morePagesAvailable = true;
       this.wordpressService.getPostEmbedbyCategory(this.categoryId).subscribe(data=>{
         console.log(data);
         this.posts = [];
@@ -236,14 +237,22 @@ export class CommunityPage {
     let page = (Math.ceil(this.posts.length/10)) + 1;
     let loading = true;
 
-    this.wordpressService.getRecentPosts(this.categoryId, page)
+    this.wordpressService.getPostEmbedbyCategory(this.categoryId, page)
     .subscribe(data => {
       for(let post of data){
         if(!loading){
           infiniteScroll.complete();
         }
-        post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-        this.posts.push(post);
+        post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
+          post.author = post._embedded['author'][0].name;
+          post.reltime = moment(post.date).fromNow();
+          post.replies = 0;
+          if(post._embedded.replies != undefined)
+            post.replies = post._embedded.replies[0].length;
+          else
+            post.replies = 0;
+          console.log(post)
+          this.posts.push(post);
         loading = false;
       }
     }, err => {

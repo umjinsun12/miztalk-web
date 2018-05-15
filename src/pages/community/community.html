@@ -60,7 +60,11 @@
         </ion-slide>
     </ion-slides>
 
-      
+    <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="morePagesAvailable">
+      <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 게시글을 로딩 중입니다."> </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    
     <!--<ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
@@ -83,12 +87,7 @@
         <!--</ion-row>
       </ion-item>
     </ion-list>
-    <ion-infinite-scroll [enabled]="morePagesAvailable" (ionInfinite)="doInfinite($event)">
-        <ion-infinite-scroll-content
-        loadingSpinner="bubbles"
-        loadingText="Loading more posts ...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>-->
+  
 
     <!--
 

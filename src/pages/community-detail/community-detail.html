@@ -14,21 +14,27 @@
 
 <ion-content>
   <ion-list>
-    <ion-list-header>
-      <div class="community-category">[{{post.categoryName}}]</div>
-      <div class="community-title">{{post.title.rendered}}</div>
-      <div>{{post.author}} {{post.date}}</div>
-    </ion-list-header>
-    <div style="border-bottom: 0.55px solid #c8c7cc" padding>
-      {{post.content.rendered}}
-    </div>
-    <ion-list-header>
-      댓글 {{post.replies.length}}
-    </ion-list-header>
-    <ion-item *ngFor="let reply of post.replies">
-      <div>{{reply.author_name}}</div>
-      <div>{{reply.content.rendered}}</div>
-      <div>{{reply.date}}</div>
+    <ion-item no-padding>
+      <div class="community-title-wrapper">
+        <div class="community-category">[{{post.categoryName}}]</div>
+        <div class="community-title">{{post.title.rendered}}</div>
+        <div class="community-author">{{post.author}} {{post.date}}</div>
+      </div>
     </ion-item>
+    <ion-item no-padding>
+      <div class="community-content">{{post.content.rendered}}</div>
+    </ion-item>
+    <ion-item no-padding>
+      <div class="community-comment-title">댓글 {{post.replies.length}}</div>
+    </ion-item>
+    <div class="comment-box">
+    <ion-item *ngFor="let reply of post.replies" no-padding>
+      <div class="comment-wrapper">
+        <div class="comment-auther">{{reply.author_name}}</div>
+        <div class="comment-content">{{reply.content.rendered}}</div>
+        <div class="comment-date">{{reply.date}}</div>
+      </div>
+    </ion-item>
+    </div>
   </ion-list>
 </ion-content>

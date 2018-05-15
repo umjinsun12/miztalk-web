@@ -1,4 +1,4 @@
-  <ion-header no-shadow>
+<ion-header no-shadow>
     <ion-navbar>
       
     <button ion-button menuToggle color="grapefruit">
@@ -13,13 +13,11 @@
             <img src="assets/img/drawable-xxxhdpi/action_b_point_icon.png" height=10>
         </ion-buttons>
     </ion-navbar>
-  </ion-header>
+</ion-header>
 
 
 
-  <ion-content>
-        
-
+<ion-content>
     <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
@@ -40,6 +38,4 @@
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="morePagesAvailable">
             <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 카드뉴스를 로딩 중입니다."> </ion-infinite-scroll-content>
         </ion-infinite-scroll>
-  </ion-content>
-
-  
+</ion-content>

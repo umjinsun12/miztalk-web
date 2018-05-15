@@ -270,8 +270,6 @@ export class HomePage {
       return;
     }
       
-    
-
     let homePosts  = this.wordpressService.getPostEmbedbyCategory(this.homeCategoryId, this.cardnews_order[this.cardpos]);
     let allCategorys = this.wordpressService.getAllCategory();
     this.cardpos++;
