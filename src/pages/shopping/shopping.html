@@ -52,13 +52,12 @@
                           <div class="card-background-page">
                 <ion-row class="unlimited-items">
                   
-                  <ion-card class="card-wrapper" *ngFor="let item of service.products.products">
+                  <ion-card class="card-wrapper" *ngFor="let item of service.products.products" no-shadow>
                     <div>
                       <div class="stock">
                           <img tappable src="{{item.images[0].src}}" (click)="getProduct(item.id)">
                           <button ion-button color="danger" *ngIf="!item.in_stock">OUTOFSTOCK
                           </button>
-    
                       </div>
 
                       <div class="price-wrapper">

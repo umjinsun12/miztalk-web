@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>venustalk2</name>
-    <description>An awesome Ionic/Cordova app.</description>
-    <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <name>미즈톡</name>
+    <description>센스있는 젊줌마들의 커뮤니티</description>
+    <author email="umjinsun12@gmail.com" href="http://mistalk.com/">MisTalk Team</author>
     <content src="index.html" />
     <access origin="*" />
     <access origin="cdvfile://*" />

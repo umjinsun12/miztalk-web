@@ -43,14 +43,16 @@ ion-label{
 
 
 .price-off-tag{
+    font-family: 'notosansbold';
     font-size : 22px;
     color : red;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .price-off{
+    font-family: 'notosansbold';
     font-size : 22px;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 
@@ -60,4 +62,11 @@ ion-label{
 
 .product-cart{
     font-size : 2.4em !important;
+}
+
+
+.product-item-detail > p > img
+{
+    width:100%;
+    height: auto;
 }

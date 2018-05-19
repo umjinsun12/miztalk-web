@@ -67,6 +67,7 @@ export class ShoppingProductPage {
     }
     handleProductResults(results) {
         this.product = results;
+        console.log(results);
     }
     getProduct(id) {
         this.nav.push(ShoppingProductPage, id);

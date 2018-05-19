@@ -55,7 +55,6 @@ small {
     color: color($colors, grapefruit);
 }
 
-
 /*****************************
    Header
 *****************************/
@@ -76,6 +75,13 @@ ion-header{
                 padding-left: 14px;
             }
         }
+        .toolbar-md{
+            border-bottom: 1px solid lightgrey;
+        }
+    }
+
+    &.header-md::after{
+        display: none;
     }
 
     
@@ -90,6 +96,26 @@ ion-header{
         margin-right: 16px;
     }
 }
+
+ion-segment {
+    display: block;
+    white-space: nowrap;
+    font-size: 0;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+
+    ion-segment-button.segment-button {
+        display: inline-block;
+        min-width: 100px;
+        width: auto;
+    }
+}
+
 
 /*****************************
    Product List
@@ -135,7 +161,7 @@ ion-header{
         margin: 10px;
         transition: all 0.3s ease-in;
         h5 {
-            font-family: 'montserratregular';
+            font-family: 'notosansregular';
             text-transform: capitalize;
             width: 100%;
             white-space: nowrap;
@@ -155,7 +181,7 @@ ion-header{
             line-height: 1;
         }
         .price {
-            font-family: 'montserratsemibold';
+            font-family: 'notesansbold';
         }
     }
     &.list-view {
