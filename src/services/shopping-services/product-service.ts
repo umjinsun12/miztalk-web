@@ -77,6 +77,7 @@ export class ProductService {
           });
       });
     }
+
     deleteItem(id){
       var params = new URLSearchParams();
       params.append("product_id", id);
@@ -84,7 +85,6 @@ export class ProductService {
         return new Promise(resolve => {
         this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-remove_wishlist', params, this.config.options).map(res => res.json())
           .subscribe(data => {
-            
             resolve(data);
           });
       });

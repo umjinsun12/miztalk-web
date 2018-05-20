@@ -38,6 +38,7 @@ import { CartService } from './../services/shopping-services/cart-service';
 import { ShoppingProductPage } from '../pages/shopping-product/shopping-product';
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
+import { CardnewsService } from '../services/shopping-services/cardnews-service';
 
 
 
@@ -94,6 +95,7 @@ import { EventDetailPage } from '../pages/event-detail/event-detail';
     SplashScreen,
     WordpressService,
     AuthenticationService,
+    CardnewsService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

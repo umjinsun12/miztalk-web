@@ -18,6 +18,8 @@ export class Config {
     language: any = 'english';
     appDir: any = 'ltr';
 
+    WORDPRESS_REST_API_URL: any = this.url + '/wp-json/wp/v2';
+
 
     oauth: any;
     signedUrl: any;

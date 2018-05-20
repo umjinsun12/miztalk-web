@@ -12,7 +12,8 @@
 
     <ion-slides loop="false">
         <ion-slide *ngFor="let item of posts">
-          <img data-src="{{item.guid.rendered}}">
+          <img style="width:100%; height:auto" data-src="{{item}}"/>
         </ion-slide>
       </ion-slides>
+    {{posts}}
 </ion-content>
