@@ -61,6 +61,7 @@ export class HomePage {
     public storage : Storage,
     public functions: Functions,
     public service : CardnewsService) {
+      this.service.presentLoading('로딩중입니다.');
       this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
   }
 
@@ -89,6 +90,7 @@ export class HomePage {
         }
       }
     }
+    this.service.dismissLoading();
   }
 
   ionViewWillEnter() {
@@ -142,6 +144,7 @@ export class HomePage {
 
   handleRefresh(results, refresher){
     this.posts = results;
+    this.service.filter.page = 0;
     console.log(this.posts);
     for(let post of this.posts){
       post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
@@ -192,7 +195,5 @@ export class HomePage {
       }
       infiniteScroll.complete();
   }
-
-
 
 }

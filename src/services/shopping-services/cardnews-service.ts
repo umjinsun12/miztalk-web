@@ -114,10 +114,16 @@ export class CardnewsService {
     loadMore() {
         this.filter.page += 1;
         return new Promise(resolve => {
-            this.getPostEmbedbyCategory(this.cardnewsCategoryId, this.cardnews_order[this.filter.page]).then((results) => {
-                this.shuffle(results);
-                resolve(results);
-            });
+            if(this.filter.page >= this.cardnews_order.length){
+                console.log("!!!!");
+                resolve(undefined);
+            }else{
+                this.getPostEmbedbyCategory(this.cardnewsCategoryId, this.cardnews_order[this.filter.page]).then((results) => {
+                    this.shuffle(results);
+                    resolve(results);
+                });
+            }
+            
         });
     }
 
