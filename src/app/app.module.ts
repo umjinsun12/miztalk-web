@@ -39,6 +39,7 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { CardnewsService } from '../services/shopping-services/cardnews-service';
+import { LoginPage } from '../pages/login/login';
 
 
 
@@ -54,6 +55,7 @@ import { CardnewsService } from '../services/shopping-services/cardnews-service'
     HomeDetailPage,
     CommunityWritePage,
     ShoppingCartPage,
+    LoginPage,
     KeysPipe,
   ],
   imports: [
@@ -76,7 +78,8 @@ import { CardnewsService } from '../services/shopping-services/cardnews-service'
     HomeDetailPage,
     ShoppingProductPage,
     MyApp,
-    MenuPage
+    MenuPage,
+    LoginPage
   ],
   providers: [
     NativeStorage,

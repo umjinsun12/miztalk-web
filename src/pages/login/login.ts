@@ -19,7 +19,7 @@ import { IonicPage, NavController} from 'ionic-angular';
 })
 export class LoginPage {
 
-  loginData: any;
+    loginData: any;
     loadLogin: any;
     status: any;
     error: any;
