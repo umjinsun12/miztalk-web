@@ -7,12 +7,14 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>event-detail</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  이벤트 디테일
+    <ion-item no-padding>
+        <div class="community-content" [innerHtml]="post.content.rendered"></div>
+    </ion-item>
 </ion-content>

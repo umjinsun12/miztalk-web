@@ -155,7 +155,6 @@ ion-segment {
     
     .list-item {
         
-        
         width: calc(50% - 20px);
         float: left;
         margin: 10px;
@@ -172,8 +171,9 @@ ion-segment {
         .product-image {
             background-size: cover !important;
             background-repeat: no-repeat;
-            height: 150px;
             background-position: center;
+            width:auto;
+            height:160px;
         }
         .category-name {
             color: color($colors, warm-grey);
@@ -187,7 +187,6 @@ ion-segment {
     &.list-view {
         .list-item {
             width: calc(100% - 30px);
-            margin: 15px;
             position: relative;
             h5,
             small {

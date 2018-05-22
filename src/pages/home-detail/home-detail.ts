@@ -47,6 +47,7 @@ export class HomeDetailPage {
           continue;
         post = post.split("src=\"")[1].split("\"")[0];
         post = post.replace('-300x300',"");
+        post = post.replace('-231x300',"");
         this.posts.push(post);
       }
       console.log(this.posts);

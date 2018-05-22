@@ -16,9 +16,18 @@
    
   <ion-content no-padding>
       <ion-card *ngFor="let post of posts" >
-          <ion-card-content (click)="getPostConent(post.id, post.title.rendered)">
-          <div class="product-image" [ngStyle]="{'background-image': 'url(' + post.thumnail + ')', 'background-size':'cover'}"></div>
-          <ion-card-title [innerHTML]="post.title.rendered"></ion-card-title>
+          <ion-card-content (click)="getPostConent(post.id, post.title.rendered)" no-padding>
+            <ion-row>
+              <ion-col col-4>
+                <div class="product-image" [ngStyle]="{'background-image': 'url(' + post.thumbnail + ')', 'background-size':'cover'}"></div>
+              </ion-col>
+              <ion-col class="event-box" col-8 padding>
+                <h2 class="event-company">{{post.event.company}}</h2>
+                <h2 class="event-title">{{post.event.title}}</h2>
+                <h2 class="event-content">{{post.event.content}}</h2>
+                <p class="event-date">{{post.event.startdate}} ~ {{post.event.enddate}}</p>
+              </ion-col>
+            </ion-row>
           </ion-card-content>
         </ion-card>
   </ion-content>

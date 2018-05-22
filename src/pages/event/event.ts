@@ -48,6 +48,23 @@ export class EventPage {
       .subscribe(data =>{
         for(let post of data){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
+          post.title.datas = post.title.rendered.split('|');
+          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+          post.event = {
+            company : "",
+            title : "",
+            content : "",
+            startdate : "",
+            enddate : ""
+          }
+          if(post.title.datas.length == 5){
+            post.event.company = post.title.datas[0];
+            post.event.title = post.title.datas[1];
+            post.event.content = post.title.datas[2];
+            post.event.startdate = post.title.datas[3];
+            post.event.enddate = post.title.datas[4];
+          }
+          console.log(post.title);
           this.posts.push(post);
           console.log(post);
         }
