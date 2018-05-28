@@ -1,24 +1,23 @@
 <ion-header>
   <ion-navbar>
     
-  <button ion-button menuToggle color="grapefruit">
-    <ion-icon name="md-menu"></ion-icon>
-  </button>
-  <ion-buttons class="md-search" end>
-      <ion-icon color="primary" name="ios-search"></ion-icon>
+  <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
+  
+  <ion-buttons end *ngIf="!showFilters && !showSortFilters"> 
+    <button ion-button icon-only *ngIf="values.isLoggedIn" (click)="presentPopover($event)" style="color:#fff;margin-left:6px;margin-right:6px;">
+          <ion-icon ios="md-search" md="md-search" style="font-size:30px;"></ion-icon>
+    </button>
+
+    <button ion-button icon-only light class="has-icon icon-only has-badge" (click)="getCart()">
+      <ion-icon class="ion-md-cart item-icon"></ion-icon>
+      <ion-badge class="badge badge-light"  *ngIf="values.count">{{values.count}}
+      </ion-badge>
+    </button>
   </ion-buttons>
-  <ion-buttons end>
-      <button ion-button icon-only light class="has-icon icon-only has-badge" (click)="getCart()">
-        <ion-icon color="primary" class="ion-ios-cart-outline item-icon product-cart">
-        </ion-icon>
-        <ion-badge class="badge badge-light" *ngIf="values.count">{{values.count}}
-        </ion-badge>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
    
-  <ion-content no-padding>
+  <ion-content class="products" #contentRef (ionScroll)="scrollingFun($event)">
         <!--<div *ngIf="service?.banners" class="home-banners">
           <ion-slides pager="false" loop="true" autoplay="15800" >
             <ion-slide *ngFor='let value of service.banners'>
@@ -26,7 +25,7 @@
             </ion-slide>
           </ion-slides>
         </div>-->
-      <div *ngIf="service?.products?.products" class="products-listing">
+      <!--<div *ngIf="service?.products?.products" class="products-listing">
           <div *ngIf="service?.products.products.length">
               <ion-list>
                           <div class="card-background-page">
@@ -63,8 +62,8 @@
                       </div>
 
 
-                        <!--button ion-button [disabled]='!item.in_stock' text-uppercase color="button-color" item-right clear *ngIf="values.cart[item.id] == undefined || values.cart[item.id] == 0" (click)="addToCart(item.id, item.type)">
-                          {{"Add"  | translate}}
+                        <button ion-button [disabled]='!item.in_stock' text-uppercase color="button-color" item-right clear *ngIf="values.cart[item.id] == undefined || values.cart[item.id] == 0" (click)="addToCart(item.id, item.type)">
+                          Add"  | translate}}
                         </button>
                         <button ion-button icon-only item-right clear color="button-color" *ngIf="values.cart[item.id] >= 1" (click)="deleteFromCart(item.id)">
                           <ion-icon ios="ios-remove-circle-outline" md="ios-remove-circle-outline">
@@ -75,7 +74,7 @@
                         <button ion-button icon-only item-right clear color="button-color" *ngIf="values.cart[item.id] >= 1" (click)="updateToCart(item.id)">
                           <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline">
                           </ion-icon>
-                        </button-->
+                        </button
                       </div>
                       </div>
                   </div>
@@ -88,8 +87,90 @@
           </div>
 
 
+
+
           <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
               <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 상품을 로딩 중입니다."> </ion-infinite-scroll-content>
-          </ion-infinite-scroll>
+          </ion-infinite-scroll>-->
+
+
+          <ion-spinner *ngIf="!products && !values.related" name="crescent"> </ion-spinner>
+          <ion-spinner *ngIf="loading" name="crescent"> </ion-spinner>
+
+          <div *ngIf="homeservice?.banners" class="home-banners">
+              <ion-slides pager="true" loop="true" autoplay="5800">
+                  <ion-slide *ngFor='let value of homeservice.banners'> <img src="{{value}}"> </ion-slide>
+              </ion-slides>
+          </div>
+
+          <div>
+            <ion-row class="category-listing">
+              <ion-col class="col-3 category-title">
+                  <img src="assets/img/sh-ct-baby.png"srcset="assets/img/sh-ct-baby@2x.png 2x,assets/img/sh-ct-baby@3x.png 3x" class="category-icon">
+                  <div class="category-text">
+                    육아·생활
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title">
+                  <img src="assets/img/sp-ct-living.png"srcset="assets/img/sp-ct-living@2x.png 2x,assets/img/sp-ct-living@3x.png 3x" class="category-icon">
+                  <div class="category-text">
+                  주방·가전
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title">
+                  <img src="assets/img/forma-1.png"srcset="assets/img/forma-1@2x.png 2x,assets/img/forma-1@3x.png 3x" class="category-icon">
+                  <div class="category-text">
+                  뷰티·다이어트
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title">
+                  <img src="assets/img/sp-ct-food.png"srcset="assets/img/sp-ct-food@2x.png 2x,assets/img/sp-ct-food@3x.png 3x" class="category-icon">
+                  <div class="category-text">
+                  식품
+                  </div>
+              </ion-col>
+            </ion-row>
+          </div>
+
+
+
+          <div *ngIf="products" class="products-listing">
+            <div *ngIf="!products.length && !loading" class="no-products">
+                <h2>No products found!</h2>
+            </div>
+            <div *ngIf="products.length && !loading">
+                
+                <div *ngIf="!values.listview">
+                    <div class="grid">
+                        <ion-row class="row unlimited-items">
+                            <ion-col class="col" *ngFor="let item of products">
+                                <ion-card>
+                                    <ion-card-content class="stock"> <img tappable src="{{item.images[0].src}}" (click)="getProduct(item.id)" [ngClass]="{opacity: !item.in_stock}">
+                                        <div> <button ion-button color="danger" *ngIf="!item.in_stock">No Stock</button> </div>
+                                        <ion-icon name="md-heart" class="wishlist-button-grid1" *ngIf="values.wishlistId[item.id]" (click)="removeFromWishlist(item.id)"></ion-icon>
+                                        <ion-icon name="md-heart-outline" class="wishlist-button-grid2" *ngIf="!values.wishlistId[item.id]" (click)="addToWishlist(item.id)"></ion-icon>
+                                    </ion-card-content>
+                                    <div tappable (click)="getProduct(item.id)" class="card-name">
+                                        <ion-label *ngIf="item.title">{{item.title}} </ion-label>
+                                        <ion-label *ngIf="item.name">{{item.name}} </ion-label>
+                                    </div>
+                                    <ion-label style="margin-bottom:2px;margin-left: 4px;"> 
+                                      <span class="price-offer" *ngIf="item.in_stock && item.sale_price && ((item.regular_price - item.sale_price) / item.regular_price*100) >= '1'">{{(item.regular_price - item.sale_price) / item.regular_price*100 | number : '1.0-0'}}%</span>
+                                      <span class="price-regular" *ngIf="!item.sale_price">{{(1*item.price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="!item.sale_price">원</span>
+                                      <span class="price-regular" *ngIf="item.sale_price">{{(1*item.sale_price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="item.sale_price">원</span>
+                                      <span class="price-delete" *ngIf="item.sale_price"><del>{{(1*item.regular_price | currency:values.currency:false:'1.0-0').replace('USD','')}}원</del></span>
+                                    </ion-label>
+                      
+                                    <!--h3 *ngIf="item.average_rating == 0" style="font-size: 13px;margin:0 0 8px 10px" text-left>0 ratings</h3-->
+                                </ion-card>
+                            </ion-col>
+                        </ion-row>
+                    </div><br> </div>
+            </div>
+            <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
+                <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more items.."> </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+        </div>
+
 
   </ion-content>

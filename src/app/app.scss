@@ -17,7 +17,13 @@
 
 
 @import "../assets/css/animate.min";
+@import "../theme/icons";
 
+
+
+* {
+    font-family: 'notosansregular';
+}
 
 
 h1 {
@@ -97,6 +103,11 @@ ion-header{
 
     ion-title{
         text-align: center;
+        color: color($colors, light);
+    }
+
+    ion-title .toolbar-title-md{
+        color: color($colors, light);
     }
     
 

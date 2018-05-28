@@ -85,14 +85,16 @@ $header:     #25242c;
 @import "ionic.theme.default";
 
 
+$ionicons-font-path: "../assets/fonts";
+
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/ionicons/
 
-@import "ionic.ionicons";
+//@import "ionic.ionicons";
 
-
+@import "ionicons";
 // Fonts
 // --------------------------------------------------
 

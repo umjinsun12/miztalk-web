@@ -7,6 +7,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController,IonicPage } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { Content } from 'ionic-angular';
+import { Service} from './../../services/shopping-services/service'
 
 /**
  * Generated class for the ShoppingPage page.
@@ -49,7 +50,7 @@ export class ShoppingPage {
     private contentBox;
     related: any;
 
-    constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions) {
+    constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions, public homeservice: Service) {
         this.data = {};
         this.filter = {};
         this.q = "";
