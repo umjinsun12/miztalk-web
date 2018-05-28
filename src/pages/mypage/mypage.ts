@@ -1,10 +1,10 @@
+import { AccountLogin } from './../account/login/login';
 import { Values } from './../../services/shopping-services/values';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Functions } from './../../services/shopping-services/functions'
 import { TabsPage } from '../tabs/tabs';
 import { HomePage } from '../home/home';
-import { LoginPage } from '../login/login';
 import { Service } from '../../services/shopping-services/service';
 
 /**
@@ -41,7 +41,7 @@ export class MypagePage {
     console.log(this.values.isLoggedIn);
     if(!this.values.isLoggedIn){
       this.functions.showAlert("에러", "로그인이 필요한 서비스입니다.");
-      this.navCtrl.push(LoginPage);
+      this.navCtrl.push(AccountLogin);
     }
   }
 

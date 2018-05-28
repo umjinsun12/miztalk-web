@@ -1,3 +1,4 @@
+import { AccountLogin } from './../pages/account/login/login';
 import { Storage } from '@ionic/storage';
 import { CommunityWritePage } from './../pages/community-write/community-write';
 import { TabsPage } from './../pages/tabs/tabs';
@@ -39,7 +40,6 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { CardnewsService } from '../services/shopping-services/cardnews-service';
-import { LoginPage } from '../pages/login/login';
 
 
 
@@ -55,7 +55,7 @@ import { LoginPage } from '../pages/login/login';
     HomeDetailPage,
     CommunityWritePage,
     ShoppingCartPage,
-    LoginPage,
+    AccountLogin,
     KeysPipe,
   ],
   imports: [
@@ -79,7 +79,7 @@ import { LoginPage } from '../pages/login/login';
     ShoppingProductPage,
     MyApp,
     MenuPage,
-    LoginPage
+    AccountLogin
   ],
   providers: [
     NativeStorage,

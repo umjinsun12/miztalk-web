@@ -19,33 +19,13 @@
 </ion-header>
    
   <ion-content no-padding>
-        <div *ngIf="service?.banners" class="home-banners">
+        <!--<div *ngIf="service?.banners" class="home-banners">
           <ion-slides pager="false" loop="true" autoplay="15800" >
             <ion-slide *ngFor='let value of service.banners'>
               <img src="{{value}}">
             </ion-slide>
           </ion-slides>
-        </div>
-        
-      <div class="categories" *ngIf="service?.categories">
-          <div *ngIf="service.mainCategories" class="main-categories">
-            <ion-row class="row unlimited-items">
-              <ion-col class="col" *ngFor="let item of service.mainCategories">
-                <a class="shop-category" (click)="getCategory(item.id, item.slug, item.name)">
-                    <div text-center>
-                      <ion-icon color="category-color" name="{{item.description}}" class="shop-category-icon"  text-center></ion-icon>
-                    </div>  
-                    <div text-center>
-                      <span [innerHTML]="item.name"></span>
-                    </div>
-                </a>
-              </ion-col>
-            </ion-row>
-          </div>
-      </div>
-
-
-
+        </div>-->
       <div *ngIf="service?.products?.products" class="products-listing">
           <div *ngIf="service?.products.products.length">
               <ion-list>

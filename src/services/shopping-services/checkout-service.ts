@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Config } from './config';
 import { URLSearchParams } from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 
+var headers = new Headers();
+headers.append('Content-Type', 'application/x-www-form-urlencoded');
 @Injectable()
 export class CheckoutService {
     data: any;
+    url: any;
     status: any;
     billingAddressForm: any;
     shippingAddressForm: any;
@@ -22,8 +25,10 @@ export class CheckoutService {
     orderSummary: any;
     addresses: any;
     address: any;
-    constructor(private http: Http, private config: Config) {
+    shippingUpdate : any;
 
+    constructor(private http: Http, private config: Config) { 
+        
     }
     updateOrderReview(form) {
         var params = new URLSearchParams();
@@ -41,7 +46,6 @@ export class CheckoutService {
         params.append("s_postcode", form.billing_postcode);
         params.append("s_country", form.billing_country);
         params.append("s_state", form.billing_state);
-        params.append("shipping_method[0]", form.shipping_method);
         return new Promise(resolve => {
             this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-update_order_review', params, this.config.options).map(res => res.json())
                 .subscribe(data => {
@@ -61,6 +65,7 @@ export class CheckoutService {
         params.append("billing_address_2", form.billing_address_2);
         params.append("billing_city", form.billing_city);
         params.append("billing_postcode", form.billing_postcode);
+
         params.append("shipping_first_name", form.shipping_first_name);
         params.append("shipping_last_name", form.shipping_last_name);
         params.append("shipping_company", form.shipping_company);
@@ -74,42 +79,20 @@ export class CheckoutService {
         params.append("billing_state", form.billing_state);
         params.append("shipping_country", form.shipping_country);
         params.append("shipping_state", form.shipping_state);
+
         if(form.terms){
             params.append("terms", 'on');
             params.append("terms-field", '1');
         }
+
+        if(!form.shipping){
+            params.append("ship_to_different_address", "1");
+        }
+
         params.append("payment_method", form.payment_method);
         params.append("_wpnonce", form.checkout_nonce);
         params.append("_wp_http_referer", this.config.url + '/checkout?wc-ajax=update_order_review');
 
-        if (form.password) {
-            params.append("createaccount", form.register);
-            params.append("account_password", form.password);
-        }
-        return new Promise(resolve => {
-            this.http.post(this.config.url + '/checkout?wc-ajax=checkout', params, this.config.options).map(res => res.json())
-                .subscribe(data => {
-                    this.status = data;
-                    resolve(this.status);
-                });
-        });
-    }
-    checkouttest(form) {
-        var params = new URLSearchParams();
-        params.append("billing_first_name", "Name hajsk");
-        params.append("billing_last_name", "Name hajsk");
-        params.append("billing_company", "Name hajsk");
-        params.append("billing_email", "test@gmail.com");
-        params.append("billing_phone", "237648372");
-        params.append("billing_address_1", "form billing_address_1");
-        params.append("billing_address_2", "dsjfh sdjfhsdkj");
-        params.append("billing_city", "fsdfdjgif");
-        params.append("billing_postcode", "560048");
-        params.append("billing_country", "IN");
-        params.append("billing_state", "KA");
-        params.append("payment_method", form.payment_method);
-        params.append("_wpnonce", form.checkout_nonce);
-        params.append("_wp_http_referer", this.config.url + '/checkout?wc-ajax=update_order_review');
         if (form.password) {
             params.append("createaccount", form.register);
             params.append("account_password", form.password);
@@ -235,7 +218,7 @@ export class CheckoutService {
         params.append("_wp_http_referer", "/checkout/");
         params.append("redirect", this.config.url + "/wp-admin/admin-ajax.php?action=mstoreapp-userdata");
         return new Promise(resolve => {
-            this.http.post(this.config.url + '/checkout/', params)
+            this.http.post(this.config.url + '/checkout/', params, this.config.options)
                 .subscribe(data => {
                     this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-get_checkout_form', this.config.options).map(res => res.json())
                         .subscribe(data => {
@@ -249,7 +232,7 @@ export class CheckoutService {
         var params = new URLSearchParams()
         params.append("coupon_code", form.coupon_code);
         return new Promise(resolve => {
-            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-apply_coupon', params)
+            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-apply_coupon', params, this.config.options)
                 .subscribe(data => {
                     this.status = data;
                     resolve(this.status);
@@ -272,7 +255,7 @@ export class CheckoutService {
         params.append("card[address_zip]", form.billing_postcode);
         params.append("card[address_country]", form.billing_country);
         return new Promise(resolve => {
-            this.http.post('https://api.stripe.com/v1/tokens', params, this.config.options).map(res => res.json())
+            this.http.post('https://api.stripe.com/v1/tokens', params, this.config.optionstwo).map(res => res.json())
                 .subscribe(data => {
                     this.status = data;
                     resolve(this.status);
@@ -305,12 +288,10 @@ export class CheckoutService {
         params.append("shipping_state", form.shipping_state);
         params.append("payment_method", form.payment_method);
         params.append("_wpnonce", form.checkout_nonce);
-
         if(form.terms){
             params.append("terms", 'on');
             params.append("terms-field", '1');
         }
-
         params.append("wc-stripe-payment-token", 'new');
         params.append("stripe_token", token.id);
         params.append("_wp_http_referer", this.config.url + '/checkout?wc-ajax=update_order_review');
@@ -328,10 +309,21 @@ export class CheckoutService {
     }
     getOrderSummary(id) {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wc-api/v3/orders/' + id + '?', false), this.config.options).map(res => res.json())
+            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders/' + id + '?', false), this.config.optionstwo).map(res => res.json())
                 .subscribe(data => {
                     this.orderSummary = data;
                     resolve(this.orderSummary);
+                });
+        });
+    }
+    updateShipping(method) {
+        var params = new URLSearchParams()
+        params.append("shipping_method[0]", method);
+        return new Promise(resolve => {
+            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-update_shipping_method', params, this.config.options).map(res => res.json())
+                .subscribe(data => {
+                    this.shippingUpdate = data;
+                    resolve(this.shippingUpdate);
                 });
         });
     }
