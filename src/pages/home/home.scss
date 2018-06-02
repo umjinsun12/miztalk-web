@@ -1,12 +1,36 @@
+.cardheader{
+    &.header{
+        height: $toolbar-height;
+        background: color($colors, primary);
 
-
-
-
-.point{
-    color: color($colors, light);
-    font-weight: 700;
-    font-size: 12px;
+        .toolbar{
+            min-height: $toolbar-height;
+            
+            .toolbar-background{
+                background: color($colors, primary);
+            }
+            .back-button{
+                color: white;
+                padding-left: 14px;
+            }
+            .bar-button{
+                color: color($colors, light);
+            }
+        }
+        .toolbar-md{
+            border-bottom: 1px solid lightgrey;
+        }
+    }
+    .point{
+        color: color($colors, light);
+        font-weight: 700;
+        font-size: 12px;
+    }
 }
+
+
+
+
 
 page-home {
     .item-md{

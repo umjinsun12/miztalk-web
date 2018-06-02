@@ -4,7 +4,7 @@
   <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
   
   <ion-buttons end *ngIf="!showFilters && !showSortFilters"> 
-    <button ion-button icon-only *ngIf="values.isLoggedIn" (click)="presentPopover($event)" style="color:#fff;margin-left:6px;margin-right:6px;">
+    <button ion-button icon-only *ngIf="values.isLoggedIn" (click)="presentPopover($event)" style="color:#e83d4d;margin-left:6px;margin-right:6px;">
           <ion-icon ios="md-search" md="md-search" style="font-size:30px;"></ion-icon>
     </button>
 
@@ -133,6 +133,11 @@
           </div>
 
 
+          <ion-refresher (ionRefresh)="doRefresh($event)">
+              <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
+
+
 
           <div *ngIf="products" class="products-listing">
             <div *ngIf="!products.length && !loading" class="no-products">
@@ -168,7 +173,7 @@
                     </div><br> </div>
             </div>
             <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
-                <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="Loading more items.."> </ion-infinite-scroll-content>
+                <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 상품을 불러오는 중입니다."> </ion-infinite-scroll-content>
             </ion-infinite-scroll>
         </div>
 

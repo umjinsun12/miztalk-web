@@ -24,6 +24,7 @@ import { MyApp } from './app.component';
 import { MenuPage } from './../pages/menu/menu';
 
 
+import { Facebook } from '@ionic-native/facebook';
 
 // shopping service
 import { WishlistService } from './../services/shopping-services/wishlist-service';
@@ -40,6 +41,9 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { CardnewsService } from '../services/shopping-services/cardnews-service';
+
+import { PhotoViewer} from '@ionic-native/photo-viewer';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 
 
@@ -65,7 +69,9 @@ import { CardnewsService } from '../services/shopping-services/cardnews-service'
       tabsPlacement: 'bottom',
       backButtonText: '',
       backButtonIcon: 'ios-arrow-back',
-      iconMode: 'md'
+      iconMode: 'md',
+      scrollPadding: false,
+      scrollAssist: false
     }),
     IonicStorageModule.forRoot(),
   ],
@@ -99,6 +105,9 @@ import { CardnewsService } from '../services/shopping-services/cardnews-service'
     WordpressService,
     AuthenticationService,
     CardnewsService,
+    Facebook,
+    PhotoViewer,
+    SocialSharing,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

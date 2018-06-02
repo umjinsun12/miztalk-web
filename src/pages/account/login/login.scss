@@ -1,3 +1,225 @@
-page-login {
-
+.account-login:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: color($colors, primary);
+}
+.account-login {
+    background-image: url("../assets/image/login.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    .list {
+        margin: 0 0 16px 0;
+    }
+    .item {
+        padding: 0px;
+    }
+    .shop-info {
+        margin: 80px 60px 40px 60px;
+        text-align: center;
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 25px;
+        }
+        h2 {
+            padding-top: 30px;
+            text-align: center;
+            color: #fff;
+            font-size: 16px;
+        }
+    }
+    .login-div {
+        background-color: white;
+        width : 100%;
+        position: absolute;
+        bottom: 0px;
+        margin: 0px 0px 0 0px;
+        .login-header{
+            text-align: center;
+            min-height: 25px;
+            height: 25px;
+            font-size: 12px;
+            background-color : #f3f3f3;
+        }
+        .label-ios{
+            margin: 0px;
+            padding-top: 4px;
+        }
+        .button {
+            margin-top: 5px 0 5px 0;
+            min-height: 70px;
+            color: black;
+            border: 1px solid #f3f3f3;
+            font-weight: 400;
+            font-size: 11px;
+            margin:0px;
+        }
+        .col{
+            padding : 0px;
+        }
+        .login-signup{
+            background: white;
+            text-align: center;
+            font-size:13px;
+            margin: 5px 0 5px 0;
+        }
+    }
+    .or-button {
+        .button {
+            border: 0;
+            margin-top: -45px;
+            position: absolute;
+            color: #fff;
+            text-transform: none;
+            font-size: 16px;
+        }
+    }
+    .signup {
+        margin: 0 35px;
+        text-align: center;
+        h2 {
+            font-size: 15px;
+            color: #fff;
+            a {
+                color: #edff00;
+                font-size: 15px;
+                margin: 0 10px;
+            }
+        }
+    }
+    .login {
+        margin: 0 50px;
+        .list>.item-block:first-child {
+            border-top: none;
+        }
+        .list>.item-block:last-child {
+            border-bottom: 1px solid #ddd;
+        }
+        .list .item-block .item-inner {
+            border-bottom: none;
+        }
+        .item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.79);
+            background-color: transparent;
+        }
+        h2 {
+            font-size: 12px;
+            text-align: center;
+            color: #dcdddd;
+            letter-spacing: 0.2px;
+            text-decoration: underline;
+        }
+        h3 {
+            font-size: 15px;
+            text-align: center;
+        }
+        ion-icon {
+            color: #fff;
+            font-size: 2rem;
+        }
+        .button {
+            min-height: 50px;
+            color: color($colors, primary);
+            background-color : white;
+            font-size: 14px;
+            margin: 0;
+        }
+        .item ion-icon[item-left] {
+            margin-left: 0;
+            margin-top: 9px;
+            margin-bottom: 0;
+        }
+        input {
+            font-size: 15px;
+            color: #fff;
+            letter-spacing: 0.2px;
+        }
+        ion-label[fixed] {
+            color: #dcdddd;
+            font-size: 30px;
+            //-webkit-flex: 0 0 100px;
+            flex: 0 0 40px;
+            width: 40px;
+            min-width: 40px;
+            max-width: 100px;
+            padding : 8px;
+        }
+        .label+ion-input .text-input {
+            margin-left: 0;
+            width: calc(100% - (16px / 2) - 16px);
+        }
+        .item-md ion-icon[item-left]+.item-inner {
+            margin-left: 0;
+        }
+        .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner {
+            border-bottom-color: #f2f2f2;
+            box-shadow: none;
+        }
+        .item-md.item-input.input-has-focus .item-inner {
+            box-shadow: none;
+        }
+        .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
+            border-bottom-color: transparent;
+            box-shadow: none;
+        }
+        .list-md .item-input.ng-valid.input-has-value:not(.input-has-focus):last-child {
+            border-bottom-color: #f2f2f2;
+            box-shadow: none;
+        }
+        .list-md .item-input.input-has-focus:last-child {
+            box-shadow: none;
+        }
+        .list-md .item-input.ng-invalid.ng-touched:not(.input-has-focus):last-child {
+            border-bottom-color: #f2f2f2;
+            box-shadow: none;
+        }
+        .margin-error-message {
+            margin: 10px 20px 0;
+            h3 {
+                text-align: center;
+                color: #ff4444;
+                font-size: 15px;
+                margin-bottom: 0;
+            }
+        }
+    }
+    .button.activated {
+        background-color: transparent;
+        color: #8c8c8c;
+    }
+}
+.login-header {
+    .toolbar-background {
+        background: transparent;
+    }
+    .back-button {
+        color: #fff;
+    }
+}
+.close-button {
+    button {
+        border-radius: 4px;
+        height: 3em;
+        font-size: 1.6rem;
+        color: #fff;
+        background-color: transparent;
+        margin: 0.4rem 0.2rem;
+        padding: 0 1em;
+        z-index: 10;
+        float: left;
+        box-shadow: none;
+        .icon {
+            font-size: 24px;
+            margin: 16px 8px;
+            color: #fff;
+        }
+    }
+    .button-ios.activated, .button-md.activated {
+        background-color: transparent;
+        box-shadow: none;
+    }
 }

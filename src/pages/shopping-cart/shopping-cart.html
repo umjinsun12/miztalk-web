@@ -4,12 +4,11 @@
         <ion-icon name="menu">
         </ion-icon>
       </button>
-      <ion-title text-center>{{"장바구니"}}
+      <ion-title text-center>장바구니
       </ion-title>
       <ion-buttons end>
         <button ion-button icon-only light class="has-icon icon-only has-badge">
-          <ion-icon color="primary" class="ion-ios-cart-outline item-icon product-cart">
-          </ion-icon>
+            <ion-icon class="ion-md-cart item-icon"></ion-icon>
           <ion-badge class="badge badge-light" *ngIf="values.count">{{values.count}}
           </ion-badge>
         </button>
@@ -17,142 +16,133 @@
     </ion-navbar>
   </ion-header>
   <ion-content class="cart">
-    <ion-spinner *ngIf="!cart" name="crescent">
-    </ion-spinner>
-    <div *ngIf="cart">
-      <div class="empty-cart" *ngIf="cart.cart_contents.length == 0">
-      <img src="assets/img/empty-cart.jpg">
-      <h4 text-center no-lines>
-        <button ion-button full clear text-uppercase color="button-color">{{"장바구니에 상품이 없습니다!"}}
-        </button>
-      </h4>
-      </div>
-      <div *ngIf="cart?.cart_contents">
-  
-        <div class="cart-items">
-        <ion-list>
-          <div class="cart-list" *ngFor="let item of cart.cart_contents | keys">
-            <ion-item no-lines *ngIf="item.value.quantity != 0">
-              <ion-thumbnail item-left>
-                <img src="{{item.value.thumb}}">
-              </ion-thumbnail>
-              <h2 wrap-text>{{item.value.name}}
-              </h2>
-              <h3 wrap-text > {{"가격"}}: {{(item.value.price | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-              </h3>
-              <h3 wrap-text> {{"총합"}}: {{(1*item.value.line_subtotal | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-              </h3>
-              <a (click)="delete( item.key )">
-                <ion-icon name="trash">
+      <ion-spinner *ngIf="!cart" name="crescent"> </ion-spinner>
+      <div *ngIf="cart">
+          <div class="empty" *ngIf="cart.cart_contents.length == 0"> <img src="../../assets/img/empty-cart.jpg">
+              <h4 color="side-heading-color" text-center no-lines>장바구니가 비어 있습니다.</h4>
+              <h5 text-center no-lines></h5> <button ion-button class="butt" item-center medium color="button-color" text-uppercase (click)="gohome()">쇼핑 계속하기</button> </div>
+          <div *ngIf="cart?.cart_contents">
+              <div class="cart-items">
+                  <div class="cart-list" *ngFor="let item of cart.cart_contents | keys">
+                      <ion-item no-lines>
+                          <ion-thumbnail item-left (click)="getProduct(item.value.product_id)"> <img src="{{item.value.thumb}}"> </ion-thumbnail>
+                          <h2 wrap-text class="item-name" style="position: absolute;top: 15px;max-width: 50%;">{{item.value.name}}</h2>
+                          <!--<h3 wrap-text style="position: absolute; margin-top: -17px;">{{item.value.price | currency:values.currency:true:'1.2-2'}}</h3>-->
+                          <h3 wrap-text style="position: absolute;right: 10px;bottom: 20px;font-size:  14px"><span style="font-size: 14px">{{(1*item.value.line_subtotal | currency:values.currency:false:'1.0-0').replace('USD','')}}원</span></h3>
+                          <div class="add-remove-button"> <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear (click)="deleteFromCart(item.value.product_id, item.key)">
+                <ion-icon name="md-remove">
                 </ion-icon>
-              </a>
-              <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="deleteFromCart(item.value.product_id, item.key)">
-                <ion-icon ios="ios-remove-circle-outline" md="ios-remove-circle-outline">
+              </button> <button ion-button item-right color="button-color" clear style="border: 0; margin: 0 5px;background: #f2f2f2;color: #000;">{{item.value.quantity}}
+              </button> <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear (click)="addToCart(item.value.product_id, item.key)">
+                <ion-icon name="md-add">
                 </ion-icon>
-              </button>
-              <button ion-button item-right color="button-color" clear>{{item.value.quantity}}
-              </button>
-              <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="addToCart(item.value.product_id, item.key)">
-                <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline">
+              </button> </div> <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear (click)="delete( item.key )" style="position: absolute;top: 10px;right: 10px;color: #a5a5a5;">
+                <ion-icon name="md-close">
                 </ion-icon>
-              </button>
-            </ion-item>
+              </button> </ion-item>
+                  </div>
+                  <div class="add-from-wishlist" *ngIf="values.isLoggedIn && cart.cart_contents.length != 0">
+                      <ion-item (click)="wishlist()" tappable>
+                          <ion-icon name="ios-heart-outline" item-left></ion-icon>
+                          <h2>찜하기에 추가하기</h2>
+                          <ion-icon name="ios-arrow-forward" item-right></ion-icon>
+                      </ion-item>
+                  </div>
+              </div>
+              <div *ngIf="cart.cart_contents.length != 0" class="coupon-offers">
+                  <!--<ion-item no-lines (click)="enableCouponOffer()" [ngClass]="{activeCoupon1: enableCoupon}" class="coupon-header">
+                      <ion-icon name="ios-pricetag-outline" item-left></ion-icon>
+                      <h6 *ngIf="cart.cart_totals.discount_total == 0">Apply Coupon and Offers</h6>
+                      <h6 *ngIf="cart.cart_totals.discount_total != 0">Coupon {{cart.applied_coupons}} Applied</h6>
+                  </ion-item>-->
+                  <div *ngIf="enableCoupon">
+                      <form #f="ngForm" class="coupon">
+                          <ion-item [ngClass]="{activeCoupon2: enableCoupon}">
+                              <ion-input type="text" placeholder="Coupon code" [(ngModel)]="cart.coupon" name="coupon"> </ion-input>
+                              <h2 item-right> <button ion-button color="button-color" block type="submit" text-uppercase [disabled]='disableSubmitCoupon' (click)="submitCoupon()"> 적용
+                </button> </h2>
+                          </ion-item>
+                      </form>
+                  </div>
+              </div>
+              <div *ngIf="cart.cart_contents.length != 0" style="margin: 4px 2px 0 2px;">
+                  <ion-list class="totals">
+                      <ion-row>
+                          <ion-col width-75>
+                              <ion-label>합계 </ion-label>
+                          </ion-col>
+                          <ion-col width-25 text-right>
+                              <ion-label>{{(1*cart.cart_totals.subtotal | currency:values.currency:false:'1.0-0').replace('USD','')}}원</ion-label>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="cart.cart_totals.subtotal_tax != 0">
+                          <ion-col width-75>
+                              <ion-label>SubTotal Tax </ion-label>
+                          </ion-col>
+                          <ion-col width-25 text-right>
+                              <ion-label>{{(1*cart.cart_totals.subtotal_tax | currency:values.currency:false:'1.0-0').replace('USD','')}}원</ion-label>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="cart.cart_totals.discount_total && cart.cart_totals.discount_total != 0">
+                          <ion-col width-75 class="remove-coupon">
+                              <ion-label>Coupons - {{cart.applied_coupons}} <a (click)="removeCoupon()"> (Remove)
+                  </a> </ion-label>
+                          </ion-col>
+                          <ion-col width-25 text-right>
+                              <ion-label>- {{(1*cart.cart_totals.discount_total | currency:values.currency:false:'1.0-0').replace('USD','')}}원</ion-label>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="cart.cart_totals.shipping_total != 0">
+                          <ion-col width-75>
+                              <ion-label>배송비 </ion-label>
+                          </ion-col>
+                          <ion-col width-25 text-right>
+                              <ion-label>{{(1*cart.cart_totals.shipping_total | currency:values.currency:false:'1.0-0').replace('USD','')}}원</ion-label>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="cart.cart_totals.shipping_tax != 0">
+                          <ion-col width-75>
+                              <ion-label>Shipping Tax </ion-label>
+                          </ion-col>
+                          <ion-col width-25 text-right>
+                              <ion-label>{{(1*cart.cart_totals.shipping_tax | currency:values.currency:false:'1.0-0').replace('USD','')}}원</ion-label>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row *ngIf="cart.cart_totals.total_tax != 0">
+                          <ion-col width-75>
+                              <ion-label>Total Tax </ion-label>
+                          </ion-col>
+                          <ion-col width-25 text-right>
+                              <ion-label>{{(1*cart.cart_totals.total_tax | currency:values.currency:false:'1.0-0').replace('USD','')}}원</ion-label>
+                          </ion-col>
+                      </ion-row>
+                      <ion-row>
+                          <ion-col width-75>
+                              <ion-label> <b> 총 합계
+                  </b> </ion-label>
+                          </ion-col>
+                          <ion-col width-25 text-right>
+                              <ion-label style="font-weight: 600;font-size: 17px">{{(1*cart.cart_totals.total| currency:values.currency:false:'1.0-0').replace('USD','')}}원</ion-label>
+                          </ion-col>
+                      </ion-row>
+                  </ion-list>
+              </div>
           </div>
-        </ion-list>
-        </div>
-  
-        <div *ngIf="cart.cart_contents.length != 0">
-          <ion-list *ngIf="shipping" no-margin text-wrap radio-group [(ngModel)]="chosen_shipping" (ngModelChange)="updateShipping(chosen_shipping)" class="shipping-methods">
-            <ion-item-divider>
-              <h2>{{"Selectashippingmethod"}}
-              </h2>
-            </ion-item-divider>
-            <ion-item *ngFor="let method of shipping | keys" >
-              <ion-label>{{method.value.method_title}} 
-                <span *ngIf="method.value.cost">{{ (1*method.value.cost | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-                </span> 
-              </ion-label>
-              <ion-radio value="{{method.value.id + ':' + method.value.instance_id}}" >
-              </ion-radio>
-            </ion-item>
-          </ion-list>
-  
-          <form #f="ngForm" class="coupon">
-            <ion-item>
-              <ion-label>{{"쿠폰 코드"}}</ion-label>
-              <ion-input type="text" [(ngModel)]="cart.coupon" name="coupon">
-              </ion-input>
-              <h2 item-right>
-                <button ion-button color="button-color" block type="submit" text-uppercase [disabled]='disableSubmitCoupon' (click)="submitCoupon()"> {{Apply}}
-                </button>
-              </h2>
-            </ion-item>
-          </form>
-  
-          <ion-list class="totals" *ngIf="cart.cart_totals">
-            <!--ion-item-divider>
-              <h2>{{"Totals" | translate}}
-              </h2>
-            </ion-item-divider-->
-            <ion-row>
-              <ion-col width-75>
-                <ion-label>{{"상품 가격"}}
-                </ion-label>
-              </ion-col>
-              <ion-col width-25 text-right>
-                <ion-label>{{(1*cart.cart_totals.subtotal | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-                </ion-label>
-              </ion-col>
-            </ion-row>  
-
-  
-            <ion-row *ngIf="cart.cart_totals.discount_total && cart.cart_totals.discount_total != 0"> 
-              <ion-col width-75 class="remove-coupon">
-                <ion-label>{{"쿠폰"}} - {{cart.applied_coupons}} 
-                  <a (click)="removeCoupon()"> (Remove)
-                  </a>
-                </ion-label>
-              </ion-col>
-              <ion-col width-25 text-right>
-                <ion-label>- {{(1*cart.cart_totals.discount_total | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-                </ion-label>
-              </ion-col>
-            </ion-row>
-  
-            <ion-row *ngIf="cart.cart_totals.shipping_total != 0"> 
-              <ion-col width-75>
-                <ion-label>{{"배송비"}}
-                </ion-label>
-              </ion-col>
-              <ion-col width-25 text-right>
-                <ion-label >{{(1*cart.cart_totals.shipping_total | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-                </ion-label>
-              </ion-col>
-            </ion-row>
-  
-            <ion-row>
-              <ion-col width-75>
-                <ion-label>
-                  <b> {{"총 합계"}}
-                  </b>
-                </ion-label>
-              </ion-col >
-              <ion-col width-25 text-right>
-                <ion-label>{{(1*cart.cart_totals.total | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-                </ion-label>
-              </ion-col>
-            </ion-row>
-  
-          </ion-list>
-          
-        </div>
       </div>
-    </div>
   </ion-content>
   <div *ngIf="cart">
-    <ion-footer *ngIf="cart.cart_contents.length != 0">
-      <button ion-button full color="button-color" no-padding no-margin [disabled]='disableSubmit' (click)="checkout()">주문하기
-      </button>
-    </ion-footer>
+      <ion-footer class="cart-footer" *ngIf="cart.cart_contents.length != 0">
+          <ion-row>
+              <ion-col class="col1">
+                  <div class="you-pay">
+                      <h3 *ngIf="cart?.cart_totals.discount_total && cart.cart_totals.discount_total != 0">Save: {{(1*cart.cart_totals.discount_total ).replace('USD','')}}원</h3>
+                      <h2>결제 금액: {{(1*cart?.cart_totals.total | currency:values.currency:false:'1.0-0').replace('USD','')}}원</h2>
+                  </div>
+              </ion-col>
+              <ion-col class="col2">
+                  <div class="checkout-button"> <button ion-button full color="button-color" no-padding no-margin text-uppercase [disabled]='disableSubmit' (click)="checkout()"> 구매하기 <ion-icon name="ios-arrow-forward"></ion-icon>
+      </button> </div>
+              </ion-col>
+          </ion-row>
+      </ion-footer>
   </div>
-  

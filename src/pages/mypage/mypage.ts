@@ -39,10 +39,10 @@ export class MypagePage {
 
   ionViewWillEnter(){
     console.log(this.values.isLoggedIn);
-    if(!this.values.isLoggedIn){
+    /*if(!this.values.isLoggedIn){
       this.functions.showAlert("에러", "로그인이 필요한 서비스입니다.");
       this.navCtrl.push(AccountLogin);
-    }
+    }*/
   }
 
   logout(){

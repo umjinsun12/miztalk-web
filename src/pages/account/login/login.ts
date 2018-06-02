@@ -5,6 +5,7 @@ import { Functions } from './../../../services/shopping-services/functions';
 import { Values } from './../../../services/shopping-services/values';
 import { Component } from '@angular/core';
 import { IonicPage, NavController} from 'ionic-angular';
+import { Facebook } from '@ionic-native/facebook';
 
 /**
  * Generated class for the LoginPage page.
@@ -31,7 +32,7 @@ export class AccountLogin {
     googleSpinner: boolean = false;
     gres: any;
 
-    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values/*, public fb: Facebook, public googlePlus: GooglePlus*/) {
+    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values, public fb: Facebook /*public googlePlus: GooglePlus*/) {
         this.loginData = [];
         this.LogIn = "LogIn";
     }
@@ -84,12 +85,12 @@ export class AccountLogin {
   hidePassword(){
     this.showPasswordEnable = false; 
   }
- /* facebookLogin() {
-        this.facebookSpinner = true;
+  facebookLogin() {
+       this.facebookSpinner = true;
        this.fb.login(['public_profile', 'user_friends', 'email']).then((response) => {
             this.service.sendToken(response.authResponse.accessToken).then((results) => {
                 this.facebookSpinner = false;
-                this.nav.setRoot(TabsPage);
+                //this.nav.setRoot(TabsPage);
                 
                 this.functions.showAlert('success', 'Logged in successfully');
             });
@@ -99,6 +100,7 @@ export class AccountLogin {
             this.functions.showAlert('Error', error);
         });
     }
+    /*
     gmailLogin() {
         this.googleSpinner = true;
         this.googlePlus.login({

@@ -1,35 +1,17 @@
-<ion-header>
-  <ion-navbar color="header">
-    <button ion-button menuToggle>
-      <ion-icon name="menu">
-      </ion-icon>
-    </button>
-    <ion-title text-center>로그인
-    </ion-title>
-  </ion-navbar>
-</ion-header>
 <ion-content class="account-login">
     <div class="shop-info">
-        <h1 text-uppercase>Shop name</h1>
-        <h2>The most fulfilling shopping experience</h2>
+            <img src="assets/img/logo-main.png" srcset="assets/img/logo-main@2x.png 2x,assets/img/logo-main@3x.png 3x" height=40>
     </div>
-    <!--div>
-        <ion-row class="login-div">
-            <ion-col class="col1"> <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="facebookLogin()">Facebook</button> </ion-col>
-            <ion-col class="col2"> <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="gmailLogin()">Google</button> </ion-col>
-        </ion-row>
-    </div-->
-    <div class="or-button"> <br> <br> <button ion-button block clear type="submit" class="button button-block button-default">Or login via e-mail
-    </button> </div>
+    
     <div>
         <form #f="ngForm" class="login">
             <ion-list>
                 <ion-item>
-                    <ion-label fixed>Username</ion-label>
+                    <ion-label fixed><ion-icon name="ios-browsers-outline"></ion-icon></ion-label>
                     <ion-input required type="email" [(ngModel)]="loginData.username" name="firstname"> </ion-input>
                 </ion-item>
                 <ion-item *ngIf="!showPasswordEnable">
-                    <ion-label fixed>Password</ion-label>
+                    <ion-label fixed><ion-icon name="ios-lock-outline"></ion-icon></ion-label>
                     <ion-input required type="password" [(ngModel)]="loginData.password" name="password"> </ion-input>
                     <ion-icon *ngIf="loginData.password" item-right name="ios-eye" (click)="showPassword()" style="font-size: 2.5rem;z-index:10"></ion-icon>
                 </ion-item>
@@ -38,11 +20,39 @@
                     <ion-input required type="text" [(ngModel)]="loginData.password" name="password"> </ion-input>
                     <ion-icon item-right name="ios-eye-off" (click)="hidePassword()" style="font-size: 2.5rem;z-index:10"></ion-icon>
                 </ion-item>
-                <h2 tappable (click)="forgotten()">Forgot Password?</h2>
-            </ion-list> <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="login()">LogIn
+                <h2 tappable (click)="forgotten()">비밀번호를 잊으셨나요?</h2>
+                <h2 tappable (click)="forgotten()">되돌아가기</h2>
+            </ion-list> <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="login()">로그인
       </button> <br> </form>
-        <div class="signup">
-            <h2>Don't have an account? <a (click)="signup()"> SIGN UP</a></h2>
+
+        <div class="login-div">
+                <ion-label class="login-header">
+                    SNS 로그인
+                </ion-label>
+                <ion-row>
+                    <ion-col class="col1"> 
+                        <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="facebookLogin()">
+                            <div><img src="assets/img/9-2.png" scroll="false" width="50%" srcset="assets/img/9-2@2x.png 2x,assets/img/9-2@3x.png 3x">
+                            <br>페이스북
+                            </div>
+                        </button>
+                    </ion-col>
+                    <ion-col class="col2"> <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="gmailLogin()">
+                        <div><img src="assets/img/02-2.png" scroll="false" width="50%" srcset="assets/img/02-2@2x.png 2x,assets/img/02-2@3x.png 3x">
+                            <br>카카오톡
+                        </div>
+                    </button> </ion-col>
+                    <ion-col class="col3"> 
+                        <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="gmailLogin()">
+                        <div><img src="assets/img/10-2.png" scroll="false" width="50%" srcset="assets/img/10-2@2x.png 2x,assets/img/10-2@3x.png 3x">
+                                <br>네이버
+                        </div>
+                    </button> </ion-col>
+                </ion-row>
+                <ion-label class="login-signup">
+                    아직 회원이 아니세요? <a (click)="signup()">회원가입하기</a>
+                </ion-label>
         </div>
+
     </div>
 </ion-content>

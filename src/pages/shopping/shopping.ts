@@ -8,6 +8,8 @@ import { NavController, NavParams, PopoverController, ViewController,IonicPage }
 import { ModalController } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { Service} from './../../services/shopping-services/service'
+import { WishlistPage } from '../account/wishlist/wishlist'
+import { PopoverPage } from '../about-popover/about-popover';
 
 /**
  * Generated class for the ShoppingPage page.
@@ -79,6 +81,7 @@ export class ShoppingPage {
         this.service.load(this.filter).then((results) => this.handleProducts(results));
     }
     handleProducts(results) {
+        console.log(results);
         this.products = results;
         this.viewCtrl.showBackButton(true);
     }
@@ -87,7 +90,7 @@ export class ShoppingPage {
         this.items.slug = slug;
         this.items.name = name;
         this.items.categories = this.categories;
-        //this.nav.push(ProductsPage, this.items);
+        this.nav.push(ShoppingProductPage, this.items);
     }
     parseText(id, count, offset, obj2) {
         var text = '{';
@@ -103,14 +106,15 @@ export class ShoppingPage {
         return obj3;
     }
     getProducts(id) {
-        //this.nav.push(ProductsPage, id);
+        this.nav.push(ShoppingProductPage, id);
     }
     getProduct(id) {
-        //this.nav.push(ProductPage, id);
+        this.nav.push(ShoppingProductPage, id);
     }
     getCart() {
+        console.log("asdfasdf");
         this.values.hideTabbar = false;
-        //this.nav.push(CartPage);
+        this.nav.push(ShoppingCartPage);
     }
     doInfinite(infiniteScroll) {
         this.filter.page += 1;
@@ -127,6 +131,18 @@ export class ShoppingPage {
         }
         infiniteScroll.complete();
     }
+
+    doRefresh(refresher){
+        this.has_more_items = true;
+        this.filter.page = 1;
+        this.service.load(this.filter).then((results) => this.handleRefreshProducts(results, refresher));
+    }
+    handleRefreshProducts(results, refresher){
+        console.log(results);
+        this.products = results;
+        refresher.complete();
+    }
+
     setListView() {
         this.values.listview = true;
     }
@@ -141,7 +157,7 @@ export class ShoppingPage {
     }
     addToCart(id, type) {
         if (type == 'variable') {
-            //this.nav.push(ProductPage, id);
+            this.nav.push(ShoppingProductPage, id);
         } else {
             var text = '{';
             var i;
@@ -197,7 +213,7 @@ export class ShoppingPage {
         }
     }
     getWishlist() {
-        //this.nav.push(WishlistPage);
+        this.nav.push(WishlistPage);
     }
     getFilter() {
         /*let modal = this.modalCtrl.create(Filter, this.filter);
@@ -257,10 +273,10 @@ export class ShoppingPage {
         this.related = "";
     }
     presentPopover(event: Event) {
-        /*let popover = this.popoverCtrl.create(PopoverPage);
+        let popover = this.popoverCtrl.create(PopoverPage);
         popover.present({
             ev: event
-        });*/
+        });
         console.log("popover");
     }
 
