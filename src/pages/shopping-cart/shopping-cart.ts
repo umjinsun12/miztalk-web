@@ -1,4 +1,3 @@
-import { BillingAddressForm } from './../checkout/billing-address-form/billing-address-form';
 import { Functions } from './../../services/shopping-services/functions';
 import { Values } from './../../services/shopping-services/values';
 import { CartService } from './../../services/shopping-services/cart-service';
@@ -6,6 +5,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { ShoppingProductPage } from '../shopping-product/shopping-product';
 import { ShoppingPage } from '../shopping/shopping';
+import {BillingAddressForm} from '../../pages/checkout/billing-address-form/billing-address-form';
 
 /**
  * Generated class for the ShoppingCartPage page.

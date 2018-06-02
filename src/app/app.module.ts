@@ -45,7 +45,22 @@ import { CardnewsService } from '../services/shopping-services/cardnews-service'
 import { PhotoViewer} from '@ionic-native/photo-viewer';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
+import { BillingAddressForm} from '../pages/checkout/billing-address-form/billing-address-form';
+import {OrderSummary} from '../pages/checkout/order-summary/order-summary'
 
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
+import { AppRate } from '@ionic-native/app-rate';
+import { EmailComposer } from '@ionic-native/email-composer';
+import { MypagePage } from '../pages/account/mypage/mypage';
+import { MyInformation } from '../pages/account/my-information/my-information';
+import { Address } from '../pages/account/address/address';
+import { EditAddressForm } from '../pages/account/edit-address-form/edit-address-form';
+import { AccountForgotten } from '../pages/account/forgotten/forgotten';
+import { OrderDetails } from '../pages/account/order-details/order-details';
+import { Orders } from '../pages/account/orders/orders';
+import { AccountRegister } from '../pages/account/register/register';
+import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
 
 
@@ -61,6 +76,16 @@ import { SocialSharing } from '@ionic-native/social-sharing';
     ShoppingCartPage,
     AccountLogin,
     KeysPipe,
+    BillingAddressForm,
+    OrderSummary,
+    MyInformation,
+    Address,
+    EditAddressForm,
+    AccountForgotten,
+    OrderDetails,
+    Orders,
+    AccountRegister,
+    WishlistPage
   ],
   imports: [
     HttpModule,
@@ -85,7 +110,17 @@ import { SocialSharing } from '@ionic-native/social-sharing';
     ShoppingProductPage,
     MyApp,
     MenuPage,
-    AccountLogin
+    AccountLogin,
+    BillingAddressForm,
+    OrderSummary,
+    MyInformation,
+    Address,
+    EditAddressForm,
+    AccountForgotten,
+    OrderDetails,
+    Orders,
+    AccountRegister,
+    WishlistPage
   ],
   providers: [
     NativeStorage,
@@ -108,6 +143,9 @@ import { SocialSharing } from '@ionic-native/social-sharing';
     Facebook,
     PhotoViewer,
     SocialSharing,
+    InAppBrowser,
+    AppRate,
+    EmailComposer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

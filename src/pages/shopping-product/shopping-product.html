@@ -46,7 +46,7 @@
                 <!--<div (click)="showMoreReviews()"> <button ion-button icon-only small class="rating-button-grid1" style="height:20px">
         <ion-icon name="md-star"><span class="rating-count">{{product.average_rating | number:'1.1-1'}}</span></ion-icon> 
       </button> <span style="color: #777;">{{product.rating_count}} ratings</span> </div>-->
-                <h2 style="font-size: 14px;margin: 10px 16px 8px;color:#333;" *ngIf="product.total_sales != 0">{{product.total_sales}} items sold</h2>
+                <!--<h2 style="font-size: 14px;margin: 10px 16px 8px;color:#333;" *ngIf="product.total_sales != 0">{{product.total_sales}} items sold</h2>-->
                 <ion-grid class="rating-and-total-sales-grid">
                     <ion-row>
                         <ion-col> <button class="share" ion-button color="button-color" (click)="addToCart(product.id)">

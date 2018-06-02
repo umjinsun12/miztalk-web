@@ -4,7 +4,7 @@ import { Functions } from './../../../services/shopping-services/functions';
 import { CheckoutService } from './../../../services/shopping-services/checkout-service';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-//import { OrderSummary } from '../../checkout/order-summary/order-summary';
+import { OrderSummary } from '../../checkout/order-summary/order-summary';
 //import { TermsCondition } from '../../checkout/terms-condition/terms-condition';
 //import { AccountForgotten } from '../../account/forgotten/forgotten';
 
@@ -146,7 +146,7 @@ export class BillingAddressForm {
                   var pos2 = str.lastIndexOf("/?key=wc_order");
                   var pos3 = pos2 - (pos1 + 16);
                   var order_id = str.substr(pos1 + 16, pos3);
-                  //this.nav.push(OrderSummary, order_id);
+                  this.nav.push(OrderSummary, order_id);
                   browser.close();
               }
               else if (data.url.indexOf('cancel_order=true') != -1 || data.url.indexOf('cancelled=1') != -1 || data.url.indexOf('cancelled') != -1) {
@@ -185,7 +185,7 @@ export class BillingAddressForm {
           var pos2 = str.lastIndexOf("?key=wc_order");
           var pos3 = pos2 - (pos1 + 15);
           var order_id = str.substr(pos1 + 15, pos3);
-          //this.nav.push(OrderSummary, order_id);
+          this.nav.push(OrderSummary, order_id);
       } else if (results.result == "failure") {
           this.functions.showAlert("ERROR", results.messages);
       }
@@ -336,10 +336,11 @@ export class BillingAddressForm {
           this.functions.showAlert("ERROR", "Please choose billing Country");
           return false
       }
-      if (this.form.billing_state == undefined || this.form.billing_state == "") {
+      /*if (this.form.billing_state == undefined || this.form.billing_state == "") {
           this.functions.showAlert("ERROR", "Please choose billing State");
           return false
-      } else {
+      }*/ 
+      else {
           return true
       }
   }
@@ -364,10 +365,10 @@ export class BillingAddressForm {
           this.functions.showAlert("ERROR", "Please choose Shipping Country");
           return false
       }
-      if (this.form.shipping_state == undefined || this.form.shipping_state == "") {
+      /*if (this.form.shipping_state == undefined || this.form.shipping_state == "") {
           this.functions.showAlert("ERROR", "Please choose Shipping State");
           return false
-      } else {
+      }*/ else {
           return true
       }
   }
@@ -440,11 +441,11 @@ export class BillingAddressForm {
           this.editBillingForm();
           //return false
       }
-      if (this.form.billing_state == undefined || this.form.billing_state == "") {
+      /*if (this.form.billing_state == undefined || this.form.billing_state == "") {
           this.functions.showAlert("ERROR", "Please choose billing State");
           this.editBillingForm();
           //return false
-      }
+      }*/
       if (this.form.shipping_first_name == undefined || this.form.shipping_first_name == "") {
           this.functions.showAlert("ERROR", "Please enter Shipping First name");
           this.editShippingForm();
@@ -465,11 +466,11 @@ export class BillingAddressForm {
           this.editShippingForm();
           // return false
       }
-      if (this.form.shipping_state == undefined || this.form.shipping_state == "") {
+      /*if (this.form.shipping_state == undefined || this.form.shipping_state == "") {
           this.functions.showAlert("ERROR", "Please choose Shipping State");
           this.editShippingForm();
           //return false
-      }
+      }*/
       if (this.form.shipping_postcode == undefined || this.form.shipping_postcode == "") {
           this.functions.showAlert("ERROR", "Please enter Shipping Postcode");
           this.editShippingForm();

@@ -6,6 +6,9 @@ import { Values } from './../../../services/shopping-services/values';
 import { Component } from '@angular/core';
 import { IonicPage, NavController} from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
+import {AccountRegister} from '../register/register';
+import {TabsPage} from '../../tabs/tabs';
+import {AccountForgotten} from '../forgotten/forgotten'
 
 /**
  * Generated class for the LoginPage page.
@@ -59,20 +62,20 @@ export class AccountLogin {
         this.disableSubmit = false;
         this.LogIn = "LogIn";
         if (!results.errors && results.data) {
-            this.functions.showAlert('success', 'You have successfully logged in');
+            this.functions.showAlert('로그인', '로그인하셨습니다.');
             if(this.values.cartLoadEnable){
                 //this.nav.setRoot(CartPage);
             }
             else{
-            //this.nav.setRoot(TabsPage);
+            this.nav.setRoot(TabsPage);
             }
         }
         else if (results.errors) {
-            this.functions.showAlert('error', 'invalid username/password');
+            this.functions.showAlert('에러', '계정이나 비밀번호가 맞지 않습니다.');
         }
     }
     forgotten() {
-        //this.nav.push(AccountForgotten);
+        this.nav.push(AccountForgotten);
     }
 
   dismiss() {
@@ -90,8 +93,7 @@ export class AccountLogin {
        this.fb.login(['public_profile', 'user_friends', 'email']).then((response) => {
             this.service.sendToken(response.authResponse.accessToken).then((results) => {
                 this.facebookSpinner = false;
-                //this.nav.setRoot(TabsPage);
-                
+                this.nav.setRoot(TabsPage);
                 this.functions.showAlert('success', 'Logged in successfully');
             });
         }).catch((error) => {
@@ -125,6 +127,7 @@ export class AccountLogin {
         });
     }*/
     signup(){
-        //this.nav.push(AccountRegister);
+        this.nav.push(AccountRegister);
     }
+
 }
