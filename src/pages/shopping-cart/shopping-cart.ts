@@ -1,3 +1,4 @@
+import { BillingAddressForm } from './../checkout/billing-address-form/billing-address-form';
 import { Functions } from './../../services/shopping-services/functions';
 import { Values } from './../../services/shopping-services/values';
 import { CartService } from './../../services/shopping-services/cart-service';
@@ -55,7 +56,6 @@ export class ShoppingCartPage {
         this.chosen_shipping = results.chosen_shipping;
     }
     handleCart(results) {
-        
         this.cart = results;
     }
     delete(key) {
@@ -70,7 +70,7 @@ export class ShoppingCartPage {
     handleBilling(results) {
         this.disableSubmit = false;
         this.Checkout = "Checkout";
-        //this.nav.push(BillingAddressForm, results);
+        this.nav.push(BillingAddressForm, results);
     }
     deleteFromCart(id, key) {
         this.service.deleteFromCart(id, key).then((results) => this.handleCart(results));

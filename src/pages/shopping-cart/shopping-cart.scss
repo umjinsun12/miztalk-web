@@ -1,5 +1,5 @@
 .cart {
-    background: #f2f2f2;
+    background: white;
     .empty {
         margin-top: 50px;
         h4 {
@@ -291,15 +291,15 @@
     }
 }
 .cart-footer {
-    background-color: #444;
+    background-color: white;
     color: #fff;
     .col1 {
         padding: 10px;
         min-width: 58%;
-        background: #444;
+        //background: #444;
     }
     .col2 {
-        background-color: $button-color;
+        background-color: white;
     }
     h3 {
         font-size: 10px;

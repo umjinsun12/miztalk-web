@@ -6,13 +6,6 @@
       </button>
       <ion-title text-center>장바구니
       </ion-title>
-      <ion-buttons end>
-        <button ion-button icon-only light class="has-icon icon-only has-badge">
-            <ion-icon class="ion-md-cart item-icon"></ion-icon>
-          <ion-badge class="badge badge-light" *ngIf="values.count">{{values.count}}
-          </ion-badge>
-        </button>
-      </ion-buttons>
     </ion-navbar>
   </ion-header>
   <ion-content class="cart">
@@ -133,12 +126,12 @@
   <div *ngIf="cart">
       <ion-footer class="cart-footer" *ngIf="cart.cart_contents.length != 0">
           <ion-row>
-              <ion-col class="col1">
+              <!--<ion-col class="col1">
                   <div class="you-pay">
                       <h3 *ngIf="cart?.cart_totals.discount_total && cart.cart_totals.discount_total != 0">Save: {{(1*cart.cart_totals.discount_total ).replace('USD','')}}원</h3>
                       <h2>결제 금액: {{(1*cart?.cart_totals.total | currency:values.currency:false:'1.0-0').replace('USD','')}}원</h2>
                   </div>
-              </ion-col>
+              </ion-col>-->
               <ion-col class="col2">
                   <div class="checkout-button"> <button ion-button full color="button-color" no-padding no-margin text-uppercase [disabled]='disableSubmit' (click)="checkout()"> 구매하기 <ion-icon name="ios-arrow-forward"></ion-icon>
       </button> </div>
