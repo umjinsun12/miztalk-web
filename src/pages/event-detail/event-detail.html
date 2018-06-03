@@ -7,14 +7,25 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title></ion-title>
+    <ion-title>이벤트</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content no-padding>
     <ion-item no-padding>
-        <div class="community-content" [innerHtml]="post.content.rendered"></div>
+        <div class="event-content" [innerHtml]="post.content.rendered"></div>
     </ion-item>
 </ion-content>
+
+
+<!--<ion-footer no-shadow>
+    <ion-toolbar position="bottom">
+      <ion-row>
+        <button ion-button full color="button-color" >
+          이벤트 응모하기
+        </button>
+      </ion-row>
+    </ion-toolbar>
+</ion-footer>-->

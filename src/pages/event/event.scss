@@ -1,9 +1,41 @@
 .product-image{
     background-size: cover !important;
     background-repeat: no-repeat !important;
-    width: 120px;
-    height: 120px;
     background-position: center !important;
+}
+
+.anounce_rows{
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.segment {
+    border-bottom: 1px solid #f2f2f2;
+    .segment .segment-button.segment-activated {
+        color: color($colors, primary); //background-color: #25242c;
+        border-radius: 0;
+        height: 40px; //border: 1px solid #d0d0d0;
+        border: 0;
+        font-weight: 600;
+        border-bottom: 2px solid color($colors, primary);
+    }
+    .segment .segment-button {
+        border: 0;
+        color: color($colors, warm-grey);
+        height: 40px;
+        background-color: transparent;
+        font-size: 16px;
+        border: 0;
+    }
+    .label-md {
+        padding : 0px;
+        text-transform: capitalize;
+    }
+    .label {
+        font-size: 13px;
+        span {
+            font-size: 14px;
+        }
+    }
 }
 
 .event-box{

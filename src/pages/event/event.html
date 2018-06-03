@@ -15,19 +15,33 @@
 </ion-header>
    
   <ion-content no-padding>
-      <ion-card *ngFor="let post of posts" >
+      <div class="segment">
+          <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule($event)">
+              <ion-segment-button tappable value="overview">
+                  <ion-label text-uppercase>이벤트</ion-label>
+              </ion-segment-button>
+              <ion-segment-button tappable value="anounce">
+                  <ion-label text-uppercase>당첨자 발표</ion-label>
+              </ion-segment-button>
+          </ion-segment>
+      </div>
+      <div *ngIf="showOverview">
+        <ion-card *ngFor="let post of posts" >
           <ion-card-content (click)="getPostConent(post.id, post.title.rendered)" no-padding>
-            <ion-row>
-              <ion-col col-4>
-                <div class="product-image" [ngStyle]="{'background-image': 'url(' + post.thumbnail + ')', 'background-size':'cover'}"></div>
-              </ion-col>
-              <ion-col class="event-box" col-8 padding>
-                <h3 class="event-company">{{post.event.company}}</h3>
-                <h3 class="event-title">{{post.event.title}}</h3>
-                <h3 class="event-content">{{post.event.content}}</h3>
-                <p class="event-date">{{post.event.startdate}} ~ {{post.event.enddate}}</p>
-              </ion-col>
-            </ion-row>
+            <img src="{{post.thumbnail}}">
           </ion-card-content>
         </ion-card>
+      </div>
+      <div *ngIf="showAnounce">
+          <ion-list>
+              <ion-item  *ngFor="let post of anounce_posts" no-padding>
+                <ion-row class="anounce_rows" no-padding>
+                  <ion-col (click)="getPostConent(post.id, post.title.rendered)">
+                    <p class="post-title" [innerHTML]="post.title.rendered"></p>
+                    <p class="post-date">{{post.reltime}}</p>
+                  </ion-col>
+                </ion-row>
+              </ion-item>
+          </ion-list>
+      </div>
   </ion-content>

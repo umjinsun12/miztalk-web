@@ -21,17 +21,46 @@
     <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-      
+    <div *ngIf="values?.maincard && values.maincard.length" class="home-banners">
+            <ion-slides pager="true" loop="true" autoplay="5800">
+                <ion-slide *ngFor='let value of values.maincard' (click)="getBannerConent(value.link)">
+                    <img src="{{value.src}}">
+                </ion-slide>
+            </ion-slides>
+    </div>
+
       <ion-list>
           <ion-item class="product-list animated fadeInUp" [ngClass]="{'list-view': layout && layout=='list'}" >
+            <div *ngFor="let item of posts; let i = index" >
+                <ion-row *ngIf="i%2===0" no-padding>
+                    <ion-col class="col1" (click)="getPostConent(posts[i].id, posts[i].title.rendered)">
+                        <div class="product-image" [ngStyle]="{'background-image': 'url(' + posts[i].thumnail + ')', 'background-size':'cover'}"></div>
+                        <small class="category-name">{{posts[i].categoryName}}</small>
+                        <h6>{{posts[i].title.rendered}}</h6>
+                    </ion-col>
+                    <ion-col class="col2" *ngIf="i+1<posts.length" (click)="getPostConent(posts[i+1].id, posts[i+1].title.rendered)">
+                        <div class="product-image" [ngStyle]="{'background-image': 'url(' + posts[i+1].thumnail + ')', 'background-size':'cover'}"></div>
+                        <small class="category-name">{{posts[i+1].categoryName}}</small>
+                        <h6>{{posts[i+1].title.rendered}}</h6>
+                    </ion-col>
+                    <ion-col class="col2" *ngIf="i+1>=posts.length">
+                    </ion-col>
+                </ion-row>
+                <ion-row *ngIf="(i+1)%6===0 && values?.mainad && values.mainad.length">
+                    <ion-col (click)="getBannerConent(values.mainad[((i+1)/6)%values.mainad.length].link)">
+                        <img src="{{values.mainad[((i+1)/6)%values.mainad.length].src}}">
+                    </ion-col>
+                </ion-row>
+            </div>
+              <!--
             <ul>
-              <li class="list-item" *ngFor="let item of posts" (click)="getPostConent(item.id, item.title.rendered)" no-padding>
+              <li class="list-item" *ngFor="let item of posts; let i = index" (click)="getPostConent(item.id, item.title.rendered)" no-padding>
                 <div class="product-image" [ngStyle]="{'background-image': 'url(' + item.thumnail + ')', 'background-size':'cover'}">
                 </div>
                 <h6>{{item.title.rendered}}</h6>
                 <small class="category-name">{{item.categoryName}}</small>
               </li>
-            </ul>
+            </ul>-->
           </ion-item>
       </ion-list>
 

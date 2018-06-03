@@ -40,6 +40,8 @@ export class Values {
   loadDeals: boolean = false;
   point: any = 0;
   token: any = "";
+  maincard: any = [];
+  mainad : any = [];
 
   constructor() {
   	this.filter = {};

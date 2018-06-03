@@ -8,7 +8,8 @@ import { IonicPage, NavController, NavParams, LoadingController ,Nav} from 'ioni
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { WordpressService } from '../../services/wordpress.service';
-import { CardnewsService } from '../../services/shopping-services/cardnews-service'
+import { CardnewsService } from '../../services/shopping-services/cardnews-service';
+import {EventDetailPage} from '../event-detail/event-detail';
 
 
 /**
@@ -71,6 +72,13 @@ export class HomePage {
     passData.id = postId;
     this.navCtrl.push(HomeDetailPage, passData);
   }
+
+  getBannerConent(postId:number){
+    let passData = {name:'', id:0};
+    passData.name = "이벤트";
+    passData.id = postId;
+    this.navCtrl.push(EventDetailPage, passData);
+  }
   
   handlePostResults(results) {
     this.posts = results;
@@ -94,7 +102,6 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-
   }
 
   
@@ -195,5 +202,7 @@ export class HomePage {
       }
       infiniteScroll.complete();
   }
+
+  
 
 }

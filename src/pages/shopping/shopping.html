@@ -98,7 +98,7 @@
           <ion-spinner *ngIf="loading" name="crescent"> </ion-spinner>
 
           <div *ngIf="homeservice?.banners" class="home-banners">
-              <ion-slides pager="true" loop="true" autoplay="5800">
+              <ion-slides pager="false" loop="true" autoplay="5800">
                   <ion-slide *ngFor='let value of homeservice.banners'> <img src="{{value}}"> </ion-slide>
               </ion-slides>
           </div>

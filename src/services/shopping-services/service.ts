@@ -7,6 +7,7 @@ import { URLSearchParams } from '@angular/http';
 import { NativeStorage } from '@ionic-native/native-storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
+import { map } from 'rxjs/operator/map';
 
 @Injectable() 
 export class Service {
@@ -120,6 +121,41 @@ export class Service {
                     this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mshop-point-ex-get_mypoint', this.config.options).map(res => res.json())
                         .subscribe(data => {
                            this.values.point = data.free_point;
+                        });
+
+                this.http.get(this.config.WORDPRESS_REST_API_URL + '/posts/1746', this.config.options).map(res=> res.json())
+                        .subscribe(data => {
+                            var regExp = /<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g, match;
+                            var parsesrc = [];
+                            while (match = regExp.exec(data.content.rendered))
+                                parsesrc.push(match[1]);
+                            var mainlink = data.content.rendered.match('{{[^>]*}}');
+                            var parselink = mainlink[0].replace('{{','').replace('}}','').split('|');
+                            this.values.maincard = [];
+                            for(var i=0 ; i < parsesrc.length ; i++){
+                                var parse = {
+                                    src : parsesrc[i],
+                                    link : parselink[i]
+                                };
+                                this.values.maincard.push(parse);
+                            }
+                        });
+                this.http.get(this.config.WORDPRESS_REST_API_URL + '/posts/1756', this.config.options).map(res=> res.json())
+                        .subscribe(data =>{
+                            var regExp = /<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g, match;
+                            var parsesrc = [];
+                            while (match = regExp.exec(data.content.rendered))
+                                parsesrc.push(match[1]);
+                            var mainlink = data.content.rendered.match('{{[^>]*}}');
+                            var parselink = mainlink[0].replace('{{','').replace('}}','').split('|');
+                            this.values.mainad = [];
+                            for(var i=0 ; i < parsesrc.length ; i++){
+                                var parse = {
+                                    src : parsesrc[i],
+                                    link : parselink[i]
+                                };
+                                this.values.mainad.push(parse);
+                            }
                         });
 
             });

@@ -3,6 +3,7 @@ import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
 import { EventDetailPage } from '../event-detail/event-detail';
+import * as moment from 'moment';
 
 /**
  * Generated class for the EventPage page.
@@ -19,11 +20,17 @@ import { EventDetailPage } from '../event-detail/event-detail';
 export class EventPage {
 
   posts: Array<any> = new Array<any>();
+  anounce_posts: Array<any> = new Array<any>();
   morePagesAvailable: boolean = true;
   loggedUser: boolean = false;
 
   categoryId: number = 27;
   categoryTitle: string = "이벤트";
+
+  showOverview: boolean = true;
+  showAnounce : boolean = false;
+  segment = 'overview';
+
 
   constructor(
     public navCtrl: NavController, 
@@ -31,13 +38,6 @@ export class EventPage {
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController,
     public values : Values) { 
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventPage');
-  }
-
-  ionViewWillEnter() {
     this.morePagesAvailable = true;
 
     if(!(this.posts.length > 0)){
@@ -48,30 +48,62 @@ export class EventPage {
       .subscribe(data =>{
         for(let post of data){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-          post.title.datas = post.title.rendered.split('|');
-          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
-          post.event = {
-            company : "",
-            title : "",
-            content : "",
-            startdate : "",
-            enddate : ""
-          }
-          if(post.title.datas.length == 5){
-            post.event.company = post.title.datas[0];
-            post.event.title = post.title.datas[1];
-            post.event.content = post.title.datas[2];
-            post.event.startdate = post.title.datas[3];
-            post.event.enddate = post.title.datas[4];
-          }
-          console.log(post.title);
-          this.posts.push(post);
           console.log(post);
+          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].source_url;
+          this.posts.push(post);
         }
+        console.log(this.posts);
         loading.dismiss();
       });
       
     }
+
+    this.getPostCategory(173);
+  }
+
+  updateSchedule(event) {
+    console.log(event._value);
+    if (event._value == 'overview') {
+        this.showOverview = true;
+        this.showAnounce = false;
+    } else if (event._value == 'anounce') {
+        this.showOverview = false;
+        this.showAnounce = true;
+    }
+  }
+
+  getPostCategory(categoryid){
+    let loading = this.loadingCtrl.create();
+    loading.present();
+
+    this.anounce_posts = [];
+    this.wordpressService.getPostEmbedbyCategory(categoryid).subscribe(data=>{
+      console.log(data);
+      this.anounce_posts = [];
+      for(let post of data){
+        post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
+        post.author = post._embedded['author'][0].name;
+        post.reltime = moment(post.date).fromNow();
+        post.replies = 0;
+        if(post._embedded.replies != undefined)
+          post.replies = post._embedded.replies[0].length;
+        else
+          post.replies = 0;
+        this.anounce_posts.push(post);
+      }
+      loading.dismiss();
+    });
+}
+
+
+  
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad EventPage');
+  }
+
+  ionViewWillEnter() {
+    
   }
 
 
