@@ -1,3 +1,27 @@
 page-menu {
 
 }
+.menu-menu{
+    ion-header.header{
+        height: 50px;
+        .toolbar{
+            min-height: 50px;
+        }
+    }
+            
+}
+.menu-header{
+    ion-title{
+        background-color: color($colors, primary);
+        padding : 0px;
+    }
+    .toolbar-title{
+        width: auto;
+    }
+    .point{
+        color: white;
+    }
+    img{
+        height: 25px;
+    }
+}

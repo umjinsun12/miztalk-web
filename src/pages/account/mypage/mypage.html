@@ -21,7 +21,14 @@
     <div *ngIf="values.isLoggedIn">
         <div class="account-header"> 
           <!--<span *ngIf="values.avatar"><img src="{{values.avatar}}"></span>-->
-          <ion-item *ngIf="values.customerName">{{values.customerName}}</ion-item>
+          <ion-row>
+              <ion-col col-4 class="col1">
+                  <img src="assets/img/level-02.png">
+              </ion-col>
+              <ion-col col-8 class="col2">
+                  <ion-item *ngIf="values.customerName">{{values.customerName}}</ion-item>
+              </ion-col>
+          </ion-row>
         </div>
         <div class="logged-in-contents">
             <ion-list>

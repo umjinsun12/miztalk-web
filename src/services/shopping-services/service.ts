@@ -133,10 +133,13 @@ export class Service {
                             var parselink = mainlink[0].replace('{{','').replace('}}','').split('|');
                             this.values.maincard = [];
                             for(var i=0 ; i < parsesrc.length ; i++){
+                                var parselink_type = parselink[i].split(':');
                                 var parse = {
                                     src : parsesrc[i],
-                                    link : parselink[i]
+                                    type : parselink_type[0],
+                                    link : parselink_type[1]
                                 };
+                                console.log(parse);
                                 this.values.maincard.push(parse);
                             }
                         });
@@ -150,9 +153,11 @@ export class Service {
                             var parselink = mainlink[0].replace('{{','').replace('}}','').split('|');
                             this.values.mainad = [];
                             for(var i=0 ; i < parsesrc.length ; i++){
+                                var parselink_type = parselink[i].split(':');
                                 var parse = {
                                     src : parsesrc[i],
-                                    link : parselink[i]
+                                    type : parselink_type[0],
+                                    link : parselink_type[1]
                                 };
                                 this.values.mainad.push(parse);
                             }

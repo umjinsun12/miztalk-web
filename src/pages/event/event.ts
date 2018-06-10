@@ -3,6 +3,7 @@ import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
 import { EventDetailPage } from '../event-detail/event-detail';
+import {EventAnouncePage} from '../event-anounce/event-anounce'
 import * as moment from 'moment';
 
 /**
@@ -39,6 +40,7 @@ export class EventPage {
     public loadingCtrl: LoadingController,
     public values : Values) { 
     this.morePagesAvailable = true;
+    moment.locale('ko');
 
     if(!(this.posts.length > 0)){
       let loading = this.loadingCtrl.create();
@@ -112,6 +114,13 @@ export class EventPage {
     passData.name = postName;
     passData.id = postId;
     this.navCtrl.push(EventDetailPage, passData);
+  }
+
+  getAnounceConent(postId:number, postName:string){
+    let passData = {name:'', id:0};
+    passData.name = postName;
+    passData.id = postId;
+    this.navCtrl.push(EventAnouncePage, passData);
   }
 
 

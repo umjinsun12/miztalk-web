@@ -3,7 +3,7 @@
       <ion-icon name="menu">
       </ion-icon>
     </button>
-        <ion-title text-center>Order Info </ion-title>
+        <ion-title text-center>주문서</ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content class="order-details">
@@ -12,55 +12,58 @@
         <ion-item-group>
             <ion-item class="top-details">
                 <ion-row>
-                    <ion-col class="dull">Order Number </ion-col>
+                    <ion-col class="dull">주문번호</ion-col>
                     <ion-col>{{orderDetails.number}} </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col class="dull">Date </ion-col>
-                    <ion-col>{{orderDetails.date_created | date: 'dd/MM/yyyy'}} </ion-col>
-                </ion-row>
-                <ion-row *ngIf="orderDetails.shipping_lines.length">
-                    <ion-col class="dull">Shipping Method </ion-col>
-                    <ion-col>{{orderDetails.shipping_lines[0].method_title}} </ion-col>
+                    <ion-col class="dull">주문날짜</ion-col>
+                    <ion-col>{{orderDetails.date_created | date: 'yyyy년 MM월 dd일'}} </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col class="dull">Status </ion-col>
-                    <ion-col>{{orderDetails.status}} </ion-col>
+                    <ion-col class="dull">주문상태</ion-col>
+                    <ion-col>
+                        <h2 style="color: green" text-capitalize *ngIf="orderDetails.status == 'processing'"> 배송중 </h2>
+                        <h2 style="color: green" text-capitalize *ngIf="orderDetails.status == 'completed'"> 배송완료 </h2>
+                        <h2 style="color: green" text-capitalize *ngIf="orderDetails.status == 'refunded'"> 환불완료 </h2>
+                        <h2 style="color: red" text-capitalize *ngIf="orderDetails.status == 'cancelled'"> 주문취소 </h2>
+                        <h2 style="color: red" text-capitalize *ngIf="orderDetails.status == 'failed'"> 주문실패 </h2>
+                        <h2 style="color: #c3ad00" text-capitalize *ngIf="orderDetails.status == 'on-hold'"> 주문대기 </h2>
+                        <h2 style="color: #c3ad00" text-capitalize *ngIf="orderDetails.status == 'pending'"> 배송준비중 </h2>
+                    </ion-col>
                 </ion-row>
             </ion-item>
-            <ion-item-divider>Product Details </ion-item-divider>
+            <ion-item-divider>상품 상세</ion-item-divider>
             <ion-item *ngFor="let item of orderDetails.line_items">
-                <h2><span class="dull">Product Name :</span> {{item.name}} </h2>
-                <h2><span class="dull">Price :</span> {{item.price | currency:values.currency:symbol:'1.2-2'}} </h2>
-                <h2><span class="dull">Quantity :</span> {{item.quantity}} </h2>
-                <h2><span class="dull">SubTotal :</span> {{1*item.subtotal | currency:values.currency:symbol:'1.2-2'}} </h2>
+                <h2><span class="dull">상품이름 :</span> {{item.name}} </h2>
+                <h2><span class="dull">가격 :</span> {{(item.price   | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</h2>
+                <h2><span class="dull">수량 :</span> {{item.quantity}} </h2>
+                <h2><span class="dull">합계 :</span> {{(1*item.subtotal   | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</h2>
             </ion-item>
-            <ion-item-divider>Billing Address </ion-item-divider>
-            <ion-item text-wrap> {{orderDetails.billing.first_name}} {{orderDetails.billing.last_name}}, {{orderDetails.billing.email}} {{orderDetails.billing.phone}} {{orderDetails.billing.address_1}} {{orderDetails.billing.address_2}} {{orderDetails.billing.city}} {{orderDetails.billing.state}} {{orderDetails.billing.postcode}} </ion-item>
-            <ion-item-divider>Shipping Address </ion-item-divider>
-            <ion-item text-wrap> {{orderDetails.shipping.first_name}} {{orderDetails.shipping.last_name}}, {{orderDetails.shipping.company}} {{orderDetails.shipping.address_1}} {{orderDetails.shipping.address_2}} {{orderDetails.shipping.city}} {{orderDetails.shipping.state}} {{orderDetails.shipping.country}} {{orderDetails.shipping.postcode}} </ion-item>
-            <ion-item-divider>Total </ion-item-divider>
+            <ion-item-divider>배송 주소</ion-item-divider>
+            <ion-item text-wrap> {{orderDetails.billing.first_name}} {{orderDetails.billing.last_name}}, {{orderDetails.billing.email}} {{orderDetails.billing.phone}} {{orderDetails.billing.address_1}} {{orderDetails.billing.address_2}} {{orderDetails.billing.city}} {{orderDetails.billing.state}} {{orderDetails.billing.postcode}} </ion-item>            <!--<ion-item-divider>Shipping Address </ion-item-divider>
+            <ion-item text-wrap> {{orderDetails.shipping.first_name}} {{orderDetails.shipping.last_name}}, {{orderDetails.shipping.company}} {{orderDetails.shipping.address_1}} {{orderDetails.shipping.address_2}} {{orderDetails.shipping.city}} {{orderDetails.shipping.state}} {{orderDetails.shipping.country}} {{orderDetails.shipping.postcode}} </ion-item>-->
+            <ion-item-divider>합계</ion-item-divider>
             <ion-item>
                 <ion-row>
-                    <ion-col class="dull">SubTotal </ion-col>
-                    <ion-col text-right>{{(1*orderDetails.total - 1*orderDetails.shipping_total - 1*orderDetails.total_tax) | currency:values.currency:symbol:'1.2-2'}} </ion-col>
+                    <ion-col class="dull">상품가격 </ion-col>
+                    <ion-col text-right>{{((1*orderDetails.total - 1*orderDetails.shipping_total - 1*orderDetails.total_tax)   | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col class="dull"> Shipping Total </ion-col>
-                    <ion-col text-right>{{1*orderDetails.shipping_total | currency:values.currency:symbol:'1.2-2'}} </ion-col>
+                    <ion-col class="dull">배송비 </ion-col>
+                    <ion-col text-right>{{(1*orderDetails.shipping_total  | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-col>
                 </ion-row>
-                <ion-row>
+                <!--<ion-row>
                     <ion-col class="dull">Tax Total </ion-col>
                     <ion-col text-right>{{1*orderDetails.total_tax | currency:values.currency:symbol:'1.2-2'}} </ion-col>
-                </ion-row>
+                </ion-row>-->
                 <ion-row text-uppercase>
-                    <ion-col class="dull">Grand Total </ion-col>
-                    <ion-col text-right>{{1*orderDetails.total | currency:values.currency:symbol:'1.2-2'}} </ion-col>
+                    <ion-col class="dull">총 합계</ion-col>
+                    <ion-col text-right>{{(1*orderDetails.total   | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-col>
                 </ion-row>
             </ion-item>
         </ion-item-group>
         <ion-item>
-            <h2>Payment Method : </h2>
+            <h2>결제 수단 : </h2>
             <h2 style="color:#020da0"> {{orderDetails.payment_method_title}}</h2>
         </ion-item>
     </div>

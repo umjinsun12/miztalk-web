@@ -7,12 +7,23 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>event-anounce</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
+  <ion-list>
+    <ion-item no-padding>
+      <div class="community-title-wrapper">
+        <div class="community-category">[{{post.categoryName}}]</div>
+        <div class="community-title">{{post.title.rendered}}</div>
+        <div class="community-author">{{post.author}} {{post.date}}</div>
+      </div>
+    </ion-item>
+    <ion-item no-padding>
+      <div class="community-content" [innerHtml]="post.content.rendered"></div>
+    </ion-item>
+  </ion-list>
 </ion-content>

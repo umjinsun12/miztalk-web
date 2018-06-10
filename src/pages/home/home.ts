@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { WordpressService } from '../../services/wordpress.service';
 import { CardnewsService } from '../../services/shopping-services/cardnews-service';
 import {EventDetailPage} from '../event-detail/event-detail';
+import { ShoppingProductPage } from '../shopping-product/shopping-product';
 
 
 /**
@@ -73,11 +74,14 @@ export class HomePage {
     this.navCtrl.push(HomeDetailPage, passData);
   }
 
-  getBannerConent(postId:number){
+  getBannerConent(postType:number,postId:number){
     let passData = {name:'', id:0};
     passData.name = "이벤트";
     passData.id = postId;
-    this.navCtrl.push(EventDetailPage, passData);
+    if(postType == 0)
+      this.navCtrl.push(EventDetailPage, passData);
+    else if(postType == 1)
+      this.nav.push(ShoppingProductPage, postId);
   }
   
   handlePostResults(results) {

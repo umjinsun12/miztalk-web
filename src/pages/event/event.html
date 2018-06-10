@@ -36,7 +36,7 @@
           <ion-list>
               <ion-item  *ngFor="let post of anounce_posts" no-padding>
                 <ion-row class="anounce_rows" no-padding>
-                  <ion-col (click)="getPostConent(post.id, post.title.rendered)">
+                  <ion-col (click)="getAnounceConent(post.id, post.title.rendered)">
                     <p class="post-title" [innerHTML]="post.title.rendered"></p>
                     <p class="post-date">{{post.reltime}}</p>
                   </ion-col>

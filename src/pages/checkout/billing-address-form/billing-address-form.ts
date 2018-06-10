@@ -5,6 +5,7 @@ import { CheckoutService } from './../../../services/shopping-services/checkout-
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { OrderSummary } from '../../checkout/order-summary/order-summary';
+import { defaultFormat } from 'moment';
 //import { TermsCondition } from '../../checkout/terms-condition/terms-condition';
 //import { AccountForgotten } from '../../account/forgotten/forgotten';
 
@@ -478,6 +479,34 @@ export class BillingAddressForm {
       } else {
           return true
       }
+  }
+  searchAddres(){
+    console.log("주소");
+    var options = "location=no,hidden=yes,toolbar=no";
+    let browser = this.iab.create('assets/daum-address.html', '_blank', options);
+    browser.show();
+    console.log(browser.on('loadstart'));
+    browser.on('loadstart').subscribe(data => {
+        /*if (data.url.indexOf('order-received') != -1 && data.url.indexOf('return=') == -1) {
+                this.values.cart = [];
+                this.values.count = 0;
+                var str = data.url;
+                var pos1 = str.lastIndexOf("/order-received/");
+                var pos2 = str.lastIndexOf("/?key=wc_order");
+                var pos3 = pos2 - (pos1 + 16);
+                var order_id = str.substr(pos1 + 16, pos3);
+                this.nav.push(OrderSummary, order_id);
+                browser.close();
+        }
+              else if (data.url.indexOf('cancel_order=true') != -1 || data.url.indexOf('cancelled=1') != -1 || data.url.indexOf('cancelled') != -1) {
+                  browser.close();
+                  this.buttonSubmit = false;
+              }    */
+              console.log(data);
+        });
+          browser.on('exit').subscribe(data => {
+              this.buttonSubmit = false;
+        });
   }
   ionViewWillEnter() {
       if (document.querySelector(".tabbar")) this.tabBarElement.display = 'none';

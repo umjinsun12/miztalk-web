@@ -62,6 +62,8 @@ import { Orders } from '../pages/account/orders/orders';
 import { AccountRegister } from '../pages/account/register/register';
 import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
+import {EventAnouncePage} from '../pages/event-anounce/event-anounce'
+
 
 
 @NgModule({
@@ -85,7 +87,8 @@ import { WishlistPage } from '../pages/account/wishlist/wishlist';
     OrderDetails,
     Orders,
     AccountRegister,
-    WishlistPage
+    WishlistPage,
+    EventAnouncePage
   ],
   imports: [
     HttpModule,
@@ -120,7 +123,8 @@ import { WishlistPage } from '../pages/account/wishlist/wishlist';
     OrderDetails,
     Orders,
     AccountRegister,
-    WishlistPage
+    WishlistPage,
+    EventAnouncePage
   ],
   providers: [
     NativeStorage,

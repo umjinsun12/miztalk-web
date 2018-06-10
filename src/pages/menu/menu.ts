@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Nav } from 'ionic-angular';
+import { Values } from '../../services/shopping-services/values';
 
 /**
  * Generated class for the MenuPage page.
@@ -30,15 +31,16 @@ export class MenuPage {
   @ViewChild(Nav) nav: Nav;
  
   pages: PageInterface[] = [
-    { title: 'Tab 1', pageName: 'TabsPage', tabComponent: 'HomePage', index: 0, icon: 'home' },
-    { title: 'Tab 2', pageName: 'TabsPage', tabComponent: 'CuommunityPage', index: 1, icon: 'contacts' },
-    { title: 'Tab 3', pageName: 'TabsPage', tabComponent: 'ShoppingPage', index: 1, icon: 'contacts' },
-    { title: 'Tab 4', pageName: 'TabsPage', tabComponent: 'EventPage', index: 1, icon: 'contacts' },
-    { title: 'Tab 5', pageName: 'TabsPage', tabComponent: 'MypagePage', index: 1, icon: 'contacts' },
-    { title: 'Tab 6', pageName: 'TabsPage', tabComponent: 'MypagePage', index: 1, icon: 'contacts' },
+    { title: '홈', pageName: 'TabsPage', tabComponent: 'HomePage', index: 0, icon: 'ai-tab-1-home-icon-off' },
+    { title: '커뮤니티', pageName: 'TabsPage', tabComponent: 'CommunityPage', index: 1, icon: 'ai-tab-2-comu-icon-off' },
+    { title: '이벤트', pageName: 'TabsPage', tabComponent: 'ShoppingPage', index: 1, icon: 'ai-tab-3-event-off' },
+    { title: '쇼핑', pageName: 'TabsPage', tabComponent: 'EventPage', index: 1, icon: 'ai-tab-4-shop-icon-off' },
+    { title: '마이페이지', pageName: 'TabsPage', tabComponent: 'MypagePage', index: 1, icon: 'ai-tab-5-mypage-icon-off' },
   ];
  
-  constructor(public navCtrl: NavController) { }
+  constructor(
+    public navCtrl: NavController,
+    public values : Values) { }
  
   openPage(page: PageInterface) {
     let params = {};

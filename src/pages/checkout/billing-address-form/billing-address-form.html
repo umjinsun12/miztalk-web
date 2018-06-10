@@ -107,12 +107,10 @@
                     </ion-item>
                 </div>
                 <ion-row *ngIf="enableBillingAddress">
-                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline type="submit" class="button button-block button-default" (click)="backToAddressPage()">취소
-           </button> </ion-col>
-                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline style="float: right" type="submit" class="button button-block button-default" (click)="showShippingForm()">저장
-           </button> </ion-col>
-                    <ion-col *ngIf="!values.isLoggedIn"> <button ion-button outline style="float: right" type="submit" class="button button-block button-default" (click)="showShippingForm()">다음
-           </button> </ion-col>
+                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline type="submit" class="button button-block button-default" (click)="backToAddressPage()">취소</button> </ion-col>
+                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline type="submit" class="button button-block button-default" (click)="searchAddres()">우편번호</button> </ion-col>
+                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline style="float: right" type="submit" class="button button-block button-default" (click)="showShippingForm()">저장</button> </ion-col>
+                    <ion-col *ngIf="!values.isLoggedIn"> <button ion-button outline style="float: right" type="submit" class="button button-block button-default" (click)="showShippingForm()">다음</button> </ion-col>
                 </ion-row> <br> </ion-list>
             <div class="Address-form" *ngIf="enableShippingForm">
                 <ion-list class="shipping-address-list">

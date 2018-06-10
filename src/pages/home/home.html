@@ -23,7 +23,7 @@
     </ion-refresher>
     <div *ngIf="values?.maincard && values.maincard.length" class="home-banners">
             <ion-slides pager="true" loop="true" autoplay="5800">
-                <ion-slide *ngFor='let value of values.maincard' (click)="getBannerConent(value.link)">
+                <ion-slide *ngFor='let value of values.maincard' (click)="getBannerConent(value.type, value.link)">
                     <img src="{{value.src}}">
                 </ion-slide>
             </ion-slides>
@@ -47,7 +47,7 @@
                     </ion-col>
                 </ion-row>
                 <ion-row *ngIf="(i+1)%6===0 && values?.mainad && values.mainad.length">
-                    <ion-col (click)="getBannerConent(values.mainad[((i+1)/6)%values.mainad.length].link)">
+                    <ion-col (click)="getBannerConent(values.mainad[((i+1)/6)%values.mainad.length].type ,values.mainad[((i+1)/6)%values.mainad.length].link)">
                         <img src="{{values.mainad[((i+1)/6)%values.mainad.length].src}}">
                     </ion-col>
                 </ion-row>
