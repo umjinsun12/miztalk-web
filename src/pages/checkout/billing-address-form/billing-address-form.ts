@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Values } from './../../../services/shopping-services/values';
 import { Functions } from './../../../services/shopping-services/functions';
+import { Service } from './../../../services/shopping-services/service'
 import { CheckoutService } from './../../../services/shopping-services/checkout-service';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -45,17 +46,17 @@ export class BillingAddressForm {
   shipping: any;
   order: any;
   buttonText : any;
-  enableBillingAddress: boolean = false;
-  enableShippingMethods: boolean = false;
+  enableBillingAddress: boolean = true;
+  enableShippingMethods: boolean = true;
   enableShippingForm : boolean = false;
   enableLogin: boolean = true;
   chosen_shipping: any;
   showPasswordEnable: boolean = false;
-  enablePaymentMethods : boolean = false;
-  showAddress: boolean = false;
+  enablePaymentMethods : boolean = true;
+  showAddress: boolean = true;
   tabBarElement: any;
   
-  constructor(private viewCtrl: ViewController, public iab: InAppBrowser, public nav: NavController, public service: CheckoutService, params: NavParams, public functions: Functions, public values: Values) {
+  constructor(private viewCtrl: ViewController, public iab: InAppBrowser, public nav: NavController, public service: CheckoutService, params: NavParams, public functions: Functions, public values: Values, public addressservice : Service) {
       this.PlaceOrder = "Place Order";
       this.buttonText1 = "Apply";
       this.LogIn = "LogIn";
@@ -481,32 +482,9 @@ export class BillingAddressForm {
       }
   }
   searchAddres(){
-    console.log("주소");
-    var options = "location=no,hidden=yes,toolbar=no";
-    let browser = this.iab.create('assets/daum-address.html', '_blank', options);
-    browser.show();
-    console.log(browser.on('loadstart'));
-    browser.on('loadstart').subscribe(data => {
-        /*if (data.url.indexOf('order-received') != -1 && data.url.indexOf('return=') == -1) {
-                this.values.cart = [];
-                this.values.count = 0;
-                var str = data.url;
-                var pos1 = str.lastIndexOf("/order-received/");
-                var pos2 = str.lastIndexOf("/?key=wc_order");
-                var pos3 = pos2 - (pos1 + 16);
-                var order_id = str.substr(pos1 + 16, pos3);
-                this.nav.push(OrderSummary, order_id);
-                browser.close();
-        }
-              else if (data.url.indexOf('cancel_order=true') != -1 || data.url.indexOf('cancelled=1') != -1 || data.url.indexOf('cancelled') != -1) {
-                  browser.close();
-                  this.buttonSubmit = false;
-              }    */
-              console.log(data);
-        });
-          browser.on('exit').subscribe(data => {
-              this.buttonSubmit = false;
-        });
+    this.addressservice.getKoreanAddress("연제구", 1).then((results) => {
+        console.log(results);
+    });
   }
   ionViewWillEnter() {
       if (document.querySelector(".tabbar")) this.tabBarElement.display = 'none';

@@ -38,11 +38,40 @@ page-home {
     }
     .item-md{
         padding-left: 0px;
+        h6{
+            font-size: 1.3rem;
+            margin: 1px 0;
+        }
+    }
+    .col{
+        width: 50%;
+    }
+
+    ion-col{
+        
+        .col1{
+            width: 50% !important;
+        }
+        .col2{
+            width: 50% !important;
+        }
+    }
+
+    .item-ios{
+        padding-left: 0px;
+        h6{
+            font-size: 1.2rem;
+            margin : 0 0 2px;
+        }
     }
 
     .label-ios{
-        margin: 0px 8px 11px 0;
+        margin: 0px 0px 11px 0;
     }
+
+    .item-ios.item-block .item-inner{
+        padding-right: 0px;
+    }    
     .col{
         .product-image{
             width : 100%;

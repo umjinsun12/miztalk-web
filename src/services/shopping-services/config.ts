@@ -25,6 +25,8 @@ export class Config {
     shareAppURL: any = 'https://play.google.com/store/apps/details?id=com.mstoreapp.wootab0002&hl=en';
     shareAppChooserTitle: any = 'Pick an app';
     supportEmail: any = 'support@mstoreapp.com';
+
+    jusoApikey: any = 'U01TX0FVVEgyMDE4MDYxMTAwMTcwMTEwNzkzNzc=';
     
     WORDPRESS_REST_API_URL: any = this.url + '/wp-json/wp/v2';
 

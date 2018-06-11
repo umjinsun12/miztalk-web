@@ -33,7 +33,7 @@ export class ShoppingProductPage {
     AddToCart: any;
     wishlistIcon: boolean = false;
     showSpecification: boolean = false;
-    moreDescription: boolean = false;
+    moreDescription: boolean = true;
     related: any;
     crossSell: any;
     upsell:any;

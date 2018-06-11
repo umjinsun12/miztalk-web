@@ -44,42 +44,48 @@
         </form> <br> </div>
     <div *ngIf="form">
         <form #f="ngForm" class="form">
-            <div class="address">
+            <!--<div class="address">
                 <ion-item no-lines *ngIf="showAddress">
                     <h1>배송 주소 입력</h1>
                     <h2>{{form.billing_first_name}} {{form.billing_last_name}} {{form.billing_email}} {{form.billing_phone}} {{form.billing_address_1}} {{form.billing_address_2}} {{form.billing_city}} {{form.billing_state}} {{form.billing_country}} {{form.billing_postcode}} </h2> <button ion-button small clear type="submit" class="button button-block button-default" (click)="editBillingForm()"><ion-icon name="md-create"></ion-icon>
             Edit
            </button> </ion-item>
-                <ion-item no-lines *ngIf="showAddress">
+                <!--<ion-item no-lines *ngIf="showAddress">
                     <h1>Shipping Address </h1>
                     <h2>{{form.shipping_first_name}} {{form.shipping_last_name}} {{form.billing_phone}} {{form.shipping_address_1}} {{form.shipping_address_2}} {{form.shipping_city}} {{form.shipping_state}} {{form.shipping_country}} {{form.shipping_postcode}} </h2> <button ion-button small clear type="submit" class="button button-block button-default" (click)="editShippingForm()">
           <ion-icon name="md-create"></ion-icon>Edit
-           </button> </ion-item>
-                <hr style="margin: 12px 0;background-color: rgba(0, 0, 0, 0.06);" *ngIf="showAddress && OrderReview?.shipping"> </div>
+           </button> </ion-item>-->
+                <!--<hr style="margin: 12px 0;background-color: rgba(0, 0, 0, 0.06);" *ngIf="showAddress && OrderReview?.shipping"> </div>-->
+
+
+
             <ion-list no-margin class="Address-form" *ngIf="enableBillingAddress"> 
                 <!--<ion-item class="billing-header" no-lines *ngIf="enableBillingAddress">
                     <ion-label color="side-heading-color">배송 주소</ion-label>
                 </ion-item>-->
-                <ion-label *ngIf="enableBillingAddress">First Name </ion-label>
+                <ion-label *ngIf="enableBillingAddress">주문자 성함 </ion-label>
                 <ion-input required type="text" [(ngModel)]="form.billing_first_name" name="firstname" *ngIf="enableBillingAddress"> </ion-input>
-                <ion-label *ngIf="enableBillingAddress">Last Name </ion-label>
-                <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_last_name" name="lastname"> </ion-input>
-                <ion-label *ngIf="enableBillingAddress">Phone </ion-label>
+                <ion-label *ngIf="enableBillingAddress">주문자 휴대폰번호 </ion-label>
                 <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.billing_phone" name="telephone"> </ion-input>
-                <ion-label *ngIf="enableBillingAddress">Address </ion-label>
+
+                <ion-label *ngIf="enableBillingAddress">수령자명</ion-label>
+                <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_last_name" name="lastname"> </ion-input>
+                <ion-label *ngIf="enableBillingAddress">수령자 휴대폰번호 </ion-label>
+                <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.billing_phone" name="telephone"> </ion-input>
+                <ion-label *ngIf="enableBillingAddress">배송주소 </ion-label>
                 <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_address_1" name="street1"> </ion-input>
-                <ion-label *ngIf="enableBillingAddress">Landmark </ion-label>
+                <ion-label *ngIf="enableBillingAddress">상세주소 </ion-label>
                 <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_address_2" name="street2"> </ion-input>
-                <ion-label *ngIf="enableBillingAddress">Email </ion-label>
-                <ion-input *ngIf="enableBillingAddress" required type="email" [(ngModel)]="form.billing_email" name="email"> </ion-input>
+                <ion-label *ngIf="enableBillingAddress">우편번호 </ion-label>
+                <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_postcode" name="postcode" (ngModelChange)="updateOrderReview()"> </ion-input>
+                <ion-label *ngIf="enableBillingAddress">배송시 요청사항 </ion-label>
+                <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_email" name="email"> </ion-input>
                 <div *ngIf="!values.isLoggedIn && enableBillingAddress">
                     <ion-label>Password </ion-label>
                     <ion-input required type="password" [(ngModel)]="form.password" name="password"> </ion-input>
                 </div>
                 <ion-label *ngIf="enableBillingAddress">City </ion-label>
                 <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_city" name="city" (ngModelChange)="updateOrderReview()"> </ion-input>
-                <ion-label *ngIf="enableBillingAddress">Postcode </ion-label>
-                <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_postcode" name="postcode" (ngModelChange)="updateOrderReview()"> </ion-input>
                 <!--<ion-item class="select-item-field" *ngIf="enableBillingAddress">
                     <ion-label> Country </ion-label>
                     <ion-select okText="OK" cancelText="Cancel" [(ngModel)]="form.billing_country" (ngModelChange)="getRegion(form.billing_country)" name="billing_country">
@@ -100,12 +106,12 @@
                     <ion-label> State </ion-label>
                     <ion-input required type="text" [(ngModel)]="form.billing_state" name="billing_state" (ngModelChange)="updateOrderReview()"> </ion-input>
                 </div>-->
-                <div class="same-for-shipping" *ngIf="enableBillingAddress">
+                <!--<div class="same-for-shipping" *ngIf="enableBillingAddress">
                     <ion-item class="side-heading-background">
                         <ion-label color="side-heading-color">Same For Shipping </ion-label>
                         <ion-toggle checked="true" [(ngModel)]="form.shipping" name="shipping"> </ion-toggle>
                     </ion-item>
-                </div>
+                </div>-->
                 <ion-row *ngIf="enableBillingAddress">
                     <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline type="submit" class="button button-block button-default" (click)="backToAddressPage()">취소</button> </ion-col>
                     <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline type="submit" class="button button-block button-default" (click)="searchAddres()">우편번호</button> </ion-col>
@@ -163,7 +169,7 @@
         </form>
     </div>
     <div style="margin:0 5px">
-        <div *ngIf="OrderReview?.shipping && enableShippingMethods" class="shipping-methods">
+        <!--<div *ngIf="OrderReview?.shipping && enableShippingMethods" class="shipping-methods">
             <ion-list no-margin text-wrap radio-group [(ngModel)]="chosen_shipping" (ngModelChange)="updateShipping(chosen_shipping)">
                 <ion-item class="shipping-method-header" no-lines>
                     <ion-label>Choose Shipping </ion-label>
@@ -173,7 +179,7 @@
                     <ion-radio value="{{method.value.id}}"> </ion-radio>
                 </ion-item>
             </ion-list>
-        </div>
+        </div>-->
         <hr style="margin: 12px;height:1px;background-color: rgba(0, 0, 0, 0.06);" *ngIf="OrderReview?.shipping && enableShippingMethods">
         <ion-list *ngIf="OrderReview?.cart && enableShippingMethods" class="order-summary">
             <ion-item class="order-review-header" no-lines>

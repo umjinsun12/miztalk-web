@@ -188,7 +188,7 @@ export class HomePage {
       else{
         for(let post of results){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-          if(post._embedded['wp:featuredmedia'][0].media_details != undefined){
+          if(post._embedded['wp:featuredmedia'][0] != undefined){
               post.thumnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
           }
 

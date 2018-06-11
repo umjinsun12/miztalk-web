@@ -37,6 +37,7 @@ export class Service {
     bestOffers: any;
     trending: any;
     deals : any;
+    jusoResponse: any;
 
     communityCategories: any;
     postoptions: any = {};
@@ -387,6 +388,16 @@ export class Service {
             this.trending = data;
         });
     }
+
+    getKoreanAddress(keyword, page:1){
+        return new Promise(resolve =>{
+            this.http.get('http://www.juso.go.kr/addrlink/addrLinkApi.do?resultType=json&keyword=' + keyword + '&confmKey=' + this.config.jusoApikey + '&currentPage=' + page).map(res => res.json()).subscribe(data => {
+                resolve(data);
+            });
+        });
+    }
+
+
     getLocationAddress(lat, lon) {
         return new Promise(resolve => {
             this.http.get('http://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + lon + '&sensor=true').map(res => res.json()).subscribe(data => {
