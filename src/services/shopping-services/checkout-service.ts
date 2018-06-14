@@ -49,6 +49,7 @@ export class CheckoutService {
         return new Promise(resolve => {
             this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-update_order_review', params, this.config.options).map(res => res.json())
                 .subscribe(data => {
+                    console.log(data);
                     this.status = data;
                     resolve(this.status);
                 });

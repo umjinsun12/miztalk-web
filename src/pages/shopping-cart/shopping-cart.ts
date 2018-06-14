@@ -51,6 +51,7 @@ export class ShoppingCartPage {
             .then((results) => this.handleCartInit(results));
     }
     handleCartInit(results) {
+        console.log(results);
         this.cart = results;
         this.shipping = results.zone_shipping;
         this.chosen_shipping = results.chosen_shipping;
@@ -89,7 +90,6 @@ export class ShoppingCartPage {
         }
     }
     handleCoupon(results) {
-        console.log(results);
         this.disableSubmitCoupon = false;
         this.Apply = "Apply";
         this.enableCoupon = false;

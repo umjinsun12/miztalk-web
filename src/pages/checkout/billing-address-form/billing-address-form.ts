@@ -49,7 +49,8 @@ export class BillingAddressForm {
   enableBillingAddress: boolean = true;
   enableShippingMethods: boolean = true;
   enableShippingForm : boolean = false;
-  enableLogin: boolean = true;
+  enableLogin: boolean = false;
+  enableAddressSearch: boolean = false;
   chosen_shipping: any;
   showPasswordEnable: boolean = false;
   enablePaymentMethods : boolean = true;
@@ -87,7 +88,7 @@ export class BillingAddressForm {
           }
       }
       else if(!this.values.isLoggedIn){
-          this.enableLogin = true;
+          this.enableLogin = false; // 로그인 처리
       }
   }
   fillShippingForm() {
@@ -106,6 +107,7 @@ export class BillingAddressForm {
       this.service.updateOrderReview(this.form).then((results) => this.handleOrderReviews(results));
   }
   handleOrderReviews(results) {
+      console.log(results);
       this.OrderReview = results;
       this.chosen_shipping = this.OrderReview.chosen_shipping;
       console.log(this.chosen_shipping);
@@ -482,6 +484,8 @@ export class BillingAddressForm {
       }
   }
   searchAddres(){
+    this.enableLogin = true;
+    this.enableAddressSearch ? this.enableAddressSearch = false : this.enableAddressSearch = true;
     this.addressservice.getKoreanAddress("연제구", 1).then((results) => {
         console.log(results);
     });

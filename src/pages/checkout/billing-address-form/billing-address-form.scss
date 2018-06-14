@@ -6,6 +6,55 @@
         display: none;
     }
 }
+
+.cart-items {
+    ion-list {
+        margin-bottom: 5px;
+    }
+    .cart-list {
+        margin: 2px 2px 0 2px;
+        ion-item {
+            border-bottom: 1px solid #f2f2f2;
+        }
+    }
+    h2 {
+        margin-top: 8px;
+    }
+    button {
+        margin: 0;
+    }
+    .add-remove-button {
+        position: absolute;
+        background-color: #f2f2f2;
+        margin-top: 20px;
+        font-size: 13px;
+        .button {
+            border: 1px solid #eaeaea;
+            font-size: 11px;
+            //height: 22px;
+            color: #777;
+            //margin: 3px;
+            background: #fff;
+            font-weight: 700;
+            //border-radius: 25px;
+        }
+        ion-icon {
+            padding-left: 3px;
+            padding-right: 3px;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+    .item-name {
+        font-size: 12px;
+        max-height: 36px;
+    }
+    h3 {
+        font-size: 15px;
+    }
+}
+
+
 .inactive {
     background-color: #fff;
 }
@@ -185,6 +234,12 @@
             }
         }
     }
+
+
+
+
+
+
     .shop-info {
         margin: 10px 10px 40px 10px;
         ;
@@ -203,12 +258,12 @@
     .Address-form {
         .text-input {
             border: 1px solid #d8d8d8;
-            height: 2.7em;
+            height: 2.2em;
             width: 100%;
-            border-radius: 4px;
+            border-radius: 0px;
             padding: 0 12px;
             margin: 0 0 12px 0;
-            font-size: 15px;
+            font-size: 14px;
             color: #5a5a5a;
         }
         ion-select {
@@ -459,6 +514,6 @@
 }
 .billing-header {
     .toolbar-title-md {
-        padding-right: 75px;
+        padding-right: 0px;
     }
 }
