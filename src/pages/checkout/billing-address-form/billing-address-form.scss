@@ -69,7 +69,7 @@
 }
 .billing-address-form {
     .side-heading-background {
-        background-color: #f6f6f6;
+        background-color: #ffffff;
         ion-label {
             font-size: 15px;
         }
@@ -256,6 +256,24 @@
         }
     }
     .Address-form {
+
+        .orderer-row{
+            padding : 15px 20px 5px 15px;
+            border-bottom : 1px solid #c8c8c8;
+        }
+
+        .order-review-orderer-header{
+            .label{
+                color : #000;
+                font-size: 17px;
+                font-weight: 600;
+                margin-left: 5px;
+            }
+            border-bottom: 1px solid #000;
+            margin-top : 20px;
+            margin-bottom: 5px;
+        }
+
         .text-input {
             border: 1px solid #d8d8d8;
             height: 2.2em;
@@ -286,14 +304,10 @@
                 margin-left: 12px;
             }
         }
-        ion-input {
-            width: 91%;
-            margin: 6px 16px;
-        }
         .label {
             color: #676767;
             font-size: 13px;
-            margin: 0 0 0 20px;
+            margin: 0px;
         }
         .billing-header {
             background-color: #fff;
@@ -318,18 +332,19 @@
             }
         }
         .row {
-            padding: 5px 0;
             .col {
                 padding: 5px 0;
                 button {
-                    border-radius: 25px;
-                    width: 125px;
-                    margin: 0 16px;
-                    color: $button-color;
-                    background: #ffffff;
+                    border: 1px solid;
+                    height: 2.8em;
+                    color: #fff;
+                    background: #000;
                     border-color: $button-color;
                 }
             }
+        }
+        .address-row{
+            padding : 0px;
         }
         .list-ios>.item-block:last-child {
             border-bottom: .5px solid #d8d8d8;
@@ -347,40 +362,65 @@
             border-bottom: none;
         }
     }
-    .order-summary {
-        .item.item-block .item-inner {
-            padding-bottom: 0;
-        }
-        .order-review-header {
-            .label {
-                color: #333;
+    .order-review{
+        .order-review-header{
+            ion-label{
+                margin: 0px;
+                font-size: 17px;
                 font-weight: 600;
-                font-size: 15px;
+                margin-left: 5px;
+            }
+            border-bottom: 1px solid #000;
+        }
+
+        .total-box{
+            background-color: #e5e5e5;
+        }
+
+
+        .item-md ion-thumbnail[item-left]{
+            margin:0px;
+        }
+
+        .cart-items .add-remove-button{
+            margin-top:10px;
+        }
+
+        .cart-items .cart-list{
+            margin:0px;
+        }
+
+        .item-md{
+            margin: 0px;
+            ion-thumnail[item-left]{
+                margin : 0px;
             }
         }
-        .row {
-            margin: 5px 5px 0px 16px; //border-bottom: .5px solid #f1f1f1;
-            padding: 7px 5px 5px 0px;
-            .label {
-                //font-weight:600;
-            }
-            .col1 {
-                .label {
-                    color: #848484;
-                }
-            }
+
+        ion-row{
+            padding:0px;
         }
-        .grand-total {
-            border-bottom: none;
-            margin-bottom: 10px;
+
+        ion-thumbnail img{
+            width : 100px;
+            height : 100px;
+            margin : 10px 0px 10px 10px;
         }
     }
+
+
+
+
+
     .payment-methods {
         .payment-method-header {
+            margin-top:30px;
+            border-bottom: 1px solid;
             .label {
-                color: #333;
+                color: #000;
+                font-size: 17px;
                 font-weight: 600;
-                font-size: 15px;
+                margin-left: 5px;
             }
         }
         .payment-instructions {
