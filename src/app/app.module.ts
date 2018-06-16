@@ -40,6 +40,8 @@ import { CartService } from './../services/shopping-services/cart-service';
 import { ShoppingProductPage } from '../pages/shopping-product/shopping-product';
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
+import { AddressSearchFormPage } from './../pages/checkout/address-search-form/address-search-form';
+
 import { CardnewsService } from '../services/shopping-services/cardnews-service';
 
 import { PhotoViewer} from '@ionic-native/photo-viewer';
@@ -62,7 +64,10 @@ import { Orders } from '../pages/account/orders/orders';
 import { AccountRegister } from '../pages/account/register/register';
 import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
-import {EventAnouncePage} from '../pages/event-anounce/event-anounce'
+
+import { NgDaumAddressModule } from 'ng2-daum-address';
+
+import {EventAnouncePage} from '../pages/event-anounce/event-anounce';
 
 
 
@@ -88,7 +93,8 @@ import {EventAnouncePage} from '../pages/event-anounce/event-anounce'
     Orders,
     AccountRegister,
     WishlistPage,
-    EventAnouncePage
+    EventAnouncePage,
+    AddressSearchFormPage
   ],
   imports: [
     HttpModule,
@@ -102,6 +108,7 @@ import {EventAnouncePage} from '../pages/event-anounce/event-anounce'
       scrollAssist: false
     }),
     IonicStorageModule.forRoot(),
+    NgDaumAddressModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -124,7 +131,8 @@ import {EventAnouncePage} from '../pages/event-anounce/event-anounce'
     Orders,
     AccountRegister,
     WishlistPage,
-    EventAnouncePage
+    EventAnouncePage,
+    AddressSearchFormPage
   ],
   providers: [
     NativeStorage,

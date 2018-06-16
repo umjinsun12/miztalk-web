@@ -71,7 +71,7 @@ export class CheckoutService {
         params.append("shipping_last_name", form.shipping_last_name);
         params.append("shipping_company", form.shipping_company);
         params.append("shipping_email", form.shipping_email);
-        params.append("shipping_phone", form.shipping_phone);
+        params.append("shipping_phone", form.receiver_phone);
         params.append("shipping_address_1", form.shipping_address_1);
         params.append("shipping_address_2", form.shipping_address_2);
         params.append("shipping_city", form.shipping_city);

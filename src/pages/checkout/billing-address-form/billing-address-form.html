@@ -24,7 +24,7 @@
                                     <h2 wrap-text class="item-name" style="position: absolute;top: 5px;max-width: 50%;font-weight:600">{{item.value.name}}</h2>
                                     <h3 wrap-text style="position: absolute;right:15px;bottom: 20px;font-size:14px;font-weight:600"><span style="font-size: 14px">{{(1*item.value.line_subtotal | currency:values.currency:false:'1.0-0').replace('USD','')}}원</span></h3>
                                     <div class="add-remove-button">
-                                    <button ion-button item-right color="button-color" clear style="border: 0; margin: 0 5px;background: #f2f2f2;color: #000;">{{item.value.quantity}}
+                                    <button ion-button item-right color="button-color" clear style="border: 0; margin: 0 5px;background: #f2f2f2;color: #000;">수량 : {{item.value.quantity}}
                                     </button> 
                                     </div> 
                                 </ion-item>
@@ -80,100 +80,61 @@
                     <ion-label *ngIf="enableBillingAddress" col-4>휴대폰 번호 </ion-label>
                     <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.billing_phone" name="telephone"> </ion-input>
                 </ion-row>
+
+                <ion-row class="orderer-check-row">
+                    <ion-checkbox checked="true" (click)="ordererequal()" [(ngModel)]="form.orderchk" name="orderchk"> </ion-checkbox>
+                    <ion-label>주문자 정보와 받으시는 분 정보가 같습니다</ion-label>
+                </ion-row>
                 
 
 
 
                 <ion-item class="order-review-orderer-header" no-lines>
                     <ion-label color="side-heading-color">받으시는 분 정보</ion-label>
-                    <ion-row>
-                        <ion-col no-lines class="col1">
-                                <ion-checkbox checked="true" [(ngModel)]="form.terms" name="terms"> </ion-checkbox>
-                            </ion-col>
-                        <ion-col class="col2">
-                                <ion-label><a (click)="terms()">위 구매조건 확인 및 결제진행 동의</a> </ion-label>
-                        </ion-col>
-                    </ion-row>
                 </ion-item>
+
+
                 <ion-row class="orderer-row">
-                    <ion-label *ngIf="enableBillingAddress" col-4>수령자명</ion-label>
+                    <ion-label *ngIf="enableBillingAddress" col-3>수령자명</ion-label>
                     <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_last_name" name="lastname"> </ion-input>
                 </ion-row>
 
                 <ion-row class="orderer-row">
-                    <ion-label *ngIf="enableBillingAddress" col-4>휴대폰 번호</ion-label>
-                    <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.billing_phone" name="telephone"> </ion-input>
+                    <ion-label *ngIf="enableBillingAddress" col-3>휴대폰 번호</ion-label>
+                    <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.receiver_phone" name="receiver_phone"> </ion-input>
                 </ion-row>
 
 
                 <ion-row class="orderer-row">
-                    <ion-col col-4>
+                    <ion-col col-3>
                         <ion-label *ngIf="enableBillingAddress">수령주소 </ion-label>
                     </ion-col>
                     <ion-col>
-                        <ion-row class="address-row">
-                        <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_address_1" name="street1"> </ion-input>
-                        <button>우편번호 검색</button>
-                        </ion-row>
-
-                        <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_address_2" name="street2"> </ion-input>
-                        <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_postcode" name="postcode" (ngModelChange)="updateOrderReview()"> </ion-input>
+                        <form [formGroup]="addrForm">
+                            <ion-row class="address-row">
+                            <ion-input *ngIf="enableBillingAddress" formControlName="zip" disabled="true" required type="text" [(ngModel)]="form.billing_postcode"  name="postcode"> </ion-input>
+                            <btn-daum-address (result)="setDaumAddressApi($event)" [options]="daumAddressOptions"></btn-daum-address>
+                            <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+                                <img src="//t1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" alt="닫기 버튼">
+                            </div>
+                            </ion-row>
+                            <ion-input *ngIf="enableBillingAddress" formControlName="addr" disabled="true" required type="text" [(ngModel)]="form.billing_address_1" name="street1" #addrDetail> </ion-input>
+                            <ion-input *ngIf="enableBillingAddress" formControlName="addrDetail" required type="text" [(ngModel)]="form.billing_address_2" name="street2"> </ion-input>
+                        </form>
                     </ion-col>
                 </ion-row>
                 
                 <ion-row class="orderer-row">
-                    <ion-label *ngIf="enableBillingAddress" col-4>배송시 요청사항 </ion-label>
-                    <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_email" name="email"> </ion-input>
+                    <ion-label *ngIf="enableBillingAddress" col-3>배송 시<br>요청사항 </ion-label>
+                    <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_company" name="company"> </ion-input>
                 </ion-row>
                 <div *ngIf="!values.isLoggedIn && enableBillingAddress">
                     <ion-label>Password </ion-label>
                     <ion-input required type="password" [(ngModel)]="form.password" name="password"> </ion-input>
                 </div>
-                <!--<ion-label *ngIf="enableBillingAddress">City </ion-label>
-                <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_city" name="city" (ngModelChange)="updateOrderReview()"> </ion-input>-->
-        
-                <!--<ion-row *ngIf="enableBillingAddress">
-                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline type="submit" class="button button-block button-default" (click)="backToAddressPage()">취소</button> </ion-col>
-                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline type="submit" class="button button-block button-default" (click)="searchAddres()">우편번호</button> </ion-col>
-                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button outline style="float: right" type="submit" class="button button-block button-default" (click)="showShippingForm()">저장</button> </ion-col>
-                    <ion-col *ngIf="!values.isLoggedIn"> <button ion-button outline style="float: right" type="submit" class="button button-block button-default" (click)="showShippingForm()">다음</button> </ion-col>
-                </ion-row> <br>-->
             </ion-list>
 
 
-            <div class="Address-form" *ngIf="enableShippingForm">
-                <ion-list class="shipping-address-list">
-                    <ion-item class="billing-header" no-lines *ngIf="enableShippingForm">
-                        <ion-label color="side-heading-color">Shipping Address </ion-label>
-                    </ion-item>
-                    <ion-label *ngIf="enableShippingForm">First Name </ion-label>
-                    <ion-input *ngIf="enableShippingForm" required type="text" [(ngModel)]="form.shipping_first_name" name="first_name"> </ion-input>
-                    <ion-label *ngIf="enableShippingForm">Last Name </ion-label>
-                    <ion-input *ngIf="enableShippingForm" required type="text" [(ngModel)]="form.shipping_last_name" name="last_name"> </ion-input>
-                    <ion-label *ngIf="enableShippingForm">Address </ion-label>
-                    <ion-input *ngIf="enableShippingForm" required type="text" [(ngModel)]="form.shipping_address_1" name="address_1"> </ion-input>
-                    <ion-label *ngIf="enableShippingForm">Landmark </ion-label>
-                    <ion-input *ngIf="enableShippingForm" required type="text" [(ngModel)]="form.shipping_address_2" name="address_2"> </ion-input>
-                    <ion-label *ngIf="enableShippingForm">City </ion-label>
-                    <ion-input *ngIf="enableShippingForm" required type="text" [(ngModel)]="form.shipping_city" name="shipping_city" (ngModelChange)="updateOrderReview()"> </ion-input>
-                    <ion-label *ngIf="enableShippingForm">Postcode </ion-label>
-                    <ion-input *ngIf="enableShippingForm" required type="text" [(ngModel)]="form.shipping_postcode" name="shipping_postcode" (ngModelChange)="updateOrderReview()"> </ion-input>
-                    
-                    <div *ngIf="!states && enableShippingForm">
-                        <ion-label>{{form.checkout_fields?.shipping?.shipping_state?.label}} </ion-label>
-                        <ion-input required type="text" [(ngModel)]="form.shipping_state" name="form.shipping_state" (ngModelChange)="updateOrderReview()"> </ion-input>
-                    </div>
-                </ion-list>
-                <ion-row style="margin-top:16px" *ngIf="enableShippingForm">
-                    <ion-col *ngIf="!values.isLoggedIn"> <button ion-button type="submit" outline class="button button-block button-default" (click)="backToBillingForm()">뒤로
-           </button> </ion-col>
-                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button type="submit" outline class="button button-block button-default" (click)="backToAddressPage()">취소
-           </button> </ion-col>
-                    <ion-col *ngIf="!values.isLoggedIn"> <button ion-button style="float: right" outline type="submit" class="button button-block button-default" (click)="showShippingMethods()">다음
-           </button> </ion-col>
-                    <ion-col *ngIf="values.isLoggedIn"> <button ion-button style="float: right" outline type="submit" class="button button-block button-default" (click)="showShippingMethods()">저장
-           </button> </ion-col>
-                </ion-row> <br> </div>
         </form>
     </div>
    

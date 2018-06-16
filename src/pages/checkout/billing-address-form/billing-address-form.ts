@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef} from '@angular/core';
 import { Values } from './../../../services/shopping-services/values';
 import { Functions } from './../../../services/shopping-services/functions';
 import { Service } from './../../../services/shopping-services/service'
@@ -7,8 +7,8 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { OrderSummary } from '../../checkout/order-summary/order-summary';
 import { defaultFormat } from 'moment';
-//import { TermsCondition } from '../../checkout/terms-condition/terms-condition';
-//import { AccountForgotten } from '../../account/forgotten/forgotten';
+import { FormGroup, FormControl, FormBuilder, Validators }	from '@angular/forms';
+
 
 /**
  * Generated class for the BillingAddressFormPage page.
@@ -21,6 +21,7 @@ import { defaultFormat } from 'moment';
   templateUrl: 'billing-address-form.html'
 })
 export class BillingAddressForm {
+  @ViewChild('addrDetail') inputAddrDetail: ElementRef;
   billingAddressForm: any;
   billing: any;
   regions: any;
@@ -56,8 +57,26 @@ export class BillingAddressForm {
   enablePaymentMethods : boolean = true;
   showAddress: boolean = true;
   tabBarElement: any;
+
+  addrForm: FormGroup = this.builder.group({
+    zip: ['', [Validators.required]],
+    addr: ['', [Validators.required]],
+    addrDetail: [''],
+  });
+
   
-  constructor(private viewCtrl: ViewController, public iab: InAppBrowser, public nav: NavController, public service: CheckoutService, params: NavParams, public functions: Functions, public values: Values, public addressservice : Service) {
+  
+  constructor(
+      private viewCtrl: ViewController, 
+      public iab: InAppBrowser, 
+      public nav: NavController, 
+      public service: CheckoutService, 
+      params: NavParams, 
+      public functions: Functions, 
+      public values: Values, 
+      public addressservice : Service,
+      private builder: FormBuilder) {
+
       this.PlaceOrder = "Place Order";
       this.buttonText1 = "Apply";
       this.LogIn = "LogIn";
@@ -243,6 +262,18 @@ export class BillingAddressForm {
   terms() {
       //this.nav.push(TermsCondition, this.form.terms_content);
   }
+
+  ordererequal(){
+      if(this.form.orderchk === true){
+        this.form.billing_last_name = this.form.billing_first_name;
+        this.form.receiver_phone = this.form.billing_phone;
+      }
+      else{
+        this.form.billing_last_name = "";
+        this.form.receiver_phone = "";
+      }
+  }
+
   updateShipping(method) {
       this.form.shipping_method = method;
       this.chosen_shipping = method;
@@ -314,12 +345,12 @@ export class BillingAddressForm {
           this.functions.showAlert("ERROR", "Please enter billing Phone number");
           return false
       }
+      if (this.form.receiver_phone == undefined || this.form.receiver_phone == "") {
+        this.functions.showAlert("ERROR", "Please enter billing Phone number");
+        return false
+    }
       if (this.form.billing_address_1 == undefined || this.form.billing_address_1 == "") {
           this.functions.showAlert("ERROR", "Please enter billing Address");
-          return false
-      }
-      if (this.form.billing_email == undefined || this.form.billing_email == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Email");
           return false
       }
       if (!this.values.isLoggedIn) {
@@ -328,22 +359,10 @@ export class BillingAddressForm {
               return false
           }
       }
-      if (this.form.billing_city == undefined || this.form.billing_city == "") {
-          this.functions.showAlert("ERROR", "Please enter billing City");
-          return false
-      }
       if (this.form.billing_postcode == undefined || this.form.billing_postcode == "") {
           this.functions.showAlert("ERROR", "Please enter billing Postcode");
           return false
       }
-      if (this.form.billing_country == undefined || this.form.billing_country == "") {
-          this.functions.showAlert("ERROR", "Please choose billing Country");
-          return false
-      }
-      /*if (this.form.billing_state == undefined || this.form.billing_state == "") {
-          this.functions.showAlert("ERROR", "Please choose billing State");
-          return false
-      }*/ 
       else {
           return true
       }
@@ -357,10 +376,6 @@ export class BillingAddressForm {
           this.functions.showAlert("ERROR", "Please enter Shipping Address");
           return false
       }
-      if (this.form.shipping_city == undefined || this.form.shipping_city == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping City");
-          return false
-      }
       if (this.form.shipping_postcode == undefined || this.form.shipping_postcode == "") {
           this.functions.showAlert("ERROR", "Please enter Shipping Postcode");
           return false
@@ -368,11 +383,7 @@ export class BillingAddressForm {
       if (this.form.shipping_country == undefined || this.form.shipping_country == "") {
           this.functions.showAlert("ERROR", "Please choose Shipping Country");
           return false
-      }
-      /*if (this.form.shipping_state == undefined || this.form.shipping_state == "") {
-          this.functions.showAlert("ERROR", "Please choose Shipping State");
-          return false
-      }*/ else {
+      }else {
           return true
       }
   }
@@ -412,84 +423,69 @@ export class BillingAddressForm {
       }
       if (this.form.billing_first_name == undefined || this.form.billing_first_name == "") {
           this.functions.showAlert("ERROR", "Please enter billing First name");
-          this.editBillingForm();
           //return false            
       }
       if (this.form.billing_phone == undefined || this.form.billing_phone == "") {
           this.functions.showAlert("ERROR", "Please enter billing Phone number");
-          this.editBillingForm();
           //return false
       }
       if (this.form.billing_address_1 == undefined || this.form.billing_address_1 == "") {
           this.functions.showAlert("ERROR", "Please enter billing Address");
-          this.editBillingForm();
-          //return false
-      }
-      if (this.form.billing_email == undefined || this.form.billing_email == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Email");
-          this.editBillingForm();
-          //return false
-      }
-      if (this.form.billing_city == undefined || this.form.billing_city == "") {
-          this.functions.showAlert("ERROR", "Please enter billing City");
-          this.editBillingForm();
           //return false
       }
       if (this.form.billing_postcode == undefined || this.form.billing_postcode == "") {
           this.functions.showAlert("ERROR", "Please enter billing Postcode");
-          this.editBillingForm();
           //return false
       }
       if (this.form.billing_country == undefined || this.form.billing_country == "") {
           this.functions.showAlert("ERROR", "Please choose billing Country");
-          this.editBillingForm();
           //return false
       }
-      /*if (this.form.billing_state == undefined || this.form.billing_state == "") {
-          this.functions.showAlert("ERROR", "Please choose billing State");
-          this.editBillingForm();
-          //return false
-      }*/
       if (this.form.shipping_first_name == undefined || this.form.shipping_first_name == "") {
           this.functions.showAlert("ERROR", "Please enter Shipping First name");
-          this.editShippingForm();
           //return false
       }
       if (this.form.shipping_address_1 == undefined || this.form.shipping_address_1 == "") {
           this.functions.showAlert("ERROR", "Please enter Shipping Address");
-          this.editShippingForm();
           //return false
-      }
-      if (this.form.shipping_city == undefined || this.form.shipping_city == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping City");
-          this.editShippingForm();
-          // return false
       }
       if (this.form.shipping_country == undefined || this.form.shipping_country == "") {
           this.functions.showAlert("ERROR", "Please choose Shipping Country");
-          this.editShippingForm();
           // return false
       }
-      /*if (this.form.shipping_state == undefined || this.form.shipping_state == "") {
-          this.functions.showAlert("ERROR", "Please choose Shipping State");
-          this.editShippingForm();
-          //return false
-      }*/
       if (this.form.shipping_postcode == undefined || this.form.shipping_postcode == "") {
           this.functions.showAlert("ERROR", "Please enter Shipping Postcode");
-          this.editShippingForm();
           //return false
       } else {
           return true
       }
   }
-  searchAddres(){
-    this.enableLogin = true;
-    this.enableAddressSearch ? this.enableAddressSearch = false : this.enableAddressSearch = true;
-    this.addressservice.getKoreanAddress("연제구", 1).then((results) => {
-        console.log(results);
-    });
+
+  daumAddressOptions =  {
+    class: ['btn', 'btn-primary'],
+    type : 'layer',
+    target : 'layer'
+  };
+  
+  setDaumAddressApi(data){
+    this.addrForm.patchValue({
+        zip: data.zip,
+        addr: data.addr
+      });
+      this.form.billing_postcode = data.zip;
+      this.form.billing_address_1 = data.addr;
+      //this.inputAddrDetail.nativeElement.setFocus();
+    console.log(data);
   }
+
+  onChangeTime(){
+      console.log('changed');
+  }
+  test(){
+    this.form.billing_postcode = "test";
+    this.form.billing_address_1 = "test";
+  }
+
   ionViewWillEnter() {
       if (document.querySelector(".tabbar")) this.tabBarElement.display = 'none';
   }

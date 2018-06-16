@@ -53,6 +53,7 @@
     "ionicons": "3.0.0",
     "md5": "^2.2.1",
     "moment": "^2.22.1",
+    "ng2-daum-address": "^1.1.4",
     "onesignal": "^0.1.2",
     "onesignal-cordova-plugin": "^2.3.3",
     "rxjs": "5.5.7",
