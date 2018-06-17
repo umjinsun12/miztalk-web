@@ -47,6 +47,7 @@ export class CartService {
     deleteItem(item_key) {
         return new Promise(resolve => {
             this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-remove_cart_item&item_key=' + item_key, this.config.options).map(res => res.json()).subscribe(data => {
+                console.log(data);
                 this.cart = data;
                 this.values.updateCart(this.cart);
                 resolve(this.cart);

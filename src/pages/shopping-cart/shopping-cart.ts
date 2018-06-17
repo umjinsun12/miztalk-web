@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import { ShoppingProductPage } from '../shopping-product/shopping-product';
 import { ShoppingPage } from '../shopping/shopping';
-import {BillingAddressForm} from '../../pages/checkout/billing-address-form/billing-address-form';
+import { BillingAddressForm } from '../../pages/checkout/billing-address-form/billing-address-form';
+
 
 /**
  * Generated class for the ShoppingCartPage page.
