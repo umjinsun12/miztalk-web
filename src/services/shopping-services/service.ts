@@ -57,6 +57,8 @@ export class Service {
         });
         return new Promise(resolve => {
             this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-keys', this.config.options).map(res => res.json()).subscribe(data => {
+                console.log("adsfsdfasdfsdfsdfsdfasdf");
+                console.log(data);
                 this.values.data = data;
                 this.login_nonce = data.login_nonce;
                 this.banners = data.banners;
@@ -163,6 +165,15 @@ export class Service {
                                 this.values.mainad.push(parse);
                             }
                         });
+
+                var params = new URLSearchParams();
+                params.append("postid", "106");
+                this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-like', params, this.config.options).map(res=> res.json()).subscribe(data => {
+                    console.log(data);
+                });
+                        
+                        
+                        
 
             });
         });

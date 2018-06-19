@@ -482,7 +482,17 @@ export class BillingAddressForm {
   }
 
   callDaumAddress(){
-    this.nav.push(AddressSearchFormPage);
+    this.nav.push(AddressSearchFormPage, {
+        data : true,
+        callback : (data) => {
+            return new Promise((resolve, reject) => {
+                console.log(data);
+                this.form.billing_postcode = data.zonecode;
+                this.form.billing_address_1 = data.address;
+                resolve();
+            })
+        }
+    });
   }
 
   onChangeTime(){

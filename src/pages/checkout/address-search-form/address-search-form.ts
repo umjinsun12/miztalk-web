@@ -15,10 +15,17 @@ import { NgDaumAddressModule } from 'ng2-daum-address';
 })
 export class AddressSearchFormPage {
 
+  callback : any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public service : Service) {
     window.addEventListener("message", function($data){
-        console.log($data);
+        if(navParams.get('data') == true){
+          if($data.data.isInput == true){
+            var cc = navParams.get('callback');
+            navParams.data = false;
+            cc($data.data).then(() => {navCtrl.pop()});
+          }
+        }
     },false);
   }
 
