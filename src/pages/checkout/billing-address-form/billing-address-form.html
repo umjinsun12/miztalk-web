@@ -113,10 +113,12 @@
                         <form [formGroup]="addrForm">
                             <ion-row class="address-row">
                             <ion-input *ngIf="enableBillingAddress" formControlName="zip" disabled="true" required type="text" [(ngModel)]="form.billing_postcode"  name="postcode"> </ion-input>
-                            <btn-daum-address (result)="setDaumAddressApi($event)" [options]="daumAddressOptions"></btn-daum-address>
+                            
+                            <button (click)="callDaumAddress()">수령주소</button>
+                            <!--<btn-daum-address (result)="setDaumAddressApi($event)" [options]="daumAddressOptions"></btn-daum-address>
                             <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
                                 <img src="//t1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" alt="닫기 버튼">
-                            </div>
+                            </div> incase webapp--> 
                             </ion-row>
                             <ion-input *ngIf="enableBillingAddress" formControlName="addr" disabled="true" required type="text" [(ngModel)]="form.billing_address_1" name="street1" #addrDetail> </ion-input>
                             <ion-input *ngIf="enableBillingAddress" formControlName="addrDetail" required type="text" [(ngModel)]="form.billing_address_2" name="street2"> </ion-input>

@@ -8,6 +8,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { OrderSummary } from '../../checkout/order-summary/order-summary';
 import { defaultFormat } from 'moment';
 import { FormGroup, FormControl, FormBuilder, Validators }	from '@angular/forms';
+import { AddressSearchFormPage } from '../address-search-form/address-search-form';
 
 
 /**
@@ -464,7 +465,8 @@ export class BillingAddressForm {
   daumAddressOptions =  {
     class: ['btn', 'btn-primary'],
     type : 'layer',
-    target : 'layer'
+    target : 'layer',
+    debug : true
   };
   
   setDaumAddressApi(data){
@@ -476,6 +478,10 @@ export class BillingAddressForm {
       this.form.billing_address_1 = data.addr;
       //this.inputAddrDetail.nativeElement.setFocus();
     console.log(data);
+  }
+
+  callDaumAddress(){
+    this.nav.push(AddressSearchFormPage);
   }
 
   onChangeTime(){

@@ -9,9 +9,9 @@ headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8
 @Injectable()
 export class Config {
 
-    url: any = 'http://genjo1517.cafe24.com';
-    consumerKey: any = 'ck_407c0bdc2fee5bf2a2da3b53647f0b1dbbbaad16';
-    consumerSecret: any = 'cs_ee70b2e939e5d38e5ca9f1003bfea2e32ef1f586';
+    url: any = 'http://miztalk.kr';
+    consumerKey: any = 'ck_afc32b36607b160d37aded122bb0932551d8ae84';
+    consumerSecret: any = 'cs_277668a5edbe6822323fa707dc84f7f7f10a98f8';
     oneSignalAppId: any = '2916e1f4-b655-47b4-8ac8-4e7ab279006c';
     googleProjectId: any = '456345671209';
     webClientId: any = '456352511209-fbam1kgj6350b5ddfsdgfddbs1.apps.googleusercontent.com';

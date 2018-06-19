@@ -15,7 +15,11 @@ import { NgDaumAddressModule } from 'ng2-daum-address';
 })
 export class AddressSearchFormPage {
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public service : Service) {
+    window.addEventListener("message", function($data){
+        console.log($data);
+    },false);
   }
 
   ionViewDidLoad() {
