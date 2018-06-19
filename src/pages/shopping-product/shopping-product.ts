@@ -10,6 +10,7 @@ import { ModalController } from 'ionic-angular';
 import { Slides } from 'ionic-angular';
 import { PopoverPage} from '../about-popover/about-popover'
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { DomSanitizer } from '@angular/platform-browser';
 //import { Caimport { ModalController } from 'ionic-angular';rtPage } from '../cart/cart';
 
 
@@ -61,7 +62,7 @@ export class ShoppingProductPage {
     count1Percentage: string = '0' + '%';
     variations: any;
 
-    constructor(public viewCtrl: ViewController, private photoViewer: PhotoViewer, public popoverCtrl: PopoverController, public nav: NavController, public service: ProductService, params: NavParams, public functions: Functions, public values: Values, private socialSharing: SocialSharing, public loadingCtrl: LoadingController, public modalCtrl: ModalController) {
+    constructor(public viewCtrl: ViewController, private photoViewer: PhotoViewer, public popoverCtrl: PopoverController, public nav: NavController, public service: ProductService, params: NavParams, public functions: Functions, public values: Values, private socialSharing: SocialSharing, public loadingCtrl: LoadingController, public modalCtrl: ModalController, public dom : DomSanitizer) {
         this.id = params.data;
         this.options = [];
         this.quantity = 1;
@@ -73,7 +74,9 @@ export class ShoppingProductPage {
     }
     handleProductResults(results) {
         this.product = results;
-        this.product.description = this.product.description.replace('<p>','').replace('</p>','');
+        this.product.description = this.product.description.replace(/<p>/g,'').replace(/<\/p>/g, '').replace(/&nbsp;/g,'');
+        this.product.description = this.dom.bypassSecurityTrustHtml(this.product.description);
+        console.log(this.product.description);
         if ((this.product.type == 'variable') && this.product.variations.length) this.getVariationProducts();
         this.getReviews();
         this.getRelatedProducts();
