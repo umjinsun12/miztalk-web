@@ -11,7 +11,6 @@ import { Functions } from './../../services/shopping-services/functions';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-community-write',
   templateUrl: 'community-write.html',

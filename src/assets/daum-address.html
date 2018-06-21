@@ -24,21 +24,26 @@
                         }
 
 
-                        window.parent.postMessage({
+                        var msg = {
                             zonecode : data.zonecode,
                             address : fullAddr,
                             isInput : true,
                             size : {width : 0, height:0}
-                        }, "*");
+                        };
+                        msg = JSON.parse(JSON.stringify(msg));
+
+                        window.parent.postMessage(msg, "*");
                     },
                     onresize : function($size)
                     {
-                        window.parent.postMessage({
+                        var msg = {
                             zonecode : "",
                             address : "",
                             isInput : false,
                             size : $size
-                        }, "*");
+                        };
+                        msg = JSON.parse(JSON.stringify(msg));
+                        window.parent.postMessage(msg, "*");
                     },
                     width : "100%",
                     height : "80%",

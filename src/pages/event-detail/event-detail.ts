@@ -10,7 +10,6 @@ import * as moment from 'moment';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-event-detail',
   templateUrl: 'event-detail.html',

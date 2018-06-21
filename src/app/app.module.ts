@@ -15,6 +15,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http';
 import { KeysPipe } from '../services/pipe/pipe';
 
+import {PopoverPage} from '../pages/about-popover/about-popover'
+
 
 import { WordpressService } from '../services/wordpress.service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -41,6 +43,8 @@ import { ShoppingProductPage } from '../pages/shopping-product/shopping-product'
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { AddressSearchFormPage } from './../pages/checkout/address-search-form/address-search-form';
+import { SpecialPage} from './../pages/special/special'
+
 
 import { CardnewsService } from '../services/shopping-services/cardnews-service';
 
@@ -65,14 +69,13 @@ import { AccountRegister } from '../pages/account/register/register';
 import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
 
-import { NgDaumAddressModule } from 'ng2-daum-address';
-
 import {EventAnouncePage} from '../pages/event-anounce/event-anounce';
 
 
 
 @NgModule({
   declarations: [
+    PopoverPage,
     EventDetailPage,
     CommunityDetailPage,
     MyApp,
@@ -94,7 +97,8 @@ import {EventAnouncePage} from '../pages/event-anounce/event-anounce';
     AccountRegister,
     WishlistPage,
     EventAnouncePage,
-    AddressSearchFormPage
+    AddressSearchFormPage,
+    SpecialPage
   ],
   imports: [
     HttpModule,
@@ -107,8 +111,7 @@ import {EventAnouncePage} from '../pages/event-anounce/event-anounce';
       scrollPadding: false,
       scrollAssist: false
     }),
-    IonicStorageModule.forRoot(),
-    NgDaumAddressModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

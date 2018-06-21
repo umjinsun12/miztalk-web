@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Service } from '../../../services/shopping-services/service';
-import { NgDaumAddressModule } from 'ng2-daum-address';
 
 /**
  * Generated class for the AddressSearchFormPage page.

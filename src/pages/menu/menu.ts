@@ -18,7 +18,6 @@ export interface PageInterface {
 }
  
 
-@IonicPage()
 @Component({
   selector: 'page-menu',
   templateUrl: 'menu.html',
