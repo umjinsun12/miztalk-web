@@ -28,6 +28,8 @@ export class ShoppingProductPage {
     wishlist: any;
     quantity: any;
     reviews: any;
+    shipping: any;
+
     reviewForm: any;
     nickname: any;
     details: any;
@@ -45,6 +47,7 @@ export class ShoppingProductPage {
     showOverview: boolean = true;
     showRelated : boolean = false;
     showReviews : boolean = false;
+    showShipping : boolean = false;
     segment = 'overview';
     form: any = {};
     buttonSubmitLogin: boolean = false;
@@ -307,6 +310,7 @@ export class ShoppingProductPage {
     similar() {
         this.showRelated = true;
         this.showOverview = false;
+        this.showShipping = false;
         this.showReviews = false;
         this.segment = 'related';
     }
@@ -314,15 +318,23 @@ export class ShoppingProductPage {
         if (event._value == 'overview') {
             this.showOverview = true;
             this.showRelated = false;
+            this.showShipping = false;
             this.showReviews = false;
         } else if (event._value == 'related') {
             this.showOverview = false;
             this.showRelated = true;
+            this.showShipping = false;
             this.showReviews = false;
         } else if (event._value == 'reviews') {
             this.showOverview = false;
             this.showRelated = false;
+            this.showShipping = false;
             this.showReviews = true;
+        } else if (event._value == 'shipping') {
+            this.showOverview = false;
+            this.showRelated = false;
+            this.showShipping = true;
+            this.showReviews = false;
         }
     }
     yourRating(rating) {
