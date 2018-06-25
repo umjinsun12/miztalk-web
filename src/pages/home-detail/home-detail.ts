@@ -1,9 +1,7 @@
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
 import { CardnewsService } from './../../services/shopping-services/cardnews-service';
-import { find } from 'rxjs/operators';
 
 /**
  * Generated class for the HomeDetailPage page.

@@ -1,7 +1,5 @@
 import { AccountLogin } from './../pages/account/login/login';
-import { Storage } from '@ionic/storage';
 import { CommunityWritePage } from './../pages/community-write/community-write';
-import { TabsPage } from './../pages/tabs/tabs';
 import { CommunityDetailPage } from './../pages/community-detail/community-detail';
 import { HomeDetailPage } from './../pages/home-detail/home-detail';
 import { NativeStorage } from '@ionic-native/native-storage';
@@ -14,6 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http';
 import { KeysPipe } from '../services/pipe/pipe';
+
 
 import {PopoverPage} from '../pages/about-popover/about-popover'
 
@@ -58,7 +57,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { AppRate } from '@ionic-native/app-rate';
 import { EmailComposer } from '@ionic-native/email-composer';
-import { MypagePage } from '../pages/account/mypage/mypage';
 import { MyInformation } from '../pages/account/my-information/my-information';
 import { Address } from '../pages/account/address/address';
 import { EditAddressForm } from '../pages/account/edit-address-form/edit-address-form';
@@ -70,6 +68,8 @@ import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
 
 import {EventAnouncePage} from '../pages/event-anounce/event-anounce';
+
+import { IamportService } from 'iamport-ionic-inicis3';
 
 
 
@@ -161,6 +161,7 @@ import {EventAnouncePage} from '../pages/event-anounce/event-anounce';
     InAppBrowser,
     AppRate,
     EmailComposer,
+    IamportService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

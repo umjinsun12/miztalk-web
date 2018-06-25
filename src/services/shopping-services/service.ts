@@ -7,7 +7,6 @@ import { URLSearchParams } from '@angular/http';
 import { NativeStorage } from '@ionic-native/native-storage';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
-import { map } from 'rxjs/operator/map';
 
 @Injectable() 
 export class Service {

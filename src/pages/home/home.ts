@@ -6,7 +6,6 @@ import { HomeDetailPage } from './../home-detail/home-detail';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController ,Nav} from 'ionic-angular';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { WordpressService } from '../../services/wordpress.service';
 import { CardnewsService } from '../../services/shopping-services/cardnews-service';
 import {EventDetailPage} from '../event-detail/event-detail';

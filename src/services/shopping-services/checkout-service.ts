@@ -229,6 +229,19 @@ export class CheckoutService {
                 });
         });
     }
+    checkPaymentResponse(mdata){
+        var params = new URLSearchParams();
+        params.append("imp_uid", mdata.imp_uid);
+        params.append("merchant_uid", mdata.merchant_uid);
+        params.append("order_id", mdata.order_id);
+        return new Promise(resolve =>{
+            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-check_payment_response', params, this.config.options).map(res => res.json())
+                .subscribe(data =>{
+                    this.status = data;
+                    resolve(this.status);
+                });
+        })
+    }
     submitCoupon(form) {
         var params = new URLSearchParams()
         params.append("coupon_code", form.coupon_code);

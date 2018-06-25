@@ -6,9 +6,12 @@ import { CheckoutService } from './../../../services/shopping-services/checkout-
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { OrderSummary } from '../../checkout/order-summary/order-summary';
-import { defaultFormat } from 'moment';
-import { FormGroup, FormControl, FormBuilder, Validators }	from '@angular/forms';
+import { FormGroup,  FormBuilder, Validators }	from '@angular/forms';
 import { AddressSearchFormPage } from '../address-search-form/address-search-form';
+
+import { IamportService } from 'iamport-ionic-inicis3';
+
+import {TabsPage} from '../../tabs/tabs';
 
 
 /**
@@ -76,7 +79,8 @@ export class BillingAddressForm {
       public functions: Functions, 
       public values: Values, 
       public addressservice : Service,
-      private builder: FormBuilder) {
+      private builder: FormBuilder,
+      public iamport: IamportService) {
 
 
       this.PlaceOrder = "Place Order";
@@ -153,34 +157,51 @@ export class BillingAddressForm {
           } else if (this.form.payment_method == 'stripe') {
               this.service.getStripeToken(this.form).then((results) => this.handleStripeToken(results));
           } else {
+              console.log('paymethod');
+              console.log(this.form.pay_method);
               this.service.checkout(this.form).then((results) => this.handlePayment(results));
           }
       }
+
   }
   handlePayment(results) {
+      console.log(results);
       if (results.result == 'success') {
-          var options = "location=no,hidden=yes,toolbar=yes";
-          let browser = this.iab.create(results.redirect, '_blank', options);
-          browser.show();
-          browser.on('loadstart').subscribe(data => {
-              if (data.url.indexOf('order-received') != -1 && data.url.indexOf('return=') == -1) {
-                  this.values.cart = [];
-                  this.values.count = 0;
-                  var str = data.url;
-                  var pos1 = str.lastIndexOf("/order-received/");
-                  var pos2 = str.lastIndexOf("/?key=wc_order");
-                  var pos3 = pos2 - (pos1 + 16);
-                  var order_id = str.substr(pos1 + 16, pos3);
-                  this.nav.push(OrderSummary, order_id);
-                  browser.close();
+          let mdata = {
+              imp_uid : results.iamport.user_code,
+              merchant_uid : results.iamport.merchant_uid,
+              order_id : results.order_id
+          }
+
+          const param = {
+            pay_method : 'card',
+            merchant_uid : results.iamport.merchant_uid,
+            name : results.iamport.name,
+            amount : results.iamport.amount,
+            buyer_email : results.iamport.buyer_email,
+            buyer_name : results.iamport.buyer_name,
+            buyer_tel : results.iamport.buyer_tel,
+            buyer_addr : results.iamport.buyer_addr,
+            buyer_postcode : results.iamport.buyer_postcode,
+            app_scheme : 'ionicinicis3'
+          };
+          
+          // 아임포트 관리자 페이지 가입 후 발급된 가맹점 식별코드를 사용
+          this.iamport.payment("imp78559751", param )
+            .then((response)=> {
+              if ( response.isSuccess() ) {
+                  console.log(response.getResponse());
+                  let res = response.getResponse();
+                  //res.imp_uid;
+                  this.service.checkPaymentResponse(mdata).then((results) => {
+                    console.log(results);
+                  });
+              }else{
+                  this.functions.showAlert("실패", "주문이 실패하였습니다. 다시 시도해 주세요.")
               }
-              else if (data.url.indexOf('cancel_order=true') != -1 || data.url.indexOf('cancelled=1') != -1 || data.url.indexOf('cancelled') != -1) {
-                  browser.close();
-                  this.buttonSubmit = false;
-              }    
-          });
-          browser.on('exit').subscribe(data => {
-              this.buttonSubmit = false;
+            })
+            .catch((err)=> {
+              alert(err)
           });
       }
       else if (results.result == 'failure') {

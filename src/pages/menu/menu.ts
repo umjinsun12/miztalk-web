@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Nav } from 'ionic-angular';
+import { NavController, Nav } from 'ionic-angular';
 import { Values } from '../../services/shopping-services/values';
 
 /**

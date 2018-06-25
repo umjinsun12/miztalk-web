@@ -1,6 +1,6 @@
 import { Values } from './../../services/shopping-services/values';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { Service } from '../../services/shopping-services/service';
 import { Functions } from './../../services/shopping-services/functions';
 

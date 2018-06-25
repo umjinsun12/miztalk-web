@@ -1,10 +1,9 @@
 import { Config } from './../../../services/shopping-services/config';
-import { MenuPage } from './../../menu/menu';
 import { Service } from './../../../services/shopping-services/service';
 import { Functions } from './../../../services/shopping-services/functions';
 import { Values } from './../../../services/shopping-services/values';
 import { Component } from '@angular/core';
-import { IonicPage, NavController} from 'ionic-angular';
+import { NavController} from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import {AccountRegister} from '../register/register';
 import {TabsPage} from '../../tabs/tabs';

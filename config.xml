@@ -107,5 +107,12 @@
         <variable name="APP_ID" value="595849610773850" />
         <variable name="APP_NAME" value="misTalk" />
     </plugin>
+    <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
+    <plugin name="cordova-plugin-iamport-kcp" spec="^0.9.1">
+        <variable name="URL_SCHEME" value="ionickcp" />
+    </plugin>
+    <plugin name="cordova-plugin-iamport-inicis" spec="^0.9.1">
+        <variable name="URL_SCHEME" value="ionicinicis3" />
+    </plugin>
     <engine name="android" spec="7.0.0" />
 </widget>
