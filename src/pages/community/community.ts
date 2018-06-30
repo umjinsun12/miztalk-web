@@ -6,6 +6,7 @@ import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides} fr
 import { Http } from '@angular/http';
 import * as moment from 'moment';
 import { CommunityDetailPage } from '../community-detail/community-detail';
+import { PointDetailPage } from '../point-detail/point-detail';
 
 /**
  * Generated class for the CommunityPage page.
@@ -147,6 +148,10 @@ export class CommunityPage {
 
 
 
+  showPointDetail(){
+    if(this.values.isLoggedIn)
+      this.navCtrl.push(PointDetailPage);
+  }
 
 
 

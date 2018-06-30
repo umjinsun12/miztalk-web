@@ -12,6 +12,7 @@ import { Orders } from '../orders/orders';
 import { WishlistPage } from '../wishlist/wishlist';
 import { AccountLogin } from '../login/login';
 import { AccountRegister } from '../register/register';
+import {PointDetailPage} from '../../point-detail/point-detail'
 //import { Post } from '../../post/post';
 /**
  * Generated class for the MypagePage page.
@@ -76,6 +77,10 @@ export class MypagePage {
         };
         this.appRate.promptForRating(true);
     }
+    showPointDetail(){
+        if(this.values.isLoggedIn)
+          this.nav.push(PointDetailPage);
+      }
     shareApp() {
         var options = {
             message: this.config.shareAppMessage,

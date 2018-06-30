@@ -46,6 +46,7 @@ export class CheckoutService {
         params.append("s_postcode", form.billing_postcode);
         params.append("s_country", form.billing_country);
         params.append("s_state", form.billing_state);
+        params.append("post_data", 'mshop_point=' + form.point);
         return new Promise(resolve => {
             this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-update_order_review', params, this.config.options).map(res => res.json())
                 .subscribe(data => {

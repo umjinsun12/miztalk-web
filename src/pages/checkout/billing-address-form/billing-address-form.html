@@ -47,6 +47,14 @@
                                 <ion-label>{{(1*OrderReview.totals.shipping_total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-label>
                             </ion-col>
                         </ion-row>
+                        <ion-row *ngIf="OrderReview.totals.fee_total != 0">
+                                <ion-col col-8 class="col1">
+                                    <ion-label>포인트 사용 </ion-label>
+                                </ion-col>
+                                <ion-col col-4 text-right>
+                                    <ion-label>{{(1*OrderReview.totals.fee_total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-label>
+                                </ion-col>
+                            </ion-row>
                         <ion-row class="grand-total">
                             <ion-col col-8>
                                 <ion-label no-margin> <b>총 합계

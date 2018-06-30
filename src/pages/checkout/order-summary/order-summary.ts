@@ -19,7 +19,10 @@ export class OrderSummary {
         if(document.querySelector(".tabbar"))
         this.tabBarElement = document.querySelector(".tabbar")['style'];
         this.service.getOrderSummary(this.id)
-            .then((results) => this.orderSummary = results);
+            .then((results) => {
+                this.orderSummary = results[0];
+                console.log(this.orderSummary);
+            });
     }
     Continue() {
         this.values.count = 0;

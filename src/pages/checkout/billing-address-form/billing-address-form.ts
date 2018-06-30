@@ -158,14 +158,12 @@ export class BillingAddressForm {
               this.service.getStripeToken(this.form).then((results) => this.handleStripeToken(results));
           } else {
               console.log('paymethod');
-              console.log(this.form.pay_method);
               this.service.checkout(this.form).then((results) => this.handlePayment(results));
           }
       }
 
   }
   handlePayment(results) {
-      console.log(results);
       if (results.result == 'success') {
           let mdata = {
               imp_uid : results.iamport.user_code,
@@ -174,7 +172,7 @@ export class BillingAddressForm {
           }
 
           const param = {
-            pay_method : 'card',
+            pay_method : this.form.payment_method.split('_')[1],
             merchant_uid : results.iamport.merchant_uid,
             name : results.iamport.name,
             amount : results.iamport.amount,
@@ -189,12 +187,21 @@ export class BillingAddressForm {
           // 아임포트 관리자 페이지 가입 후 발급된 가맹점 식별코드를 사용
           this.iamport.payment("imp78559751", param )
             .then((response)=> {
+              console.log(response);
               if ( response.isSuccess() ) {
-                  console.log(response.getResponse());
-                  let res = response.getResponse();
-                  //res.imp_uid;
-                  this.service.checkPaymentResponse(mdata).then((results) => {
-                    console.log(results);
+                  mdata.imp_uid = response.getResponse()['imp_uid'];
+                  console.log(mdata);
+                  this.service.checkPaymentResponse(mdata).then((payresults) => {
+                    console.log(payresults);
+                    var str = results.redirect;
+                    var pos1 = str.lastIndexOf("order-received/");
+                    var pos2 = str.lastIndexOf("?key=wc_order");
+                    var pos3 = pos2 - (pos1 + 15);
+                    var order_id = str.substr(pos1 + 15, pos3);
+                    this.nav.push(OrderSummary, order_id).then(()=>{
+                        const index = this.nav.getActive().index;
+                        this.nav.remove(1, index-1); 
+                    });
                   });
               }else{
                   this.functions.showAlert("실패", "주문이 실패하였습니다. 다시 시도해 주세요.")

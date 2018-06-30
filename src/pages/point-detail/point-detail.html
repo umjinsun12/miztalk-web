@@ -1,0 +1,39 @@
+<!--
+  Generated template for the PointDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>포인트 내역</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content nopadding>
+  <div class="point-summary">
+    <ion-row>
+      <ion-col class="point-char" col-4>
+        포인트
+      </ion-col>
+      <ion-col class="point-box" col-8>
+        <span class="point-number">{{values.point | number: '1.0-0'}} P</span>
+        <span class="point-del">(10p 소멸예정)</span>
+      </ion-col>
+    </ion-row>
+  </div>
+  <div class="point-detail-box">
+    <ion-row class="point-detail-row" *ngFor="let point of pointData.results">
+      <ion-col col-8>
+        <div class="point-char">{{point.desc}}</div>
+        <div class="point-date">{{point.date}}</div>
+      </ion-col>
+      <ion-col class="point-number" col-4>
+        {{point.amount}} P
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

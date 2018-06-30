@@ -28,7 +28,7 @@
               <ion-col col-8 class="col2 member-field">
                   <div class="member-name" *ngIf="values.customerName">{{values.customerName}}<span class="member-level">정회원</span> </div>
                   <div class="member-name" *ngIf="!values.customerName">미즈톡</div>
-                  <div class="member-point"><img src="assets/img/action-b-point-icon.png" class="Action_B_Point_Icon">{{values.point | number: '1.0-0'}}<span class="member-deletepoint">(소멸예정 10P)</span></div>
+                  <div class="member-point" (click)="showPointDetail()"><img src="assets/img/action-b-point-icon.png" class="Action_B_Point_Icon">{{values.point | number: '1.0-0'}}<span class="member-deletepoint">(소멸예정 10P)</span></div>
               </ion-col>
           </ion-row>
         </div>

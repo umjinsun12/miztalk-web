@@ -21,11 +21,17 @@
             border-bottom: 1px solid lightgrey;
         }
     }
-    .point{
-        color: color($colors, light);
-        font-weight: 700;
-        font-size: 12px;
+    .point_box{
+        width : 80px;
+        height: 20px;
+        background: transparent;
+        .point{
+            color: color($colors, light);
+            font-weight: 700;
+            font-size: 12px;
+        }
     }
+        
 }
 
 

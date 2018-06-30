@@ -5,6 +5,7 @@ import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-ang
 import { EventDetailPage } from '../event-detail/event-detail';
 import {EventAnouncePage} from '../event-anounce/event-anounce'
 import * as moment from 'moment';
+import { PointDetailPage } from '../point-detail/point-detail';
 
 /**
  * Generated class for the EventPage page.
@@ -98,7 +99,11 @@ export class EventPage {
 }
 
 
-  
+showPointDetail(){
+  if(this.values.isLoggedIn)
+    this.navCtrl.push(PointDetailPage);
+}
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EventPage');

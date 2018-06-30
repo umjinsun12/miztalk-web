@@ -1,0 +1,46 @@
+page-point-detail {
+   
+}
+.point-summary{
+    background-color: #f3f3f3;
+    padding : 20px;
+    .point-char{
+        color : #e83d4d;
+        font-size : 15px;
+        font-weight: 800;
+    }
+    .point-box{
+        text-align: right;
+        .point-number{
+            color : #e83d4d;
+            font-size: 18px;
+            font-weight: 800;
+        }
+        .point-del{
+            font-size: 10px;
+            color: rgba(20,20,20,0.5);
+        }
+    }
+}
+
+.point-detail-box{
+    .point-detail-row{
+        padding : 10px;
+        .point-char{
+            color : #141414;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .point-date{
+            color: #c8c8c8;
+            font-size: 12px;
+        }
+
+        .point-number{
+            font-size: 15px;
+            font-weight: 800;
+            text-align: right;
+            border-bottom: 1px solid #f8f8f8;
+        }
+    }
+}

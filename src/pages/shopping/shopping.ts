@@ -250,7 +250,7 @@ export class ShoppingPage {
     }
     scrollingFun(e) {
         if (e.scrollTop > this.contentHandle.getContentDimensions().contentHeight) {
-            if (document.querySelector(".tabbar")) document.querySelector(".tabbar")['style'].display = 'none';
+            if (document.querySelector(".tabbar")) document.querySelector(".tabbar")['style'].display = 'flex';
             if (this.topOrBottom == "top") {
                 this.contentBox.marginTop = 0;
             } else if (this.topOrBottom == "bottom") {

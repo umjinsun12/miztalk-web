@@ -272,6 +272,14 @@ export class Service {
             });
         });
     }
+    getPointlogs(){
+        return new Promise(resolve =>{
+            this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mshop-point-ex-get_mypoint_logs', this.config.options).map(res => res.json()).subscribe(data =>{
+                resolve(data);
+            });
+        });
+    }
+
     pushNotification(notification) {
         var params = new URLSearchParams();
         params.append("device_id", notification.device_id);

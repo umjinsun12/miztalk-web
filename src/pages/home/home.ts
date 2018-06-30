@@ -10,6 +10,7 @@ import { WordpressService } from '../../services/wordpress.service';
 import { CardnewsService } from '../../services/shopping-services/cardnews-service';
 import {EventDetailPage} from '../event-detail/event-detail';
 import { ShoppingProductPage } from '../shopping-product/shopping-product';
+import { PointDetailPage } from '../point-detail/point-detail';
 
 
 /**
@@ -105,6 +106,11 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
+  }
+
+  showPointDetail(){
+    if(this.values.isLoggedIn)
+      this.navCtrl.push(PointDetailPage);
   }
 
   
