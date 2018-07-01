@@ -43,7 +43,8 @@ import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { AddressSearchFormPage } from './../pages/checkout/address-search-form/address-search-form';
 import { SpecialPage} from './../pages/special/special';
-import { PointDetailPage} from './../pages/point-detail/point-detail'
+import { PointDetailPage} from './../pages/point-detail/point-detail';
+import { ShoppingSearchPage } from './../pages/shopping-search/shopping-search';
 
 
 import { CardnewsService } from '../services/shopping-services/cardnews-service';
@@ -100,7 +101,8 @@ import { IamportService } from 'iamport-ionic-inicis3';
     EventAnouncePage,
     AddressSearchFormPage,
     SpecialPage,
-    PointDetailPage
+    PointDetailPage,
+    ShoppingSearchPage
   ],
   imports: [
     HttpModule,
@@ -138,7 +140,8 @@ import { IamportService } from 'iamport-ionic-inicis3';
     WishlistPage,
     EventAnouncePage,
     AddressSearchFormPage,
-    PointDetailPage
+    PointDetailPage,
+    ShoppingSearchPage
   ],
   providers: [
     NativeStorage,

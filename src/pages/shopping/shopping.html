@@ -4,7 +4,7 @@
   <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
   
   <ion-buttons end *ngIf="!showFilters && !showSortFilters"> 
-    <button ion-button icon-only *ngIf="values.isLoggedIn" (click)="presentPopover($event)" style="color:#e83d4d;margin-left:6px;margin-right:6px;">
+    <button ion-button icon-only (click)="getSearch()" style="color:#e83d4d;margin-left:6px;margin-right:6px;">
           <ion-icon ios="md-search" md="md-search" style="font-size:30px;"></ion-icon>
     </button>
 
@@ -151,7 +151,7 @@
                             <ion-col class="col" *ngFor="let item of products">
                                 <ion-card>
                                     <ion-card-content class="stock"> <img tappable src="{{item.images[0].src}}" (click)="getProduct(item.id)" [ngClass]="{opacity: !item.in_stock}">
-                                        <div> <button ion-button color="danger" *ngIf="!item.in_stock">No Stock</button> </div>
+                                        <div> <button ion-button color="danger" *ngIf="!item.in_stock">일시 품절</button> </div>
                                         <ion-icon name="md-heart" class="wishlist-button-grid1" *ngIf="values.wishlistId[item.id]" (click)="removeFromWishlist(item.id)"></ion-icon>
                                         <ion-icon name="md-heart-outline" class="wishlist-button-grid2" *ngIf="!values.wishlistId[item.id]" (click)="addToWishlist(item.id)"></ion-icon>
                                     </ion-card-content>

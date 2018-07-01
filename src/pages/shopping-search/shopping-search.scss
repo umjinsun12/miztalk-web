@@ -1,5 +1,15 @@
-.products {
+page-shopping-search {
 
+}
+.search-page {
+    ion-searchbar{
+        padding: 0px;
+    }
+    .searchbar-input{
+        border: 0px solid rgb(202, 82, 82);
+        box-shadow: none !important;
+        margin-bottom: 10px;
+    }
     .home-banners {
         ion-slides {
             width: 100%;
@@ -421,7 +431,7 @@
                 ion-label {
                     margin: 8px 0 6px 12px; //height: 30px;
                     white-space: normal;
-                    font-size: 15px;
+                    font-size: 16px;
                     text-transform: capitalize;
                 }
                 p {

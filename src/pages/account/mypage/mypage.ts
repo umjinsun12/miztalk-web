@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController } from 'ionic-angular';
+import { NavController, ViewController, IonicPage } from 'ionic-angular';
 import { Service } from '../../../services/shopping-services/service';
 import { Config } from '../../../services/shopping-services/config';
 import { Values } from '../../../services/shopping-services/values';
@@ -20,7 +20,6 @@ import {PointDetailPage} from '../../point-detail/point-detail'
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
 @IonicPage()
 @Component({
   templateUrl: 'mypage.html',

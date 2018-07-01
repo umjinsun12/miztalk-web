@@ -10,6 +10,7 @@ import { Content } from 'ionic-angular';
 import { Service} from './../../services/shopping-services/service'
 import { WishlistPage } from '../account/wishlist/wishlist'
 import { PopoverPage } from '../about-popover/about-popover';
+import { ShoppingSearchPage } from '../shopping-search/shopping-search';
 
 /**
  * Generated class for the ShoppingPage page.
@@ -112,10 +113,13 @@ export class ShoppingPage {
         this.nav.push(ShoppingProductPage, id);
     }
     getCart() {
-        console.log("asdfasdf");
         this.values.hideTabbar = false;
         this.nav.push(ShoppingCartPage);
     }
+    getSearch() {
+        this.nav.push(ShoppingSearchPage);
+    }
+
     doInfinite(infiniteScroll) {
         this.filter.page += 1;
         this.service.loadMore(this.filter).then((results) => this.handleMore(results, infiniteScroll));

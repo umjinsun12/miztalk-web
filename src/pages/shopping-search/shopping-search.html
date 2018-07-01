@@ -1,0 +1,77 @@
+<ion-header no-border class="search-header">
+    <ion-navbar color="header"> <button ion-button menuToggle>
+      <ion-icon name="menu">
+      </ion-icon>
+    </button>
+    </ion-navbar>
+</ion-header>
+<ion-content class="search-page" #contentRef (ionScroll)="scrollingFun($event)">
+    <ion-searchbar no-shadow [(ngModel)]="myInput" [showCancelButton]="shouldShowCancel" (ionInput)="onInput($event)" (ionCancel)="onCancel($event)" placeholder="상품검색" autocomplete="on" autocorrect="on" spellcheck="true"> </ion-searchbar>
+    <ion-spinner *ngIf="loading" name="crescent"> </ion-spinner>
+    <ion-spinner *ngIf="!mainservice?.categories && !hidecategory" name="crescent"> </ion-spinner>
+    <div *ngIf="products" class="products-listing">
+        <div *ngIf="!products.length && !loading" class="no-products">
+            <h2>상품을 찾지 못했습니다!</h2>
+        </div>
+        <div *ngIf="products.length && !loading">
+            <div *ngIf="values.listview" style="background-color: #f2f2f2;">
+                <div class="item-list" *ngFor="let item of products">
+                    <ion-item class="left-padding" no-lines>
+                        <ion-thumbnail item-left class="stock-list" [ngClass]="{opacity: !item.in_stock}"> <img tappable (click)="getProduct(item.id)" src="{{item.images[0].src}}"> <button class="no-stock-button" ion-button *ngIf="!item.in_stock">일시품절
+                    </button> </ion-thumbnail>
+                        <div class="product-details">
+                            <div class="product-name-top">
+                                <div class="product-label">
+                                    <div tappable (click)="getProduct(item.id)">
+                                        <h2 *ngIf="item.title">{{item.title}} </h2>
+                                        <h2 *ngIf="item.name">{{item.name}} </h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div [innerHTML]="item.short_description" class="short-description"> </div>
+                            <div style="margin-top: 6px;"> 
+                              <span class="price-offer" *ngIf="item.in_stock && item.sale_price && ((item.regular_price - item.sale_price) / item.regular_price*100) >= '1'">{{(item.regular_price - item.sale_price) / item.regular_price*100 | number : '1.0-0'}}%</span>
+                              <span class="price-regular" *ngIf="!item.sale_price">{{(1*item.price  | currency:values.currency:false:'1.0-0').replace('USD','')}}</span> 
+                              <span class="price-regular" *ngIf="item.sale_price">{{(1*item.sale_price | currency:values.currency:false:'1.0-0').replace('USD','')}</span> 
+                              <span class="price-delete" *ngIf="item.sale_price"><del>{{(1*item.regular_price | currency:values.currency:false:'1.0-0').replace('USD','')}}</del></span> 
+                            </div>
+                            <h3 style="font-size:11px; margin: 3px 0"> <span class="rating review-star">
+                   <span class="star-icon" [ngClass]="{full: item.average_rating >= 1, half: item.average_rating == 0.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.average_rating >= 2, half: item.average_rating == 1.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.average_rating >= 3, half: item.average_rating == 2.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.average_rating >= 4, half: item.average_rating == 3.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.average_rating >= 5, half: item.average_rating == 4.5}">&#x2605;</span> </span>
+                            </h3>
+                        </div>
+                        <div width-20 class="bottom-left-button">
+                            <ion-icon name="md-heart" class="wishlist-button-fill" *ngIf="values.wishlistId[item.id]" (click)="removeFromWishlist(item.id)"></ion-icon>
+                            <ion-icon name="md-heart-outline" class="wishlist-button" *ngIf="!values.wishlistId[item.id]" (click)="addToWishlist(item.id)"></ion-icon>
+                        </div>
+                    </ion-item>
+                </div><br> </div>
+            <div *ngIf="!values.listview">
+                <div class="grid">
+                    <ion-row class="row unlimited-items">
+                        <ion-col class="col" *ngFor="let item of products">
+                            <ion-card>
+                                <ion-card-content class="stock"> <img tappable src="{{item.images[0].src}}" (click)="getProduct(item.id)" [ngClass]="{opacity: !item.in_stock}">
+                                    <div> <button ion-button color="danger" *ngIf="!item.in_stock">일시품절
+                        </button> </div>
+                                    <ion-icon name="md-heart" class="wishlist-button-grid1" *ngIf="values.wishlistId[item.id]" (click)="removeFromWishlist(item.id)"></ion-icon>
+                                    <ion-icon name="md-heart-outline" class="wishlist-button-grid2" *ngIf="!values.wishlistId[item.id]" (click)="addToWishlist(item.id)"></ion-icon>
+                                </ion-card-content>
+                                <div tappable (click)="getProduct(item.id)" class="card-name">
+                                    <ion-label *ngIf="item.title">{{item.title}} </ion-label>
+                                    <ion-label *ngIf="item.name">{{item.name}} </ion-label>
+                                </div>
+                                <ion-label style="margin-bottom:2px;margin-left: 4px;"> 
+                                  <span class="price-offer" *ngIf="item.in_stock && item.sale_price && ((item.regular_price - item.sale_price) / item.regular_price*100) >= '1'">{{(item.regular_price - item.sale_price) / item.regular_price*100 | number : '1.0-0'}}%</span>
+                                  <span class="price-regular" *ngIf="!item.sale_price">{{(1*item.price  | currency:values.currency:false:'1.0-0').replace('USD','')}}</span>
+                                  <span class="price-regular" *ngIf="item.sale_price">{{(1*item.sale_price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span> 
+                                  <span class="price-delete" *ngIf="item.sale_price"><del>{{(1*item.regular_price  | currency:values.currency:false:'1.0-0').replace('USD','')}}</del></span> 
+                                </ion-label>
+                             </ion-card>
+                        </ion-col>
+                    </ion-row>
+                </div><br> </div>
+        </div>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
+            <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 상품들을 불러오는 중입니다."> </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+    </div> <br> <br> </ion-content>
