@@ -417,6 +417,13 @@
         }
         .quantity-item {
             margin: 0 5px;
+            ion-item{
+                padding: 0px;
+                border-bottom: 0px;
+            }
+            .item-inner{
+                border-bottom: 0px;
+            }
         }
         .row {
             margin: 0;
@@ -933,5 +940,87 @@
     }
     .bar-button-ios[icon-only] ion-icon {
         font-size: 25px;
+    }
+}
+
+.black-screen{
+    width: 100%;
+    height: 500px;
+    background-color: #000;
+    opacity: .6;
+}
+
+
+
+.option-box{
+    .option-close{
+        text-align: right;
+        .close-btn{
+            zoom: 1.3;
+            margin: 10px;
+        }
+    }
+
+    background-color: white;
+    .variation-product {
+        margin: 5px;
+        ion-label {
+            color: #000;
+        }
+        .variation-title {
+            background-color: #f2f2f2;
+        }
+        .item {
+            border: 1px solid #ececec;
+            background-color: #f9f9f9;
+            height: 10px;
+        }
+        ion-select {
+            font-size: 12px;
+            color: #ffa41c;
+        }
+        .item-inner{
+            border-bottom: 0px;
+            font-size: 12px;
+        }
+    }
+    .quantity-item{
+        ion-col{
+            padding:0px;
+        }
+        ion-item{
+            padding: 0px;
+        }
+    }
+    .quantity-price{
+        text-align: left;
+        font-size: 15px;
+        font-weight: 600;
+        padding-top: 13px;
+    }
+    
+    .item-inner{
+        border-bottom: 0px !important;
+    }
+    
+    .option-product{
+        padding: 5px 10px 5px 13px;
+        border: 1px solid #888888;
+        margin : 5px 10px 5px 10px;
+        .close-btn{
+            position: absolute;
+            right: 5px;
+        }
+    }
+    .total-box{
+        padding : 5px 10px 5px 12px;
+        .total-char{
+            font-weight: 700;
+        }
+        .total-count{
+            font-weight: 700;
+            color: #ff4a00;
+            text-align: right;
+        }
     }
 }

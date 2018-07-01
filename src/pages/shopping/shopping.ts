@@ -11,6 +11,7 @@ import { Service} from './../../services/shopping-services/service'
 import { WishlistPage } from '../account/wishlist/wishlist'
 import { PopoverPage } from '../about-popover/about-popover';
 import { ShoppingSearchPage } from '../shopping-search/shopping-search';
+import { ShoppingProductsPage } from '../shopping-products/shopping-products';
 
 /**
  * Generated class for the ShoppingPage page.
@@ -105,6 +106,17 @@ export class ShoppingPage {
             obj3[attrname] = obj2[attrname];
         }
         return obj3;
+    }
+    goCategory(id, name){
+        let item = {
+            id : 0,
+            name : "",
+            categories : []
+        };
+        item.categories.push(id);
+        item.id = id;
+        item.name = name;
+        this.nav.push(ShoppingProductsPage,item);
     }
     getProducts(id) {
         this.nav.push(ShoppingProductPage, id);

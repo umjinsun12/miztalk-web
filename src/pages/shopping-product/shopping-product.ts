@@ -29,6 +29,11 @@ export class ShoppingProductPage {
     quantity: any;
     reviews: any;
     shipping: any;
+    
+    seletedOption: any;
+    selectOptionProduct: any = [];
+    showOption: boolean = false;
+    totalOptionPrice: number = 0;
 
     reviewForm: any;
     nickname: any;
@@ -80,21 +85,45 @@ export class ShoppingProductPage {
         this.product.description = this.product.description.replace(/<p>/g,'').replace(/<\/p>/g, '').replace(/&nbsp;/g,'');
         this.product.description = this.dom.bypassSecurityTrustHtml(this.product.description);
         console.log(this.product.description);
-        if ((this.product.type == 'variable') && this.product.variations.length) this.getVariationProducts();
+        if ((this.product.type == 'variable') && this.product.variations.length) 
+            this.getVariationProducts();
+        else{
+            var text = '{';
+                var i;
+                for (i = 0; i < this.options.length; i++) {
+                    var res = this.options[i].split(":");
+                    for (var j = 0; j < res.length; j = j + 2) {
+                        text += '"' + res[j] + '":"' + res[j + 1] + '",';
+                    }
+                }
+                text += '"product_id":"' + this.product.id + '",';
+                text += '"quantity":"' + this.quantity + '"}';
+                var obj = JSON.parse(text);
+                console.log(this.product);
+                console.log(obj);
+                obj.price = this.product.sale_price;
+                obj.name = this.product.name;
+                this.selectOptionProduct.push(obj);
+                this.totalOptionPrice=this.product.sale_price;
+        }
         this.getReviews();
         this.getRelatedProducts();
         this.getUpsellProducts();
         this.getCrossSellProducts();
+        
+        console.log(this.options[0]);
     }
     getVariationProducts() {
-        this.service.getVariationProducts(this.product.id).then((results) => this.variations = results);
+        this.service.getVariationProducts(this.product.id).then((results) => {
+            this.variations = results
+        });
     }
     getProduct(id) {
         this.nav.push(ShoppingProductPage, id);
     }
     addToCart(id) {
         if (this.product.type == 'variable' && this.options.length == 0) {
-            this.functions.showAlert('Eroor', 'Please Select Product Option...')
+            this.functions.showAlert('에러', '옵션을 선택하세요')
         } else {
             this.disableAddButton = true;
             var text = '{';
@@ -108,26 +137,36 @@ export class ShoppingProductPage {
             text += '"product_id":"' + id + '",';
             text += '"quantity":"' + this.quantity + '"}';
             var obj = JSON.parse(text);
+            console.log(this.product);
             this.service.addToCart(obj).then((results) => this.updateCart());
         }
     }
     buyNow(id) {
-        if (this.product.type == 'variable' && this.options.length == 0) {
-            this.functions.showAlert('Eroor', 'Please Select Product Option...')
-        } else {
-            this.disableBuyNow = true;
-            var text = '{';
-            var i;
-            for (i = 0; i < this.options.length; i++) {
-                var res = this.options[i].split(":");
-                for (var j = 0; j < res.length; j = j + 2) {
-                    text += '"' + res[j] + '":"' + res[j + 1] + '",';
+        if(this.showOption == true){
+            if (this.product.type == 'variable' && this.options.length == 0) {
+                this.functions.showAlert('에러', '옵션을 선택하세요')
+            } else {
+                var cnt = 0;
+                for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
+                    this.service.addToCart(this.selectOptionProduct[i]).then((results) => {
+                        cnt += 1;
+                        if(cnt == this.selectOptionProduct.length)
+                            this.updateBuynowResults(cnt);
+                    })
                 }
             }
-            text += '"product_id":"' + id + '",';
-            text += '"quantity":"' + this.quantity + '"}';
-            var obj = JSON.parse(text);
-            this.service.addToCart(obj).then((results) => this.updateBuynowResults(results));
+        }
+        else{
+            this.showOption = true;
+        }
+    }
+    removeItem(id){
+        console.log("adfsdf");
+        for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
+            if(this.selectOptionProduct[i].variation_id == id){
+                this.selectOptionProduct.splice(i, 1);
+                this.calculateTotal();
+            }
         }
     }
     changeProduct() {
@@ -148,6 +187,73 @@ export class ShoppingProductPage {
             }
         }
     }
+
+    chooseOption(){
+        var text = '{';
+        var i;
+        for (i = 0; i < this.options.length; i++) {
+                var res = this.options[i].split(":");
+                for (var j = 0; j < res.length; j = j + 2) {
+                    text += '"' + res[j] + '":"' + res[j + 1] + '",';
+                }
+        }
+        text += '"product_id":"' + this.product.id + '",';
+        text += '"quantity":"' + this.quantity + '"}';
+        var obj = JSON.parse(text);
+        var flag = 0;
+        for(i=0 ; i < this.selectOptionProduct.length ; i++)
+        {
+            if(obj.variation_id === this.selectOptionProduct[i].variation_id)
+                flag = 1;
+        }
+        for (let item in this.variations) {
+            if (this.variations[item].id == obj.variation_id) {
+                this.product.in_stock = this.variations[item].in_stock;
+                this.product.price = this.variations[item].price;
+                if(flag == 0){
+                    obj.price = this.variations[item].price;
+                    obj.name = this.variations[item].attributes[0].option;
+                    this.totalOptionPrice += parseInt(obj.price);
+                    this.selectOptionProduct.push(obj);
+                }
+            }
+        }
+        console.log(this.selectOptionProduct);
+        this.options[0] = [];
+    }
+
+    deleteOptionQuantity(id){
+        for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
+            if(this.selectOptionProduct[i].variation_id == id){
+                if(this.selectOptionProduct[i].quantity == 1)
+                    this.selectOptionProduct[i].quantity = 1;
+                else{
+                    this.selectOptionProduct[i].quantity = parseInt(this.selectOptionProduct[i].quantity) - 1;
+                    this.calculateTotal();
+                }
+            }
+        }
+    }
+    addOptionQuantity(id){
+        for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
+            if(this.selectOptionProduct[i].variation_id == id){
+                this.selectOptionProduct[i].quantity = parseInt(this.selectOptionProduct[i].quantity) + 1;
+                this.calculateTotal();
+            }
+        }
+    }
+
+    calculateTotal(){
+        this.totalOptionPrice = 0;
+        for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
+            this.totalOptionPrice += parseInt(this.selectOptionProduct[i].price) * parseInt(this.selectOptionProduct[i].quantity);
+        } 
+    }
+
+    closeOption(){
+        this.showOption = false;
+    }
+
 
     addQuantity(){
         this.quantity = this.quantity + 1;

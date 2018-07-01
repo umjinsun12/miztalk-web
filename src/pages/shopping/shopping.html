@@ -4,7 +4,7 @@
   <button ion-button menuToggle><ion-icon name="menu"></ion-icon></button>
   
   <ion-buttons end *ngIf="!showFilters && !showSortFilters"> 
-    <button ion-button icon-only (click)="getSearch()" style="color:#e83d4d;margin-left:6px;margin-right:6px;">
+    <button ion-button icon-only (click)="getSearch()" style="color:#fff;margin-left:6px;margin-right:6px;">
           <ion-icon ios="md-search" md="md-search" style="font-size:30px;"></ion-icon>
     </button>
 
@@ -97,33 +97,33 @@
           <ion-spinner *ngIf="!products && !values.related" name="crescent"> </ion-spinner>
           <ion-spinner *ngIf="loading" name="crescent"> </ion-spinner>
 
-          <div *ngIf="homeservice?.banners" class="home-banners">
+          <div *ngIf="values?.mainad && values.mainad.length" class="home-banners">
               <ion-slides pager="false" loop="true" autoplay="5800">
-                  <ion-slide *ngFor='let value of homeservice.banners'> <img src="{{value}}"> </ion-slide>
+                  <ion-slide *ngFor='let value of values.mainad'> <img src="{{value.src}}"> </ion-slide>
               </ion-slides>
           </div>
 
           <div>
             <ion-row class="category-listing">
-              <ion-col class="col-3 category-title">
+              <ion-col class="col-3 category-title" (click)="goCategory(15, '육아·생활')">
                   <img src="assets/img/sh-ct-baby.png" class="category-icon">
                   <div class="category-text">
                     육아·생활
                   </div>
               </ion-col>
-              <ion-col class="col-3 category-title">
+              <ion-col class="col-3 category-title" (click)="goCategory(17, '주방·가전')">
                   <img src="assets/img/sp-ct-living.png" class="category-icon">
                   <div class="category-text">
                   주방·가전
                   </div>
               </ion-col>
-              <ion-col class="col-3 category-title">
+              <ion-col class="col-3 category-title" (click)="goCategory(18, '뷰티·다이어트')">
                   <img src="assets/img/Sp_CT_Beuty.png" class="category-icon">
                   <div class="category-text">
                   뷰티·다이어트
                   </div>
               </ion-col>
-              <ion-col class="col-3 category-title">
+              <ion-col class="col-3 category-title" (click)="goCategory(19, '식품')">
                   <img src="assets/img/sp-ct-food.png"  class="category-icon">
                   <div class="category-text">
                   식품

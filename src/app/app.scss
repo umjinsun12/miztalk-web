@@ -230,5 +230,12 @@ ion-segment {
 .alert-md{
     .alert-radio-label{
         text-overflow: ellipsis;
+        white-space: normal;
+        font-size: 13px;
+    }
+    .alert-checkbox-label{
+        text-overflow: ellipsis;
+        white-space: normal;
+        font-size: 13px;
     }
 }

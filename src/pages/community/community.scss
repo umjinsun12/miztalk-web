@@ -1,19 +1,47 @@
-ion-tabs{
-    top : 0px;
-}
-
-
-.point_box{
-    width : 80px;
-    height: 20px;
-    background: transparent;
-    text-align: right;
-    .point{
-        color: color($colors, primary);
-        font-weight: 700;
-        font-size: 12px;
+ion-header{
+    ion-title{
+        color:white;
+        .toolbar-title-md{
+            color: white;
+        }
     }
+    &.header{
+        height: $toolbar-height;
+        background: color($colors, primary);
+
+        .toolbar{
+            min-height: $toolbar-height;
+            
+            .toolbar-background{
+                background: color($colors, primary);
+            }
+            .back-button{
+                //color: white;
+                padding-left: 14px;
+                background-color: #e83d4d;
+            }
+            .bar-button{
+                color: color($colors, light);
+            }
+        }
+        .toolbar-md{
+            border-bottom: 1px solid lightgrey;
+        }
+    }
+    .point_box{
+        width : 80px;
+        height: 20px;
+        background: transparent;
+        text-align: right;
+        .point{
+            color: color($colors, light);
+            font-weight: 700;
+            font-size: 12px;
+        }
+    }
+        
 }
+
 
 
 

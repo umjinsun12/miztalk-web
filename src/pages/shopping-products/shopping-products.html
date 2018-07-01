@@ -1,0 +1,63 @@
+<!--
+  Generated template for the ShoppingProductsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title> {{categoryName}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="products" #contentRef>
+
+    <ion-spinner *ngIf="!products && !values.related" name="crescent"> </ion-spinner>
+    <ion-spinner *ngIf="loading" name="crescent"> </ion-spinner>
+
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+
+    <div *ngIf="products" class="products-listing">
+      <div *ngIf="!products.length && !loading" class="no-products">
+          <h2>No products found!</h2>
+      </div>
+      <div *ngIf="products.length && !loading">
+          
+          <div *ngIf="!values.listview">
+              <div class="grid">
+                  <ion-row class="row unlimited-items">
+                      <ion-col class="col" *ngFor="let item of products">
+                          <ion-card>
+                              <ion-card-content class="stock"> <img tappable src="{{item.images[0].src}}" (click)="getProduct(item.id)" [ngClass]="{opacity: !item.in_stock}">
+                                  <div> <button ion-button color="danger" *ngIf="!item.in_stock">일시 품절</button> </div>
+                                  <ion-icon name="md-heart" class="wishlist-button-grid1" *ngIf="values.wishlistId[item.id]" (click)="removeFromWishlist(item.id)"></ion-icon>
+                                  <ion-icon name="md-heart-outline" class="wishlist-button-grid2" *ngIf="!values.wishlistId[item.id]" (click)="addToWishlist(item.id)"></ion-icon>
+                              </ion-card-content>
+                              <div tappable (click)="getProduct(item.id)" class="card-name">
+                                  <ion-label *ngIf="item.title">{{item.title}} </ion-label>
+                                  <ion-label *ngIf="item.name">{{item.name}} </ion-label>
+                              </div>
+                              <ion-label style="margin-bottom:2px;margin-left: 4px;"> 
+                                <span class="price-offer" *ngIf="item.in_stock && item.sale_price && ((item.regular_price - item.sale_price) / item.regular_price*100) >= '1'">{{(item.regular_price - item.sale_price) / item.regular_price*100 | number : '1.0-0'}}%</span>
+                                <span class="price-regular" *ngIf="!item.sale_price">{{(1*item.price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="!item.sale_price">원</span>
+                                <span class="price-regular" *ngIf="item.sale_price">{{(1*item.sale_price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="item.sale_price">원</span>
+                                <span class="price-delete" *ngIf="item.sale_price"><del>{{(1*item.regular_price | currency:values.currency:false:'1.0-0').replace('USD','')}}원</del></span>
+                              </ion-label>
+                
+                              <!--h3 *ngIf="item.average_rating == 0" style="font-size: 13px;margin:0 0 8px 10px" text-left>0 ratings</h3-->
+                          </ion-card>
+                      </ion-col>
+                  </ion-row>
+              </div><br> </div>
+      </div>
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
+          <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 상품을 불러오는 중입니다."> </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+  </div>
+
+</ion-content>

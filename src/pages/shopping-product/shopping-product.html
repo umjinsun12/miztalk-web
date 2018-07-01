@@ -68,52 +68,6 @@
                     </ion-row>
                 </ion-grid>
                 <!--variation product starts-->
-                <div *ngIf="variations?.length" class="variation-product">
-                    <ion-item>
-                        <ion-label> 옵션선택 </ion-label>
-                        <ion-select okText="OK" cancelText="Cancel" [(ngModel)]="options[0]" (ngModelChange)="changeProduct()">
-                            <div *ngFor="let option of variations">
-                                <div *ngIf="option.attributes.length == 1">
-                                    <ion-option value="variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option}}">{{option.attributes[0].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
-                                </div>
-                                <div *ngIf="option.attributes.length == 2">
-                                    <ion-option value="variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option + ':variation[attribute_pa_'+ option.attributes[1].name +']:' + option.attributes[1].option}}">{{option.attributes[0].option | uppercase}} - {{option.attributes[1].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
-                                </div>
-                                <div *ngIf="option.attributes.length == 3">
-                                    <ion-option value="variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option + ':variation[attribute_pa_'+ option.attributes[1].name +']:' + option.attributes[1].option + ':variation[attribute_pa_'+ option.attributes[2].name +']:' + option.attributes[2].option}}">{{option.attributes[0].option | uppercase}} - {{option.attributes[1].option | uppercase}} - {{option.attributes[2].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
-                                </div>
-                            </div>
-                        </ion-select>
-                    </ion-item>
-                </div>
-                <div class="add-to-cart">
-                    <div class="quantity-item">
-                        <ion-item>
-                            <ion-item style="color: black">개수</ion-item>
-                            <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="deleteQuantity()">
-                              <ion-icon ios="ios-remove-circle-outline" md="ios-remove-circle-outline"></ion-icon>
-                            </button>
-                            <button ion-button item-right color="button-color" clear>{{quantity}}
-                            </button>
-                            <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="addQuantity()">
-                                <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline">
-                                </ion-icon>
-                            </button>
-                        </ion-item>
-                    </div>
-
-                    <!--<ion-grid>
-                        <ion-row>
-                            <ion-col width-50 class="buynow"> <button ion-button full color="button-color" text-uppercase [disabled]='disableBuyNow || !product.in_stock' (click)="buyNow(product.id)" style="color: #fff;margin: 0;width: 100%; min-height: 50px;">
-                Buy now
-              </button> </ion-col>
-                            <ion-col width-50 class="keep"> <button ion-button full text-uppercase [disabled]='disableAddButton || !product.in_stock' (click)="addToCart(product.id)" style="color: #fff;background-color: #ffa41c;margin: 0;width: 100%; min-height: 50px;">
-                AddToCart
-              </button> </ion-col>
-                        </ion-row>
-                    </ion-grid>-->
-
-                </div>
                 <!--<div *ngIf="product?.attributes.length" class="description">
                     <ion-item no-lines class="item-background" (click)="showSpecs()" *ngIf="!showSpecification"> Specifications
                         <ion-icon item-right name="ios-arrow-down"></ion-icon>
@@ -388,6 +342,93 @@
   </ion-content>
 
   <ion-footer no-shadow>
+      <div *ngIf="showOption" class="option-box">
+            <div class="option-close">
+                    <ion-icon class="close-btn" name="md-close" (click)="closeOption()"></ion-icon>
+            </div>
+        <ion-row>
+            <ion-col>
+                <div *ngIf="variations?.length" class="variation-product">
+                        <ion-item>
+                            <ion-label> 옵션선택 </ion-label>
+                            <ion-select okText="OK" cancelText="Cancel" [(ngModel)]="options[0]" (ngModelChange)="chooseOption()">
+                                <div *ngFor="let option of variations">
+                                    <div *ngIf="option.attributes.length == 1">
+                                        <ion-option value="{{'variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option}}">{{option.attributes[0].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
+                                    </div>
+                                    <div *ngIf="option.attributes.length == 2">
+                                        <ion-option value="{{'variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option + ':variation[attribute_pa_'+ option.attributes[1].name +']:' + option.attributes[1].option}}">{{option.attributes[0].option | uppercase}} - {{option.attributes[1].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
+                                    </div>
+                                    <div *ngIf="option.attributes.length == 3">
+                                        <ion-option value="{{'variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option + ':variation[attribute_pa_'+ option.attributes[1].name +']:' + option.attributes[1].option + ':variation[attribute_pa_'+ option.attributes[2].name +']:' + option.attributes[2].option}}">{{option.attributes[0].option | uppercase}} - {{option.attributes[1].option | uppercase}} - {{option.attributes[2].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
+                                    </div>
+                                </div>
+                            </ion-select>
+                        </ion-item>
+                </div>
+            </ion-col>
+        </ion-row>
+        <div *ngIf="variations?.length && selectOptionProduct?.length">
+        <ion-row *ngFor="let prod of selectOptionProduct" class="option-product" >
+            <ion-col>
+                {{prod.name}}
+                <span class="close-btn"><ion-icon name="md-close" (click)="removeItem(prod.variation_id)"></ion-icon></span>
+                <ion-row>
+                    <ion-col class="quantity-price">
+                        {{prod.price * prod.quantity}}원
+                    </ion-col>
+                    <ion-col no-padding>
+                        <div class="quantity-item">
+                            <ion-item>
+                                <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="deleteOptionQuantity(prod.variation_id)">
+                                    <ion-icon ios="ios-remove-circle-outline" md="ios-remove-circle-outline"></ion-icon>
+                                </button>
+                                <button ion-button item-right color="button-color" clear>{{prod.quantity}}</button>
+                                <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="addOptionQuantity(prod.variation_id)">
+                                            <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
+                                </button>
+                            </ion-item>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+        </div>
+        <div *ngIf="!variations?.length && selectOptionProduct?.length">
+                <ion-row *ngFor="let prod of selectOptionProduct" class="option-product" >
+                        <ion-col>
+                            {{prod.name}}
+                            <ion-row>
+                                <ion-col class="quantity-price">
+                                    {{prod.price * prod.quantity}}원
+                                </ion-col>
+                                <ion-col no-padding>
+                                    <div class="quantity-item">
+                                        <ion-item>
+                                            <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="deleteOptionQuantity(prod.variation_id)">
+                                                <ion-icon ios="ios-remove-circle-outline" md="ios-remove-circle-outline"></ion-icon>
+                                            </button>
+                                            <button ion-button item-right color="button-color" clear>{{prod.quantity}}</button>
+                                            <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="addOptionQuantity(prod.variation_id)">
+                                                        <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
+                                            </button>
+                                        </ion-item>
+                                    </div>
+                                </ion-col>
+                            </ion-row>
+                        </ion-col>
+                </ion-row>
+        </div>
+
+        <ion-row class="total-box">
+            <ion-col class="total-char">
+                총금액
+            </ion-col>
+            <ion-col class="total-count">
+                {{totalOptionPrice}}원
+            </ion-col>
+        </ion-row>
+      </div>
       <ion-toolbar position="bottom">
         <ion-row>
           <button col-3 ion-button full color="dark" text-uppercase [disabled]='disableSubmit' (click)="addToCart(product.product.id)">
