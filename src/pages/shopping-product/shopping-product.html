@@ -431,9 +431,11 @@
       </div>
       <ion-toolbar position="bottom">
         <ion-row>
-          <button col-3 ion-button full color="dark" text-uppercase [disabled]='disableSubmit' (click)="addToCart(product.product.id)">
+            
+          <button col-3 ion-button full color="dark" text-uppercase [disabled]='disableSubmit' (click)="kakaoqna()">
             제품문의
           </button>
+            
           <button col-9 ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="buyNow(product.id)">
             구매하기
           </button>

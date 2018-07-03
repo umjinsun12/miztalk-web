@@ -234,6 +234,10 @@ export class ShoppingProductPage {
             }
         }
     }
+
+    kakaoqna(){
+        window.open('http://pf.kakao.com/_eiieC', '_system', 'location=no');
+    }
     addOptionQuantity(id){
         for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
             if(this.selectOptionProduct[i].variation_id == id){
