@@ -642,6 +642,9 @@
         .variation-title {
             background-color: #f2f2f2;
         }
+        .nessary-option{
+            margin-bottom: 5px;
+        }
         .item {
             border: 2px solid #ececec;
             background-color: #f9f9f9;
@@ -706,6 +709,7 @@
     }
     //Reviews segment
     .show-reviews {
+        padding-bottom: 100px;
         .comment-form {
             .button {
                 border-radius: 4px;
@@ -966,6 +970,9 @@
         margin: 5px;
         ion-label {
             color: #000;
+        }
+        .nessary-option{
+            margin-bottom: 5px;
         }
         .variation-title {
             background-color: #f2f2f2;

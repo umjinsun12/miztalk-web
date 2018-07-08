@@ -42,6 +42,8 @@ export class Values {
   token: any = "";
   maincard: any = [];
   mainad : any = [];
+  user_pass : any;
+  user_login : any;
 
   constructor() {
   	this.filter = {};

@@ -4,7 +4,7 @@ page-community-write {
 
 
 .community_submit{
-    color : #8c8c8c;
+    color : white;
 }
 
 .community-content-item{
@@ -15,6 +15,8 @@ page-community-write {
     height : 100%;
 }
 
-textarea.text-input{
-    height : 500px;
+.community-textarea{
+    textarea.text-input{
+        height : 250px;
+    }
 }

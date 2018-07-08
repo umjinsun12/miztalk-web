@@ -7,6 +7,8 @@ import { Http } from '@angular/http';
 import * as moment from 'moment';
 import { CommunityDetailPage } from '../community-detail/community-detail';
 import { PointDetailPage } from '../point-detail/point-detail';
+import { CmsService } from '../../services/cms-service.service';
+import { Functions } from '../../services/shopping-services/functions';
 
 /**
  * Generated class for the CommunityPage page.
@@ -63,7 +65,9 @@ export class CommunityPage {
     public navParams: NavParams, 
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController,
-    public values: Values) { 
+    public values: Values,
+    public cmsService: CmsService,
+    public funtions : Functions) { 
     this.myIndex = navParams.data.tabIndex || 0;
     this.selectedSegment = 'main';
     moment.locale('ko');
@@ -71,22 +75,22 @@ export class CommunityPage {
       {
         id: "main",
         title: "메인",
-        categoryid: 23
+        categoryid: 0
       },
       {
         id: "clinic",
         title: "부부클리닉",
-        categoryid: 25
+        categoryid: 1
       },
       {
         id: "usedmarket",
         title: "중고장터",
-        categoryid: 26
+        categoryid: 2
       },
       {
         id: "boast",
         title: "자랑거리",
-        categoryid: 24
+        categoryid: 3
       }
     ];
     
@@ -102,19 +106,15 @@ export class CommunityPage {
       let loading = this.loadingCtrl.create();
       loading.present();
 
-      this.posts = [];
-      this.wordpressService.getPostEmbedbyCategory(categoryid).subscribe(data=>{
+
+      this.cmsService.getPosts(1, categoryid).subscribe((data) => {
         console.log(data);
         this.posts = [];
-        for(let post of data){
-          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
-          post.author = post._embedded['author'][0].name;
-          post.reltime = moment(post.date).fromNow();
-          post.replies = 0;
-          if(post._embedded.replies != undefined)
-            post.replies = post._embedded.replies[0].length;
-          else
-            post.replies = 0;
+        for(let post of data.contents){
+          console.log(post);
+          post.date = moment(post.date).fromNow();
+          post.like = post.likelist.length;
+          post.commentsCnt = post.comments.length;
           this.posts.push(post);
         }
         loading.dismiss();
@@ -162,6 +162,7 @@ export class CommunityPage {
     console.log(this.categoryId);
     this.categoryTitle = this.navParams.get('title');
     this.getPostCategory(this.categoryId);
+
   }
 
   
@@ -216,64 +217,52 @@ export class CommunityPage {
   }
 
   doRefresh(refresher) {
-      console.log('reload');
-      console.log(this.posts);
-      this.morePagesAvailable = true;
-      this.wordpressService.getPostEmbedbyCategory(this.categoryId).subscribe(data=>{
-        console.log(data);
-        this.posts = [];
-        for(let post of data){
-          post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
-          post.author = post._embedded['author'][0].name;
-          post.reltime = moment(post.date).fromNow();
-          post.replies = 0;
-          if(post._embedded.replies != undefined)
-            post.replies = post._embedded.replies[0].length;
-          else
-            post.replies = 0;
+      this.posts = [];
+      this.cmsService.getPosts(1, this.categoryId).subscribe((data) => {
+        for(let post of data.contents){
+          post.date = moment(post.date).fromNow();
+          post.like = post.likelist.length;
+          post.commentsCnt = post.comments.length;
           this.posts.push(post);
         }
         refresher.complete();
-      });
-    };
+    });
+  };
   
 
   doInfinite(infiniteScroll) {
     let page = (Math.ceil(this.posts.length/10)) + 1;
     let loading = true;
 
-    this.wordpressService.getPostEmbedbyCategory(this.categoryId, page)
-    .subscribe(data => {
-      for(let post of data){
-        if(!loading){
-          infiniteScroll.complete();
-        }
-        post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
-          post.author = post._embedded['author'][0].name;
-          post.reltime = moment(post.date).fromNow();
-          post.replies = 0;
-          if(post._embedded.replies != undefined)
-            post.replies = post._embedded.replies[0].length;
-          else
-            post.replies = 0;
-          console.log(post)
+    this.cmsService.getPosts(page, this.categoryId).subscribe((data) => {
+        for(let post of data.contents){
+          post.date = moment(post.date).fromNow();
+          post.like = post.likelist.length;
+          post.commentsCnt = post.comments.length;
           this.posts.push(post);
-        loading = false;
-      }
-    }, err => {
-      this.morePagesAvailable = false;
-    })
+        }
+        infiniteScroll.complete();
+    });
+
   }
 
-  getPostConent(postId:number, postName:string){
-    let passData = {name:'', id:0};
-    passData.name = postName;
-    passData.id = postId;
-    this.navCtrl.push(CommunityDetailPage, passData);
+  getPostConent(postId:number, category: any){
+    var categoryTitle= this.slides[category];
+    console.log(categoryTitle);
+    console.log(postId);
+    var param = {
+      id : postId,
+      categoryTitle : categoryTitle.title
+    }
+    this.navCtrl.push(CommunityDetailPage, param);
   }
 
   doWrite(){
-    this.navCtrl.push(CommunityWritePage);
+    if(this.values.isLoggedIn){
+      this.navCtrl.push(CommunityWritePage, this.categoryId);
+    }else{
+      this.funtions.showAlert('에러', '로그인을 먼저 해주세요.');
+    }
   }
 
 }

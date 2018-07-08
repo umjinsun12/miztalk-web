@@ -4,12 +4,14 @@ import { Headers } from '@angular/http';
 
 declare var oauthSignature: any;
 var headers = new Headers();
+headers.append('Accept', 'application/json;charset=utf-8');
 headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 
 @Injectable()
 export class Config {
 
     url: any = 'http://miztalk.kr';
+    cmsurl : any = 'http://localhost:3030';
     consumerKey: any = 'ck_afc32b36607b160d37aded122bb0932551d8ae84';
     consumerSecret: any = 'cs_277668a5edbe6822323fa707dc84f7f7f10a98f8';
     oneSignalAppId: any = '2916e1f4-b655-47b4-8ac8-4e7ab279006c';

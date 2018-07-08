@@ -11,6 +11,8 @@ import { Slides } from 'ionic-angular';
 import { PopoverPage} from '../about-popover/about-popover'
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { DomSanitizer } from '@angular/platform-browser';
+import { WordpressService } from '../../services/wordpress.service';
+import { CmsService } from '../../services/cms-service.service';
 //import { Caimport { ModalController } from 'ionic-angular';rtPage } from '../cart/cart';
 
 
@@ -69,8 +71,27 @@ export class ShoppingProductPage {
     count2Percentage: string = '0' + '%';
     count1Percentage: string = '0' + '%';
     variations: any;
+    isNecessary: boolean = false;
+    necessaryCnt: number = 0;
+    necessaryList : any = [];
+    reviewList : any = [];
 
-    constructor(public viewCtrl: ViewController, private photoViewer: PhotoViewer, public popoverCtrl: PopoverController, public nav: NavController, public service: ProductService, params: NavParams, public functions: Functions, public values: Values, private socialSharing: SocialSharing, public loadingCtrl: LoadingController, public modalCtrl: ModalController, public dom : DomSanitizer) {
+
+    constructor(
+        public viewCtrl: ViewController, 
+        private photoViewer: PhotoViewer, 
+        public popoverCtrl: PopoverController, 
+        public nav: NavController, 
+        public service: ProductService, 
+        params: NavParams, 
+        public functions: Functions, 
+        public values: Values, 
+        private socialSharing: SocialSharing, 
+        public loadingCtrl: LoadingController, 
+        public modalCtrl: ModalController, 
+        public dom : DomSanitizer, 
+        public wordpressService: WordpressService,
+        public cmsService: CmsService) {
         this.id = params.data;
         this.options = [];
         this.quantity = 1;
@@ -79,9 +100,19 @@ export class ShoppingProductPage {
         this.tabBarElement = document.querySelector(".tabbar")['style'];
         this.service.getProduct(this.id)
             .then((results) => this.handleProductResults(results));
+        this.cmsService.getReviews(1 ,this.id)
+            .subscribe((results) =>this.handleReviewList(results));
     }
+
+    handleReviewList(results){
+
+    }
+
     handleProductResults(results) {
         this.product = results;
+        this.necessaryCnt = 0;
+        this.isNecessary = false;
+        console.log(this.product);
         this.product.description = this.product.description.replace(/<p>/g,'').replace(/<\/p>/g, '').replace(/&nbsp;/g,'');
         this.product.description = this.dom.bypassSecurityTrustHtml(this.product.description);
         console.log(this.product.description);
@@ -116,6 +147,7 @@ export class ShoppingProductPage {
     getVariationProducts() {
         this.service.getVariationProducts(this.product.id).then((results) => {
             this.variations = results
+            console.log(this.variations);
         });
     }
     getProduct(id) {
@@ -145,7 +177,11 @@ export class ShoppingProductPage {
         if(this.showOption == true){
             if (this.product.type == 'variable' && this.options.length == 0) {
                 this.functions.showAlert('에러', '옵션을 선택하세요')
-            } else {
+            } 
+            else if(!this.isNecessary && this.product.attributes.length >= 2){
+                this.functions.showAlert('에러', '필수 옵션을 모두 선택하세요')
+            }
+            else {
                 var cnt = 0;
                 for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
                     this.service.addToCart(this.selectOptionProduct[i]).then((results) => {
@@ -161,7 +197,6 @@ export class ShoppingProductPage {
         }
     }
     removeItem(id){
-        console.log("adfsdf");
         for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
             if(this.selectOptionProduct[i].variation_id == id){
                 this.selectOptionProduct.splice(i, 1);
@@ -219,7 +254,14 @@ export class ShoppingProductPage {
             }
         }
         console.log(this.selectOptionProduct);
-        this.options[0] = [];
+        if(this.product.attributes.length < 2)
+            this.options[0] = [];
+        else{
+            console.log(this.options);
+            if(this.product.attributes.length == this.options.length){
+                this.isNecessary = true;
+            }
+        }
     }
 
     deleteOptionQuantity(id){
@@ -450,30 +492,37 @@ export class ShoppingProductPage {
     yourRating(rating) {
         this.form.rating = rating;
     }
-    submitComment() {
+    submitComment(files) {
         this.form.id = this.id;
         if (this.validate()) {
             this.buttonSubmitLogin = true;
+
+            this.cmsService.createReview(this.product.id, this.form.comment, this.values.token, files).then(data => {
+                console.log(data);
+                this.buttonSubmitLogin = false;
+                this.functions.showAlert("성공", "리뷰를 등록해주셔서 감사합니다.! 리뷰는 승인 후에 게시됩니다.");
+            });
             this.service.submitComment(this.form).then((results) => {
                 this.status = results;
                 this.buttonSubmitLogin = false;
-                this.functions.showAlert("Success", "Thank you for your review! Your review is awaiting approval");
+                console.log(this.status);
+                this.functions.showAlert("성공", "리뷰를 등록해주셔서 감사합니다.! 리뷰는 승인 후에 게시됩니다.");
             });
         }
     }
     validate() {
         if (!this.values.isLoggedIn) {
             if (this.form.author == undefined || this.form.author == "") {
-                this.functions.showAlert("ERROR", "이름을 입력해 주세요");
+                this.functions.showAlert("에러", "이름을 입력해 주세요");
                 return false
             }
             if (this.form.email == undefined || this.form.email == "") {
-                this.functions.showAlert("ERROR", "이메일을 입력해 주세요");
+                this.functions.showAlert("에러", "이메일을 입력해 주세요");
                 return false
             }
         }
         if (this.form.comment == undefined || this.form.comment == "") {
-            this.functions.showAlert("ERROR", "댓글을 입력해 주세요");
+            this.functions.showAlert("에러", "댓글을 입력해 주세요");
             return false
         } else return true;
     }

@@ -11,6 +11,9 @@ import { CardnewsService } from '../../services/shopping-services/cardnews-servi
 import {EventDetailPage} from '../event-detail/event-detail';
 import { ShoppingProductPage } from '../shopping-product/shopping-product';
 import { PointDetailPage } from '../point-detail/point-detail';
+import { CmsService } from '../../services/cms-service.service';
+import { Config } from '../../services/shopping-services/config';
+
 
 
 /**
@@ -62,7 +65,9 @@ export class HomePage {
     public nativeStorage : NativeStorage,
     public storage : Storage,
     public functions: Functions,
-    public service : CardnewsService) {
+    public service : CardnewsService,
+    public cmsService : CmsService,
+    public config : Config) {
       this.service.presentLoading('로딩중입니다.');
       this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
   }

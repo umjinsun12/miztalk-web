@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import * as Config from '../wordpress.config';
 import { Observable } from 'rxjs/Observable';
+import { Values } from './shopping-services/values';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 
 @Injectable()
 export class WordpressService {
-  constructor(public http: Http){}
+  constructor(public http: Http, public values : Values){}
 
   getRecentPosts(categoryId:number, page:number = 1){
     //if we want to query posts by category
@@ -55,17 +56,20 @@ export class WordpressService {
     .map(res => res.json());
   }
 
-  createComment(postId, user, comment){
+  createComment(postId, comment){
     let header: Headers = new Headers();
-    header.append('Authorization', 'Bearer ' + user.token);
+    header.append('Authorization', 'Bearer ' + this.values.token);
 
-    return this.http.post(Config.WORDPRESS_REST_API_URL + "comments?token=" + user.token, {
-      author_name: user.displayname,
-      author_email: user.email,
-      post: postId,
-      content: comment
-    },{ headers: header })
-    .map(res => res.json());
+    return new Promise(resolve =>{
+      this.http.post(Config.WORDPRESS_REST_API_URL + "comments?token=" + this.values.token, {
+        author_name: this.values.customerName,
+        author_email: this.values.customerId,
+        post: postId,
+        content: comment
+      },{ headers: header }).map(res => res.json()).subscribe(data => {
+        resolve(data);
+      });
+    });
   }
 
   getPostbyId(postId){

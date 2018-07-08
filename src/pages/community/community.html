@@ -43,19 +43,13 @@
             <ion-list>
                 <ion-item *ngFor="let post of posts" no-padding>
                   <ion-row no-padding>
-                    <ion-col (click)="getPostConent(post.id, post.title.rendered)">
-                      <p class="post-title" [innerHTML]="post.title.rendered"></p>
-                      <p class="post-author">{{post.author}}</p>
-                      <p class="post-date">{{post.reltime}}</p>
-                      <ion-icon name="ios-text" class="post-comment"> {{post.replies}}</ion-icon>
-                      <!--<ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>-->
+                    <ion-col (click)="getPostConent(post._id, post.category)">
+                      <p class="post-title">{{post.title}}</p>
+                      <p class="post-author">{{post.writer}}</p>
+                      <p class="post-date">{{post.date}}</p>
+                      <ion-icon name="ios-text" class="post-comment"> {{post.commentsCnt}}</ion-icon>
+                      <ion-icon name="thumbs-up" class="post-comment"> {{post.like}}</ion-icon>
                     </ion-col>
-                    <!--<ion-col class="post-commentbox" col-3 text-center>
-                        <div small color="primary" (click)="postTapped($event, post)" icon-start>
-                          <p>0</p>
-                          <h6>댓글</h6>
-                        </div>
-                    </ion-col>-->
                   </ion-row>
                 </ion-item>
               </ion-list>
@@ -65,51 +59,6 @@
     <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="morePagesAvailable">
       <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 게시글을 로딩 중입니다."> </ion-infinite-scroll-content>
     </ion-infinite-scroll>
-
-    
-    <!--<ion-refresher (ionRefresh)="doRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-    <ion-list>
-      <ion-item *ngFor="let post of posts" no-padding>
-        <ion-row no-padding>
-          <ion-col col-9>
-            <h2 class="post-title" [innerHTML]="post.title.rendered"></h2>
-            <p class="post-author">{{post.authordata.name}}</p>
-            <p class="post-date">{{post.date | date : 'MM-dd HH:mm'}}</p>
-            <ion-icon name="ios-text" class="post-comment"> 0</ion-icon>
-            <ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>
-          </ion-col>-->
-          <!--<ion-col class="post-commentbox" col-3 text-center>
-              <div small color="primary" (click)="postTapped($event, post)" icon-start>
-                <p>0</p>
-                <h6>댓글</h6>
-              </div>
-          </ion-col>-->
-        <!--</ion-row>
-      </ion-item>
-    </ion-list>
-  
-
-    <!--
-
-    <ion-card *ngFor="let post of posts" >
-      <ion-card-content >
-      <ion-card-title [innerHTML]="post.title.rendered"></ion-card-title>
-      </ion-card-content>
-      <ion-row no-padding>
-         <ion-col>
-           <button ion-button clear small color="primary" icon-start>
-             {{post.date.split('T')[0]}}
-           </button>
-         </ion-col>
-         <ion-col text-right>
-           <button ion-button small color="primary" (click)="postTapped($event, post)" icon-start>
-              Read More
-           </button>
-         </ion-col>
-       </ion-row>
-    </ion-card>-->
     
 </ion-content>
 

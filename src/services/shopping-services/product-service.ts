@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Config } from './config';
 import { Values } from './values';
 import { URLSearchParams } from '@angular/http';
@@ -119,6 +119,8 @@ export class ProductService {
          });
      }
      submitComment(form) {
+        
+
          var params = new URLSearchParams();
          params.append("rating", form.rating);
          params.append("comment", form.comment);
@@ -127,9 +129,10 @@ export class ProductService {
              params.append("email", form.email);
          }
          params.append("comment_post_ID", form.id);
+
          return new Promise(resolve => {
-             this.http.post(this.config.url + '/wp-comments-post.php', params).subscribe(data => {
-                 resolve(true);
+             this.http.post(this.config.url + '/wp-comments-post.php', params, this.config.options).subscribe(data => {
+                 resolve(data);
              });
          });
      }

@@ -16,25 +16,60 @@
   <ion-list>
     <ion-item no-padding>
       <div class="community-title-wrapper">
-        <div class="community-category">[{{post.categoryName}}]</div>
-        <div class="community-title">{{post.title.rendered}}</div>
-        <div class="community-author">{{post.author}} {{post.date}}</div>
+        <div class="community-category">[{{categoryTitle}}]</div>
+        <div class="community-title">{{post.title}}</div>
+        <div class="community-author">{{post.writer}} {{post.date}} 
+          <ion-icon name="thumbs-up" class="community-thumbs"> {{post.like}}</ion-icon>
+        </div>
       </div>
     </ion-item>
     <ion-item no-padding>
-      <div class="community-content">{{post.content.rendered}}</div>
+        <div>
+            <ion-slides pager="true" loop="false" autoplay="false">
+                <ion-slide *ngFor='let img of post.image'>
+                    <img src="{{img}}">
+                </ion-slide>
+            </ion-slides>
+        </div>
+      <div class="community-content">{{post.contents}}</div>
+      <div *ngIf="isMine" class="community-removebtn">
+          <button ion-button color="warm-grey" (click)="removePost()">글 삭제</button>
+          <!--<button *ngIf="!likebtn" ion-button color="warm-grey">글 수정</button>-->
+        </div>
+      <div  class="like-btn">
+        <button *ngIf="likebtn" ion-button>
+            <ion-icon name="thumbs-up" (click)="doLike()"> 좋아요 {{post.like}}</ion-icon>
+        </button>
+        <button *ngIf="!likebtn" ion-button color="warm-grey">
+            <ion-icon name="thumbs-up" (click)="doLike()"> 좋아요 {{post.like}}</ion-icon>
+        </button>
+      </div>
     </ion-item>
     <ion-item no-padding>
-      <div class="community-comment-title">댓글 {{post.replies.length}}</div>
+      <div class="community-comment-title">
+        댓글 {{post.comments.length}}
+      </div>
     </ion-item>
     <div class="comment-box">
-    <ion-item *ngFor="let reply of post.replies" no-padding>
+    <ion-item *ngFor="let reply of post.comments" no-padding>
       <div class="comment-wrapper">
-        <div class="comment-auther">{{reply.author_name}}</div>
-        <div class="comment-content">{{reply.content.rendered}}</div>
-        <div class="comment-date">{{reply.date}}</div>
+        <div class="comment-auther">{{reply.name}}</div>
+        <div class="comment-content">{{reply.memo}}</div>
+        <div class="comment-date">{{reply.date}} <span *ngIf="reply.isMine" (click)="removeComment(reply._id)" style="text-decoration: underline;">  댓글삭제</span></div>
       </div>
     </ion-item>
     </div>
+    
   </ion-list>
 </ion-content>
+<ion-footer no-shadow>
+  <ion-row class="comment-write-box">
+    <ion-col col-10>
+      <ion-textarea [(ngModel)]="comment" rows="1" type="text" placeholder="댓글을 남겨보세요" autosize></ion-textarea>
+    </ion-col>
+    <ion-col col-2 no-shadow class="comment-submit-box">
+        <button class="comment-submit" ion-button full no-padding no-margin (click)="writeComment()" autosize>등록</button>
+    </ion-col>
+  </ion-row>
+    
+</ion-footer>

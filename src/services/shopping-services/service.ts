@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { LoadingController } from 'ionic-angular';
 import { Config } from './config';
 import { Values } from './values';
 import { URLSearchParams } from '@angular/http';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { AuthenticationService } from '../authentication.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
+import { CmsService } from '../cms-service.service';
 
 @Injectable() 
 export class Service {
@@ -42,7 +44,7 @@ export class Service {
     postoptions: any = {};
 
 
-    constructor(private http: Http, private config: Config, private values: Values, public loadingCtrl: LoadingController, private nativeStorage: NativeStorage) {
+    constructor(private http: Http, private config: Config, private values: Values, public loadingCtrl: LoadingController, private nativeStorage: NativeStorage, private cmsService: CmsService) {
         this.mainCategories = [];
         this.filter.page = 1;
         this.deals = {};
@@ -56,7 +58,6 @@ export class Service {
         });
         return new Promise(resolve => {
             this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-keys', this.config.options).map(res => res.json()).subscribe(data => {
-                console.log("adsfsdfasdfsdfsdfsdfasdf");
                 console.log(data);
                 this.values.data = data;
                 this.login_nonce = data.login_nonce;
@@ -68,6 +69,10 @@ export class Service {
                     this.values.customerId = data.user.data.ID;
                     this.values.customerName = data.user.data.display_name;
                     this.values.avatar = data.user.avatar_url;
+                    this.values.user_login = data.user.data.user_login;
+                    this.values.user_pass = data.user.data.user_pass;
+                    this.values.token = data.jwt.token;
+
                     this.nativeStorage.getItem('loginData').then(data => {
                         if (data.type == 'social') {
                             this.values.customerName = data.displayName;
@@ -113,6 +118,8 @@ export class Service {
                     }
                     resolve(this.categories);
                 });
+
+
 
                 this.http.get(this.config.setUrl('GET', '/wp-json/wp/v2/categories?', false), this.config.options).map(res => res.json())
                         .subscribe(data => {

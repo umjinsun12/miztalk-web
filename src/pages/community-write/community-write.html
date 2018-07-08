@@ -44,8 +44,40 @@
     </ion-item>
   
     <ion-item class="community-content-item community-textarea">
-      <ion-textarea [(ngModel)]="content" style="height:400px" type="text" placeholder="내용"></ion-textarea>
+      <ion-textarea  [(ngModel)]="content" row="15" type="text" placeholder="내용"></ion-textarea>
     </ion-item>
+
+    <!--<ion-item>
+        <ion-input type="file" name="file[]" accept="image/*" (change)="changeListener($event)" multiple></ion-input>
+    </ion-item>
+    <ion-item>
+      <div *ngFor="let item of processedImages">
+          <img src="{{item.compressedImage.imageDataUrl}}" width="100">
+      </div>
+    </ion-item>-->
+    <div>
+        <ion-row>
+          <ion-col *ngFor="let item of fileimgs">
+              <img src="{{item}}" width="100">
+          </ion-col>
+        </ion-row>
+        <button ion-button color="primary" (click)="getImage()">
+            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
+        </button>
+    </div>
+    
+    <!--<ion-item>
+        <p>{{imageURI}}</p>
+        <button ion-button color="secondary" (click)="getImage()">Get Image</button>
+      </ion-item>
+      <ion-item>
+        <h4>Image Preview</h4>
+        <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />
+      </ion-item>
+      <ion-item>
+        <button ion-button (click)="uploadFile()">Upload</button>
+      </ion-item>-->
+
   </ion-list>
   
 </ion-content>
