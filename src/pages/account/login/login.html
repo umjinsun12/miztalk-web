@@ -5,7 +5,7 @@
     
     <div>
         <form #f="ngForm" class="login">
-            <ion-list>
+            <!--<ion-list>
                 <ion-item>
                     <ion-label fixed><ion-icon name="ios-browsers-outline"></ion-icon></ion-label>
                     <ion-input required type="email" [(ngModel)]="loginData.username" name="firstname"> </ion-input>
@@ -21,11 +21,19 @@
                     <ion-icon item-right name="ios-eye-off" (click)="hidePassword()" style="font-size: 2.5rem;z-index:10"></ion-icon>
                 </ion-item>
                 <h2 tappable (click)="forgotten()">비밀번호를 잊으셨나요?</h2>
-                <h2 tappable (click)="dismiss()">되돌아가기</h2>
-            </ion-list> <button ion-button outline full type="submit" text-uppercase [disabled]="disableSubmit" (click)="login()">로그인
-      </button> <br> </form>
+                
+            </ion-list>-->
+            <button ion-button outline full class="facebookbtn" type="submit" text-uppercase [disabled]="disableSubmit" (click)="facebookLogin()"><img src="assets/img/9.png"srcset="assets/img/9@2x.png 2x,assets/img/9@3x.png 3x" class="facebookicon">페이스북 로그인
+            </button> <br> 
+            <button ion-button outline full class="naverbtn" type="submit" text-uppercase [disabled]="disableSubmit" (click)="naverLogin()"><img src="assets/img/10.png"srcset="assets/img/10@2x.png 2x,assets/img/10@3x.png 3x"class="navericon">네이버 로그인
+            </button> <br> 
+            <button ion-button outline full class="kakaobtn" type="submit" text-uppercase [disabled]="disableSubmit" (click)="kakaoLogin()"><img src="assets/img/02.png" srcset="assets/img/02@2x.png 2x,assets/img/02@3x.png 3x" class="kakaoicon">카카오톡 로그인
+            </button> <br> 
+            <h2 tappable (click)="dismiss()">되돌아가기</h2>
+        </form>
+    </div>
 
-        <div class="login-div">
+        <!--<div class="login-div">
                 <ion-label class="login-header">
                     SNS 로그인
                 </ion-label>
@@ -52,7 +60,7 @@
                 <ion-label class="login-signup">
                     아직 회원이 아니세요? <a (click)="signup()">회원가입하기</a>
                 </ion-label>
-        </div>
+                </div>
 
-    </div>
+            </div>-->
 </ion-content>

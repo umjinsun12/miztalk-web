@@ -4,7 +4,7 @@ import { ProductService } from './../../services/shopping-services/product-servi
 import { Component, ViewChild } from '@angular/core';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { md5 } from './md5';
-import { NavController, NavParams, FabContainer, LoadingController, PopoverController, ViewController} from 'ionic-angular';
+import { NavController, NavParams, FabContainer, LoadingController, PopoverController, ViewController, ToastController} from 'ionic-angular';
 import { ShoppingCartPage } from '../shopping-cart/shopping-cart';
 import { ModalController } from 'ionic-angular';
 import { Slides } from 'ionic-angular';
@@ -13,8 +13,15 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { WordpressService } from '../../services/wordpress.service';
 import { CmsService } from '../../services/cms-service.service';
+import * as moment from 'moment';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from  'ng2-image-compress';
 //import { Caimport { ModalController } from 'ionic-angular';rtPage } from '../cart/cart';
 
+
+
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Config } from '../../services/shopping-services/config';
 
 @Component({
   templateUrl: 'shopping-product.html',
@@ -29,7 +36,7 @@ export class ShoppingProductPage {
     message: any;
     wishlist: any;
     quantity: any;
-    reviews: any;
+    reviews: any = [];
     shipping: any;
     
     seletedOption: any;
@@ -37,6 +44,8 @@ export class ShoppingProductPage {
     showOption: boolean = false;
     totalOptionPrice: number = 0;
 
+
+    enableCart: boolean;
     reviewForm: any;
     nickname: any;
     details: any;
@@ -76,6 +85,8 @@ export class ShoppingProductPage {
     necessaryList : any = [];
     reviewList : any = [];
 
+    fileimgs : any = [];
+
 
     constructor(
         public viewCtrl: ViewController, 
@@ -89,24 +100,25 @@ export class ShoppingProductPage {
         private socialSharing: SocialSharing, 
         public loadingCtrl: LoadingController, 
         public modalCtrl: ModalController, 
-        public dom : DomSanitizer, 
+        public sanitizer : DomSanitizer, 
         public wordpressService: WordpressService,
-        public cmsService: CmsService) {
+        public cmsService: CmsService,
+        private camera: Camera,
+        public toastCtrl: ToastController,
+        public config: Config,
+        private imagePicker: ImagePicker,) {
         this.id = params.data;
         this.options = [];
         this.quantity = 1;
+        this.form.rating = 5;
         this.AddToCart = "Add To Cart";
         if(document.querySelector(".tabbar"))
         this.tabBarElement = document.querySelector(".tabbar")['style'];
         this.service.getProduct(this.id)
             .then((results) => this.handleProductResults(results));
-        this.cmsService.getReviews(1 ,this.id)
-            .subscribe((results) =>this.handleReviewList(results));
     }
 
-    handleReviewList(results){
-
-    }
+   
 
     handleProductResults(results) {
         this.product = results;
@@ -114,7 +126,7 @@ export class ShoppingProductPage {
         this.isNecessary = false;
         console.log(this.product);
         this.product.description = this.product.description.replace(/<p>/g,'').replace(/<\/p>/g, '').replace(/&nbsp;/g,'');
-        this.product.description = this.dom.bypassSecurityTrustHtml(this.product.description);
+        this.product.description = this.sanitizer.bypassSecurityTrustHtml(this.product.description);
         console.log(this.product.description);
         if ((this.product.type == 'variable') && this.product.variations.length) 
             this.getVariationProducts();
@@ -137,6 +149,7 @@ export class ShoppingProductPage {
                 this.selectOptionProduct.push(obj);
                 this.totalOptionPrice=this.product.sale_price;
         }
+        moment.locale('ko');
         this.getReviews();
         this.getRelatedProducts();
         this.getUpsellProducts();
@@ -173,6 +186,30 @@ export class ShoppingProductPage {
             this.service.addToCart(obj).then((results) => this.updateCart());
         }
     }
+    addCart(id) {
+        if(this.showOption == true){
+            if (this.product.type == 'variable' && this.options.length == 0) {
+                this.functions.showAlert('에러', '옵션을 선택하세요')
+            } 
+            else if(!this.isNecessary && this.product.attributes.length >= 2){
+                this.functions.showAlert('에러', '필수 옵션을 모두 선택하세요')
+            }
+            else{
+                var cnt = 0;
+                for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
+                    this.service.addToCart(this.selectOptionProduct[i]).then((results) => {
+                        cnt += 1;
+                        if(cnt == this.selectOptionProduct.length)
+                            this.disableAddButton = false;
+                    });
+                }
+            }
+        }
+        else{
+            this.disableAddButton = true;
+        }
+    }
+
     buyNow(id) {
         if(this.showOption == true){
             if (this.product.type == 'variable' && this.options.length == 0) {
@@ -331,8 +368,31 @@ export class ShoppingProductPage {
         pager: true
     }
     getReviews() {
-        this.service.getReviews(this.id).then((results) => this.handleReview(results));
+        this.cmsService.getReviews(1 ,this.id).subscribe((results) =>this.handleReviewList(results));
     }
+
+    handleReviewList(results){
+        for(let comment of results.contents){
+            comment.date = moment(comment.date).fromNow();
+            if(this.values.customerName == comment.writer)
+                comment.isMine = true;
+            else
+                comment.isMine = false;
+            for(var i= 0 ; i < comment.image.length ; i++){
+                comment.image[i] = this.config.cmsurl + '/posts/image/' + comment.image[i].split(':')[0];
+            }
+            this.reviews.push(comment);
+        }
+    }
+
+    removeComment(id){
+        this.cmsService.removePost(id).then(result => {
+            this.reviews = [];
+            this.getReviews();
+            this.functions.showAlert('성공', '리뷰가 삭제되었습니다.');
+        });
+    }
+
     handleReview(a) {
         this.reviews = a;
         this.count = this.product.rating_count;
@@ -492,24 +552,48 @@ export class ShoppingProductPage {
     yourRating(rating) {
         this.form.rating = rating;
     }
-    submitComment(files) {
+    submitComment() {
         this.form.id = this.id;
         if (this.validate()) {
             this.buttonSubmitLogin = true;
-
-            this.cmsService.createReview(this.product.id, this.form.comment, this.values.token, files).then(data => {
+            let fileblobs = []
+            for(let file of this.fileimgs){
+                fileblobs.push(this.cmsService.dataURItoBlob(file));
+            }
+            
+            this.cmsService.createReview(this.product.id , this.form.rating, this.form.comment, this.values.token, fileblobs).then(data => {
                 console.log(data);
                 this.buttonSubmitLogin = false;
-                this.functions.showAlert("성공", "리뷰를 등록해주셔서 감사합니다.! 리뷰는 승인 후에 게시됩니다.");
-            });
-            this.service.submitComment(this.form).then((results) => {
-                this.status = results;
-                this.buttonSubmitLogin = false;
-                console.log(this.status);
-                this.functions.showAlert("성공", "리뷰를 등록해주셔서 감사합니다.! 리뷰는 승인 후에 게시됩니다.");
+                this.form.comment = '';
+                this.fileimgs = [];
+                this.showAddReview = false;
+                this.reviews = [];
+                this.getReviews();
+                this.functions.showAlert("성공", "리뷰를 등록해주셔서 감사합니다.!");
             });
         }
     }
+
+    getImage() {
+        const options: CameraOptions = {
+          quality: 40,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          sourceType:this.camera.PictureSourceType.PHOTOLIBRARY
+        }
+    
+        if(this.fileimgs.length >= 3){
+          this.functions.showAlert('에러', '이미지는 최대 3장 업로드 가능합니다.')
+        }
+        else{
+          this.camera.getPicture(options).then((imageData) => {
+            this.fileimgs.push('data:image/jpeg;base64,' + imageData);
+          }, (err) => {
+            console.log(err);
+            this.presentToast(err);
+          });
+        }
+      }
+
     validate() {
         if (!this.values.isLoggedIn) {
             if (this.form.author == undefined || this.form.author == "") {
@@ -527,7 +611,24 @@ export class ShoppingProductPage {
         } else return true;
     }
     showSubmitReview() {
-        if (this.showAddReview) this.showAddReview = false;
+        if(!this.values.isLoggedIn)
+            this.functions.showAlert('에러', '로그인이 필요합니다.');
+        else if (this.showAddReview) this.showAddReview = false;
         else this.showAddReview = true;
     }
+
+    presentToast(msg) {
+        let toast = this.toastCtrl.create({
+          message: msg,
+          duration: 3000,
+          position: 'bottom'
+        });
+      
+        toast.onDidDismiss(() => {
+          console.log('Dismissed toast');
+        });
+      
+        toast.present();
+      }
+      
 }

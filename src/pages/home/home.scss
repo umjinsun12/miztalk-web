@@ -35,6 +35,27 @@
         
 }
 
+.category-listing{
+    background-color: white;
+    text-align: center;
+    border-top: 1px solid #dcdddd;
+    margin-right: -1px !important;
+    border-bottom: 6px solid #f8f8f8;
+    .category-title{
+        padding:10px;
+        border-right: 1px solid #dcdddd;
+        border-bottom: 1px solid #dcdddd;
+    }
+    .category-text{
+        color: #6e6e6e;
+        margin-top: 2px;
+        font-size: 11px;
+    }
+    .category-icon{
+        height: 23px;
+    }
+}
+
 
 
 

@@ -3,7 +3,7 @@ import { Service } from './../../../services/shopping-services/service';
 import { Functions } from './../../../services/shopping-services/functions';
 import { Values } from './../../../services/shopping-services/values';
 import { Component } from '@angular/core';
-import { NavController} from 'ionic-angular';
+import { NavController, ToastController} from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import {AccountRegister} from '../register/register';
 import {TabsPage} from '../../tabs/tabs';
@@ -15,6 +15,7 @@ import {AccountForgotten} from '../forgotten/forgotten'
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+declare var KakaoTalk: any;
 
 @Component({
   templateUrl: 'login.html',
@@ -34,7 +35,7 @@ export class AccountLogin {
     googleSpinner: boolean = false;
     gres: any;
 
-    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values, public fb: Facebook /*public googlePlus: GooglePlus*/) {
+    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values, public fb: Facebook, public toast :ToastController) {
         this.loginData = [];
         this.LogIn = "LogIn";
     }
@@ -101,32 +102,43 @@ export class AccountLogin {
             this.functions.showAlert('Error', error);
         });
     }
-    /*
-    gmailLogin() {
-        this.googleSpinner = true;
-        this.googlePlus.login({
-            'scopes': '',
-            'webClientId': this.config.webClientId,
-            'offline': true
-        }).then((res) => {
-             this.gres = res;
-             console.log(this.gres);
-            this.googleSpinner = false;
-            this.values.avatar = res.imageUrl;
-            
-            this.service.googleLogin(res).then((results) => {
-                this.functions.showAlert('success', 'Logged in successfully');
-                this.nav.setRoot(TabsPage);
-            });
-        }).catch((err) => {
-            this.googleSpinner = false;
-            this.error = err;
-            this.functions.showAlert('Error', err);
-            console.error(err);
-        });
-    }*/
+    naverLogin(){
+
+    }
+    kakaoLogin(){
+        console.log("kakaotest");
+
+        KakaoTalk.login(
+            function (result) {
+              console.log('Successful login!');
+              console.log(result);
+              this.presentToast(result);
+            },
+            function (message) {
+              console.log('Error logging in');
+              console.log(message);
+              this.presentToast(message);
+            }
+        );
+    }
+ 
     signup(){
         this.nav.push(AccountRegister);
     }
+
+    presentToast(msg) {
+        let toast = this.toast.create({
+          message: msg,
+          duration: 3000,
+          position: 'bottom'
+        });
+      
+        toast.onDidDismiss(() => {
+          console.log('Dismissed toast');
+        });
+      
+        toast.present();
+      }
+
 
 }

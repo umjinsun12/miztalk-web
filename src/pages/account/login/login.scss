@@ -17,6 +17,9 @@
     .item {
         padding: 0px;
     }
+    .button{
+        border : 0px;
+    }
     .shop-info {
         margin: 80px 60px 40px 60px;
         text-align: center;
@@ -92,6 +95,39 @@
         }
     }
     .login {
+        .facebookbtn{
+            background-color: #3b5999;
+            color : white !important;
+            border: 0px !important;
+            font-weight: 500;
+            .facebookicon{
+                width:30px;
+                position: absolute;
+                left: 20px;
+            }
+        }
+        .naverbtn{
+            background-color: #01c73c;
+            color : white !important;
+            border: 0px !important;
+            font-weight: 500;
+            .navericon{
+                width:30px;
+                position: absolute;
+                left: 20px;
+            }
+        }
+        .kakaobtn{
+            background-color: #f9e000;
+            color : black !important;
+            border: 0px !important;
+            font-weight: 500;
+            .kakaoicon{
+                width:30px;
+                position: absolute;
+                left: 20px;
+            }
+        }
         margin: 0 50px;
         .list>.item-block:first-child {
             border-top: none;
@@ -124,7 +160,6 @@
         .button {
             min-height: 50px;
             color: color($colors, primary);
-            background-color : white;
             font-size: 14px;
             margin: 0;
         }

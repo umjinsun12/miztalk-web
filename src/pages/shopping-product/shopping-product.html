@@ -8,28 +8,30 @@
         </button>
       </ion-buttons>
     </ion-navbar>
+    <div class="segment" *ngIf="product">
+            <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule($event)">
+                <ion-segment-button tappable value="overview">
+                    <ion-label text-uppercase>상세정보</ion-label>
+                </ion-segment-button>
+                <!--<ion-segment-button tappable value="related">
+                    <ion-label text-uppercase>Related </ion-label>
+                </ion-segment-button>-->
+                <ion-segment-button tappable value="shipping">
+                        <ion-label text-uppercase>배송정보</ion-label>
+                </ion-segment-button>
+                <ion-segment-button tappable value="reviews">
+                    <ion-label text-uppercase>구매후기</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+        
 </ion-header>
 
 
   <ion-content class="product-page">
 
     <ion-spinner *ngIf="!product" name="crescent"> </ion-spinner>
-    <div class="segment" *ngIf="product">
-        <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule($event)">
-            <ion-segment-button tappable value="overview">
-                <ion-label text-uppercase>상세정보</ion-label>
-            </ion-segment-button>
-            <!--<ion-segment-button tappable value="related">
-                <ion-label text-uppercase>Related </ion-label>
-            </ion-segment-button>-->
-            <ion-segment-button tappable value="shipping">
-                    <ion-label text-uppercase>배송정보</ion-label>
-            </ion-segment-button>
-            <ion-segment-button tappable value="reviews">
-                <ion-label text-uppercase>구매후기</ion-label>
-            </ion-segment-button>
-        </ion-segment>
-    </div>
+    
     <div *ngIf="showOverview">
         <div *ngIf="product" class="product-details">
             <div *ngIf="product.images">
@@ -114,25 +116,6 @@
                     </div> <br><br>
                  </div>
                  
-                <div *ngIf="reviews?.length">
-                    <ion-item *ngIf="reviews" class="item-background"> Reviews </ion-item>
-                    <div *ngFor="let item of reviews | slice:0:2; let i=index" class="reviews">
-                        <ion-item no-lines>
-                            <!--ion-avatar item-start style="margin:8px">
-                <img src="https://www.gravatar.com/avatar/{{item.avatar}}">
-              </ion-avatar-->
-                            <h3 style="margin-bottom:0px;font-size:15px"> <span class="rating review-star">
-               <span class="star-icon" [ngClass]="{full: item.rating >= 1, half: item.rating == 0.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 2, half: item.rating == 1.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 3, half: item.rating == 2.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 4, half: item.rating == 3.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 5, half: item.rating == 4.5}">&#x2605;</span> </span>
-                            </h3>
-                            <h3>By {{item.name}}</h3>
-                            <h3 style="color:#9e9898;margin-bottom:4px;font-size:13px">{{item.date_created | date:'medium'}}</h3>
-                        </ion-item>
-                        <p text-wrap>{{item.review}}</p>
-                    </div>
-                    <ion-item style="padding-top: 6px;" no-lines class="show-more" *ngIf="reviews?.length >= 3" (click)="showMoreReviews()">
-                        <h2 tappable style="border-radius:20px"><span class="span1">Show more</span><span class="span2" style="top:5px"><ion-icon name="ios-more"></ion-icon></span></h2>
-                    </ion-item>
-                </div>
             </div>
         </div>
     </div>
@@ -240,8 +223,23 @@
                                     <ion-item class="comment-area"> <textarea rows="2" style="width: 100%; border: none;" required type="text" [(ngModel)]="form.comment" name="comment" placeholder="리뷰 남기기">
                   </textarea> </ion-item>
                                 </ion-list>
-                                <div class="login-button"> <button style="margin: 16px 16px 0 16px;width: calc(100% - 32px);" ion-button block color="button-color" type="submit" text-uppercase [disabled]="buttonSubmitLogin" (click)="submitComment()">등록
-                </button> </div>
+                                <div class="image-box">
+                                        <div class="image-text">
+                                                이미지 등록 (이미지 등록은 최대 3장까지 가능합니다)
+                                                </div>
+                                        <ion-row>
+                                          <ion-col col-3 style="padding-left: 5px" *ngFor="let item of fileimgs">
+                                              <img src="{{item}}" width="60">
+                                          </ion-col>
+                                          <ion-col col-3>
+                                                <button class="image-btn" ion-button color="primary" (click)="getImage()" outline>
+                                                        <ion-icon name="add"></ion-icon>
+                                                </button>
+                                                
+                                            </ion-col>
+                                        </ion-row>
+                                    </div>
+                                    <div class="login-button"> <button style="margin: 16px 16px 0 16px;width: calc(100% - 32px);" ion-button block color="button-color" type="submit" text-uppercase [disabled]="buttonSubmitLogin" (click)="submitComment()">등록</button> </div>
                             </form>
                         </div>
                     </div>
@@ -252,12 +250,17 @@
                 <ion-card-content>
                     <div *ngFor="let item of reviews" class="reviews">
                         <ion-item no-lines>
-                            <h3 style="margin-bottom:6px;font-size:15px">{{item.name}} <span class="rating review-star">
+                            <h3 style="margin-bottom:6px;font-size:15px">{{item.writer}}  <span *ngIf="item.isMine" (click)="removeComment(item._id)" style="text-decoration: underline;font-size:12px">  댓글삭제</span> <span class="rating review-star">
                 <span class="star-icon" [ngClass]="{full: item.rating >= 1, half: item.rating == 0.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 2, half: item.rating == 1.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 3, half: item.rating == 2.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 4, half: item.rating == 3.5}">&#x2605;</span> <span class="star-icon" [ngClass]="{full: item.rating >= 5, half: item.rating == 4.5}">&#x2605;</span> </span>
                             </h3>
-                            <h3 style="color:#9e9898;margin-bottom:4px;font-size: 13px">{{item.date_created | date:'MMM d, y hh:mm a'}} </h3>
+                            <h3 style="color:#9e9898;margin-bottom:4px;font-size: 13px">{{item.date}}</h3>
                         </ion-item>
-                        <p text-wrap>{{item.review}}</p>
+                        <ion-row>
+                            <ion-col *ngFor="let img of item.image">
+                                <img src="{{img}}"/>
+                            </ion-col>
+                        </ion-row>
+                        <p text-wrap>{{item.contents}}</p>
                     </div>
                 </ion-card-content>
             </ion-card>
@@ -265,7 +268,7 @@
     </div> <br>
   </ion-content>
 
-  <ion-footer no-shadow>
+  <ion-footer *ngIf="segment == 'overview'" no-shadow no-padding>
       <div *ngIf="showOption" class="option-box">
             <div class="option-close">
                     <ion-icon class="close-btn" name="md-close" (click)="closeOption()"></ion-icon>
@@ -358,7 +361,7 @@
                 </ion-row>
         </div>
 
-        <ion-row class="total-box">
+    <ion-row class="total-box">
             <ion-col class="total-char">
                 총금액
             </ion-col>
@@ -367,22 +370,25 @@
             </ion-col>
         </ion-row>
       </div>
-      <ion-toolbar position="bottom">
+      <ion-toolbar position="bottom" no-padding>
         <ion-row>
             
           <button col-3 ion-button full color="dark" text-uppercase [disabled]='disableSubmit' (click)="kakaoqna()">
             제품문의
           </button>
-            
-          <button col-9 ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="buyNow(product.id)">
-            구매하기
-          </button>
+          
+          <ion-row  col-9 no-padding>
+              <ion-col col-4 *ngIf="showOption" no-padding>
+                            <button ion-button full color="danger" text-uppercase [disabled]='disableSubmit' (click)="addCart(product.id)">
+                        장바구니
+                </button>
+              </ion-col>
+              <ion-col no-padding>
+                <button ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="buyNow(product.id)">
+                    구매하기
+                </button>
+            </ion-col>
+          </ion-row>
         </ion-row>
       </ion-toolbar>
   </ion-footer>
-  
-  <!--<div class="add-to-cart-button">
-      <button ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="addToCart(product.product.id)">
-        {{AddToCart}}
-      </button>
-    </div>-->

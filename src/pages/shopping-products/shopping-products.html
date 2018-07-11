@@ -8,6 +8,11 @@
 
   <ion-navbar>
     <ion-title> {{categoryName}}</ion-title>
+    <ion-buttons end > 
+            <button ion-button icon-only (click)="getSearch()" style="color:#fff;margin-left:6px;margin-right:6px;">
+                  <ion-icon ios="md-search" md="md-search" style="font-size:30px;"></ion-icon>
+            </button>
+        </ion-buttons>
   </ion-navbar>
 
 </ion-header>

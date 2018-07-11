@@ -67,18 +67,19 @@ export class CmsService {
       })
   }
 
-  createReview(postid, content, token, files){
+  createReview(postid, rating,content, token, files){
 
       let params = new FormData();
       params.append('addContents', content);
-      params.append('postId', postid);
+      params.append('postid', postid);
       params.append('userToken', token);
+      params.append('rating', rating);
       for(let file of files){
         params.append('UploadFile', file);
       }
 
       return new Promise(resolve =>{
-          this.http.post(this.config.cmsurl + '/posts/showReview', params).map(res => res.json())
+          this.http.post(this.config.cmsurl + '/posts/showReview?mode=add', params).map(res => res.json())
           .subscribe(data =>{
               resolve(data);
           })
@@ -125,8 +126,8 @@ export class CmsService {
   }
 
 
-  getReviews(page: number = 1, postId: number = 0){
-      return this.http.get(this.config.cmsurl + '/posts/showReview?page=' + postId + '&postId=' + postId).map(res => res.json());
+  getReviews(page: number = 1, postid: number = 0){
+      return this.http.get(this.config.cmsurl + '/posts/showReview?page=' + page + '&postid=' + postid).map(res => res.json());
   }
 
 

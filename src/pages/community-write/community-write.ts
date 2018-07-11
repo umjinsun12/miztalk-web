@@ -111,8 +111,8 @@ export class CommunityWritePage {
   getImage() {
     const options: CameraOptions = {
       quality: 40,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType:this.camera.PictureSourceType.PHOTOLIBRARY
     }
 
     if(this.fileimgs.length >= 3){
@@ -121,7 +121,7 @@ export class CommunityWritePage {
     else{
       this.camera.getPicture(options).then((imageData) => {
         //this.imageURI = imageData;
-        this.fileimgs.push(imageData);
+        this.fileimgs.push('data:image/jpeg;base64,' + imageData);
       }, (err) => {
         console.log(err);
         this.presentToast(err);

@@ -20,7 +20,7 @@
                   <div class="cart-list" *ngFor="let item of cart.cart_contents | keys">
                         <ion-item no-lines>
                           <ion-thumbnail item-left (click)="getProduct(item.value.product_id)"> <img src="{{item.value.thumb}}"> </ion-thumbnail>
-                          <h2 wrap-text class="item-name" style="position: absolute;top: 15px;max-width: 50%;">{{item.value.name}}</h2>
+                          <h2 class="item-name" style="position: absolute;top: 15px;width:200px">{{item.value.name}}</h2>
                           <!--<h3 wrap-text style="position: absolute; margin-top: -17px;">{{item.value.price | currency:values.currency:true:'1.2-2'}}</h3>-->
                           <h3 wrap-text style="position: absolute;right: 10px;bottom: 20px;font-size:  14px"><span style="font-size: 14px">{{(1*item.value.line_subtotal | currency:values.currency:false:'1.0-0').replace('USD','')}}원</span></h3>
                           <div class="add-remove-button"> <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear (click)="deleteFromCart(item.value.product_id, item.key)">

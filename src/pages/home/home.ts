@@ -14,6 +14,8 @@ import { PointDetailPage } from '../point-detail/point-detail';
 import { CmsService } from '../../services/cms-service.service';
 import { Config } from '../../services/shopping-services/config';
 
+import {ShoppingProductsPage} from '../../pages/shopping-products/shopping-products';
+
 
 
 /**
@@ -117,6 +119,17 @@ export class HomePage {
     if(this.values.isLoggedIn)
       this.navCtrl.push(PointDetailPage);
   }
+  goCategory(id, name){
+    let item = {
+        id : 0,
+        name : "",
+        categories : []
+    };
+    item.categories.push(id);
+    item.id = id;
+    item.name = name;
+    this.navCtrl.push(ShoppingProductsPage,item);
+}
 
   
   openPage(page: HomePageInterface) {

@@ -55,16 +55,22 @@
           <img src="{{item.compressedImage.imageDataUrl}}" width="100">
       </div>
     </ion-item>-->
-    <div>
-        <ion-row>
-          <ion-col *ngFor="let item of fileimgs">
-              <img src="{{item}}" width="100">
-          </ion-col>
-        </ion-row>
-        <button ion-button color="primary" (click)="getImage()">
-            <ion-icon ios="ios-camera" md="md-camera"></ion-icon>
-        </button>
-    </div>
+    <div class="image-box">
+        <div class="image-text">
+        이미지 등록 (이미지 등록은 최대 3장까지 가능합니다)
+        </div>
+            <ion-row>
+              <ion-col col-3 style="padding-left: 5px" *ngFor="let item of fileimgs">
+                  <img src="{{item}}" width="70">
+              </ion-col>
+              <ion-col col-3>
+                    <button class="image-btn" ion-button color="primary" (click)="getImage()" outline>
+                            <ion-icon name="add"></ion-icon>
+                    </button>
+                    
+                </ion-col>
+            </ion-row>
+        </div>
     
     <!--<ion-item>
         <p>{{imageURI}}</p>

@@ -31,6 +31,35 @@
                 </ion-slide>
             </ion-slides>
     </div>
+    <div>
+            <ion-row class="category-listing">
+              <ion-col class="col-3 category-title" (click)="goCategory(15, '육아·생활')">
+                  <img src="assets/img/sh-ct-baby.png" class="category-icon">
+                  <div class="category-text">
+                    육아·생활
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title" (click)="goCategory(17, '주방·가전')">
+                  <img src="assets/img/sp-ct-living.png" class="category-icon">
+                  <div class="category-text">
+                  주방·가전
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title" (click)="goCategory(18, '뷰티·다이어트')">
+                  <img src="assets/img/Sp_CT_Beuty.png" class="category-icon">
+                  <div class="category-text">
+                  뷰티·다이어트
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title" (click)="goCategory(19, '식품')">
+                  <img src="assets/img/sp-ct-food.png"  class="category-icon">
+                  <div class="category-text">
+                  식품
+                  </div>
+              </ion-col>
+            </ion-row>
+          </div>
+          
 
       <ion-list>
           <ion-item class="product-list animated fadeInUp" [ngClass]="{'list-view': layout && layout=='list'}" >

@@ -1,4 +1,14 @@
+.segment{
+    background-color: white;
+}
 .product-page {
+
+
+
+
+    .scroll-content{
+        margin-top:100px !important;
+    }
 
     .shipping-img{
         margin-bottom: 100px;
@@ -728,6 +738,18 @@
             .item {
                 padding: 0 16px;
             }
+            .image-box{
+                margin : 0px 16px 16px 16px;
+                font-size: 13px;
+                .image-text{
+                    font-size: 12px;
+                }
+                .image-btn{
+                    width : 66px;
+                    height : 66px;
+                    border-radius : 0px !important;
+                }
+            }
         }
         .card {
             border-radius: 4px;
@@ -1030,4 +1052,8 @@
             text-align: right;
         }
     }
+}
+
+.bottom{
+   
 }
