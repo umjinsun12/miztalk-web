@@ -4,11 +4,6 @@ import { NavController, NavParams, LoadingController, ToastController} from 'ion
 import { Service } from '../../services/shopping-services/service';
 import { Functions } from './../../services/shopping-services/functions';
 import { CmsService } from '../../services/cms-service.service';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from  'ng2-image-compress';
-//import { ImagePicker } from '@ionic-native/image-picker';
- 
- 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 /**
@@ -46,10 +41,8 @@ export class CommunityWritePage {
     public values: Values,
     public functions : Functions,
     public loadingCtrl: LoadingController,
-    private transfer: FileTransfer,
     private camera: Camera,
     public toastCtrl: ToastController,
-    private imgCompressService: ImageCompressService,
     //public imagePicker : ImagePicker
     ) {
     this.selectCategory = navParams.data;
@@ -141,29 +134,6 @@ export class CommunityWritePage {
   }*/
 
   
-  changeListener($event){
-    this.file = $event.target.files[0];
-    let images: Array<IImage> = [];
-    console.log(this.file);
-    //this.imagesProvider.test1(this.file) // Calls test1() function in imagesProvider.ts
-    ImageCompressService.filesToCompressedImageSource($event.target.files).then(observableImages => {
-      observableImages.subscribe((image) => {
-        images.push(image);
-      }, (error) => {
-        console.log("Error while converting");
-      }, () => {
-                this.processedImages = images;
-                console.log(this.processedImages);
-                for(let item of this.processedImages){
-                  var fileimg = this.cmsService.dataURItoBlob(item.compressedImage.imageDataUrl);
-                  console.log(fileimg);
-                  this.fileimgs.push(fileimg);
-                }
-                
-                this.showTitle = true;
-      });
-    });
-  }
 
 
   

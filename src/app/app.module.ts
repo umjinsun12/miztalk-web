@@ -71,8 +71,6 @@ import { AccountRegister } from '../pages/account/register/register';
 import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
 
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
-import { ImageCompressService,ResizeOptions,ImageUtilityService } from 'ng2-image-compress';
  
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
@@ -185,14 +183,10 @@ import {KakaoTalk} from 'ionic-plugin-kakaotalk';
     EmailComposer,
     IamportService,
     CmsService,
-    FileTransfer,
-    FileTransferObject,
     File,
     ImagePicker,
     //{ provide: Camera, useClass: CameraMock },
     Camera,
-    ImageCompressService,
-    ResizeOptions,
     KakaoTalk,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

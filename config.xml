@@ -113,15 +113,11 @@
     <plugin name="cordova-plugin-iamport-inicis" spec="^0.9.1">
         <variable name="URL_SCHEME" value="ionicinicis3" />
     </plugin>
-    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
-    <plugin name="cordova-plugin-file" spec="~6.0.1" />
-    <plugin name="cordova-plugin-file-transfer" spec="~1.7.1" />
-    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.2.2">
-        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="miztalk" />
-    </plugin>
     <plugin name="com-badrit-base64" spec="^0.2.0" />
     <plugin name="cordova-plugin-ghyeok-kakaotalk" spec="^1.0.4">
         <variable name="KAKAO_APP_KEY" value="dc1867186fd80c3a28a1a4855747beee" />
     </plugin>
+    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
+    <plugin name="cordova-plugin-file" spec="~6.0.1" />
     <engine name="android" spec="7.0.0" />
 </widget>
