@@ -5,60 +5,109 @@
     right: 0;
     left: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: white;
 }
 .account-register {
     background-image: url("../assets/image/login.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     .shop-info {
+        text-align: center;
         margin: 50px 60px 25px 60px;
         h1 {
             text-align: center;
-            color: #fff;
+            color: black;
             font-size: 25px;
         }
         h2 {
             padding-top: 20px;
             text-align: center;
-            color: #fff;
-            font-size: 15px;
+            color: black;
+            font-size: 14px;
+        }
+        h4{
+            text-align: left;
         }
     }
+
+    .orderer-row{
+        padding : 15px 20px 5px 15px;
+        border-bottom : 1px solid #c8c8c8;
+        ion-input{
+            text-align: left;
+        }
+        ion-label{
+            padding : 6px;
+        }
+        [col-3]{
+            width: 100%;
+            max-width: 100%;
+        }
+        .text-input {
+            border: 1px solid #d8d8d8;
+            height: 2.4em;
+            border-radius: 0px;
+            padding: 0 6px;
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #5a5a5a;
+            text-align: center;
+            width: 90% !important;
+            padding-right: 6px;
+        }
+    }
+    .orderer-check-row{
+        padding : 15px 20px 5px 15px;
+        ion-label{
+            padding : 6px;
+            margin-left : 10px;
+        }
+    }
+    .term-box{
+        padding : 0px 6px 0px 22px;
+        .term-chk{
+            padding-right: 10px;
+        }
+    }
+    
+
+    .submit-btn{
+        padding : 0px 22px 0px 22px;
+    }
+
     .login-div {
         text-align: center;
         margin: 0 25px;
         .button {
             min-height: 50px;
-            color: #fff;
-            border: 2px solid rgba(255, 255, 255, 0.79);
+            color: black;
+            border: 2px solid black;
             font-weight: 600;
             font-size: 13px;
         }
     }
     h4 {
-        font-size: 13px;
-        color: #ffffff99;
-        margin: 5px 30px 15px;
-        text-align: center;
+        font-size: 11px;
+        color: black;
+        text-align: left;
         a {
-            color: #fff;
-            font-size: 14px;
+            color: black;
+            font-size: 11px;
         }
     }
     .login {
-        padding: 0 30px;
+        padding: 0 0px;
         .list>.item-block:first-child {
             border-top: none;
         }
         .list>.item-block:last-child {
-            border-bottom: 2px solid rgba(255, 255, 255, 0.79);
+            border-bottom: 2px solid black;
         }
         .list .item-block .item-inner {
             border-bottom: none;
         }
         .item {
-            border-bottom: 2px solid rgba(255, 255, 255, 0.79);
+            border-bottom: 2px solid black;
             background-color: transparent;
             padding-left: 0;
             min-height: 50px;
@@ -69,23 +118,24 @@
         h2 {
             font-size: 13px;
             text-align: right;
-            color: #fff;
+            color: black;
             letter-spacing: 0.2px;
         }
         h3 {
-            font-size: 15px;
+            font-size: 14px;
             text-align: center;
         }
         ion-icon {
-            color: #fff;
+            color: black;
             font-size: 2rem;
         }
         .button {
-            min-height: 50px;
-            color: #fff;
-            border: 2px solid rgba(255, 255, 255, 0.79);
+            min-height: 2.0em;
+            color: black;
+            border: 2px solid black;
             font-weight: 600;
             font-size: 13px;
+            margin: 0px 0px;
         }
         .item ion-icon[item-left] {
             margin-left: 0;
@@ -94,14 +144,14 @@
         }
         input {
             font-size: 15px;
-            color: #fff;
+            color: black;
             letter-spacing: 0.2px;
         }
         ion-label[fixed] {
             width: 70px;
             min-width: 70px;
             max-width: 85px;
-            color: #fff;
+            color: black;
             font-size: 15px;
         }
         .label+ion-input .text-input {
@@ -111,7 +161,7 @@
         .no-transform {
             input {
                 font-size: 16px;
-                color: #fff;
+                color: black;
                 letter-spacing: 0.2px;
                 margin: 0 8px 4px;
                 text-transform: none;
@@ -119,18 +169,18 @@
         }
         .label-md[floating], .label-ios[floating] {
             margin: 2px 8px -2px;
-            color: #dedede;
+            color: black;
             font-size: 15px;
         }
         .item-md ion-icon[item-left]+.item-inner {
             margin-left: 0;
         }
         .item-md.item-input.ng-invalid.ng-touched:not(.input-has-focus) .item-inner {
-            border-bottom-color: #f2f2f2;
+            border-bottom-color: black;
             box-shadow: none;
         }
         ::placeholder {
-            color: #fff;
+            color: black;
             font-size: 15px;
         }
         .item-md.item-input.input-has-focus .item-inner {
@@ -171,7 +221,7 @@
         border-radius: 4px;
         height: 3em;
         font-size: 1.6rem;
-        color: #fff;
+        color: black;
         background-color: transparent;
         margin: 0.4rem 0.2rem;
         padding: 0 1em;

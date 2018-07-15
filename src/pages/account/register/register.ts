@@ -1,10 +1,12 @@
+import { TermsUsePage } from './../terms-use/terms-use';
 import { Component } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Platform, NavController, AlertController } from 'ionic-angular';
 import { Service } from '../../../services/shopping-services/service';
 import { Functions } from '../../../services/shopping-services/functions';
 import { Values } from '../../../services/shopping-services/values';
 import { OneSignal } from '@ionic-native/onesignal';
 import { TabsPage } from '../../tabs/tabs';
+import { TermsPage } from '../terms/terms';
 //import { Post } from '../../post/post';
 //import { Facebook } from '@ionic-native/facebook';
 //import { GooglePlus } from '@ionic-native/google-plus';
@@ -32,8 +34,11 @@ export class AccountRegister {
     googleSpinner: boolean = false;
     gres: any;
     error: any;
+    termsChk : boolean = false;
+    termsInfoChk : boolean = false;
+    nameChk : boolean = false;
 
-    constructor(public nav: NavController, public service: Service, public platform: Platform, public functions: Functions, private oneSignal: OneSignal, public values: Values) {
+    constructor(public nav: NavController, public service: Service, public platform: Platform, public functions: Functions, private oneSignal: OneSignal, public values: Values, public alertCtrl: AlertController) {
         this.Register = "Register";
         this.registerData = {};
         this.countries = {};
@@ -53,39 +58,51 @@ export class AccountRegister {
         this.shipping_states = this.countries.state[countryId];
     }
     validateForm() {
-        if (this.registerData.first_name == undefined || this.registerData.first_name == "") {
-            this.functions.showAlert("ERROR", "Please Enter First Name");
+        if (this.registerData.display_name == undefined || this.registerData.disply_name == "") {
+            this.functions.showAlert("에러", "닉네임을 입력해 주세요");
             return false
         }
-        if (this.registerData.email == undefined || this.registerData.email == "") {
-            this.functions.showAlert("ERROR", "Please Enter Email ID");
+        if (this.registerData.phone1 == undefined || this.registerData.phone1 == "" || this.registerData.phone2 == undefined || this.registerData.phone2 == "" || this.registerData.phone3 == undefined || this.registerData.phone3 == "" ) {
+            this.functions.showAlert("에러", "휴대폰 번호를 입력해 주세요");
             return false
         }
-        if (this.registerData.password == undefined || this.registerData.password == "") {
-            this.functions.showAlert("ERROR", "Please Enter Password");
+        if (this.termsChk == false || this.termsInfoChk == false) {
+            this.functions.showAlert("에러", "약관에 동의하셔야 다음단계로 진행됩니다.");
             return false
         }
-        if (this.registerData.billing.phone == undefined || this.registerData.billing.phone == "") {
-            this.functions.showAlert("ERROR", "Please Enter phone number");
+        if (this.nameChk == false) {
+            this.functions.showAlert("에러", "닉네임 중복확인을 해주세요.");
             return false
         }
-        this.registerData.username = this.registerData.email;
-        this.registerData.billing.email = this.registerData.email;
-        this.registerData.billing.first_name = this.registerData.first_name;
-        this.registerData.shipping.first_name = this.registerData.first_name;
-        this.registerData.shipping.address_1 = this.registerData.billing.address_1;
-        this.registerData.shipping.address_2 = this.registerData.billing.address_2;
-        this.registerData.shipping.city = this.registerData.billing.city;
-        this.registerData.shipping.state = this.registerData.billing.state;
-        this.registerData.shipping.postcode = this.registerData.billing.postcode;
-        this.registerData.shipping.country = this.registerData.billing.country;
+
         return true;
     }
     registerCustomer() {
         if (this.validateForm()) {
-            this.disableSubmit = true;
-            this.Register = "Registering";
-            this.service.registerCustomer(this.registerData).then((results) => this.handleRegister(results));
+            let phonenum = this.registerData.phone1 + "-" + this.registerData.phone2 + "-" + this.registerData.phone3;
+            let alert = this.alertCtrl.create({
+                title: '휴대폰 번호 확인',
+                message: phonenum + ' 번호가 확실한가요?',
+                buttons: [
+                  {
+                    text: '취소',
+                    role: 'cancel',
+                    handler: () => {
+                      console.log('Cancel clicked');
+                    }
+                  },
+                  {
+                    text: '확인',
+                    handler: () => {
+                        this.disableSubmit = true;
+                        this.Register = "등록중";
+                      console.log('Buy clicked');
+                    }
+                  }
+                ]
+              });
+              alert.present();
+            //this.service.registerCustomer(this.registerData).then((results) => this.handleRegister(results));
         }
     }
     handleRegister(results) {
@@ -115,6 +132,27 @@ export class AccountRegister {
     }
     dismiss() {
         this.nav.pop();
+    }
+
+    nickChange(){
+        this.nameChk = false;
+    }
+
+    nickChk(){
+        if(this.registerData.display_name == undefined ){
+            this.functions.showAlert('경고', '닉네임을 입력해주세요');
+        }
+        else{
+            this.service.nicknameChk(this.registerData.display_name).then(results =>{
+                console.log(results);
+                if(results){
+                    this.functions.showAlert('알림', '이미 사용중인 닉네임입니다.');
+                }else{
+                    this.functions.showAlert('알림', '사용하셔도 되는 닉네임입니다.');
+                    this.nameChk = true;
+                }
+            });
+        }
     }
    /* facebookLogin() {
         this.facebookSpinner = true;
@@ -147,7 +185,11 @@ export class AccountRegister {
             console.error(err);
         });
     }*/
-    terms(id) {
+    terms() {
         //this.nav.push(Post, id);
+        this.nav.push(TermsPage);
+    }
+    termsUse(){
+        this.nav.push(TermsUsePage);
     }
 }

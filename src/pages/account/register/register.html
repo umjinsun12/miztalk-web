@@ -1,52 +1,57 @@
-<ion-header no-border class="login-header">
-    <ion-navbar> <button ion-button menuToggle style="color: white;">
-      <ion-icon name="menu">
-      </ion-icon>
-    </button> </ion-navbar>
+<ion-header>
+
+        <ion-navbar>
+            <ion-title color="grapefruit">
+                미즈톡 회원가입
+            </ion-title>
+        </ion-navbar>
+      
 </ion-header>
+
+
 <ion-content class="account-register">
-    <div class="shop-info">
-        <h1 text-uppercase>Shop name</h1>
-        <h2>You're just one step away from signing up.</h2>
-    </div>
     <div>
         <form #f="ngForm" class="login">
             <ion-list>
-                <ion-item>
-                    <ion-label fixed>Full Name</ion-label>
-                    <ion-input required type="text" [(ngModel)]="registerData.first_name" name="firstname"> </ion-input>
-                </ion-item>
-                <ion-item class="no-transform">
-                    <ion-label fixed>Email</ion-label>
-                    <ion-input required type="email" [(ngModel)]="registerData.email" name="Email"> </ion-input>
-                </ion-item>
-                <ion-item *ngIf="!showPasswordEnable" class="no-transform">
-                    <ion-label fixed>Password</ion-label>
-                    <ion-input required type="password" [(ngModel)]="registerData.password" name="password"> </ion-input>
-                    <ion-icon item-right *ngIf="registerData.password" name="ios-eye" (click)="showPassword()" style="font-size: 2.5rem;z-index:10"></ion-icon>
-                </ion-item>
-                <ion-item *ngIf="showPasswordEnable" class="no-transform">
-                    <ion-label fixed>Password</ion-label>
-                    <ion-input required type="text" [(ngModel)]="registerData.password" name="password"> </ion-input>
-                    <ion-icon item-right name="ios-eye-off" (click)="hidePassword()" style="font-size: 2.5rem;z-index:10"></ion-icon>
-                </ion-item>
-                <ion-item>
-                    <ion-label fixed>Phone</ion-label>
+                <!--<ion-row>
+                    <ion-col>
+                        <ion-label fixed>닉네임</ion-label>
+                    </ion-col>
+                    <ion-col>
+                        <ion-input required type="text" [(ngModel)]="registerData.first_name" name="firstname"> </ion-input>
+                    </ion-col>
+                    <ion-col>
+                        <button ion-button block type="submit" outline text-uppercase (click)="nickChk()">닉네임 중복체크</button>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-label fixed>전화번호</ion-label>
                     <ion-input required type="number" [(ngModel)]="registerData.billing.phone" name="billing_phone"> </ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label fixed>Address</ion-label>
-                    <ion-input required type="text" [(ngModel)]="registerData.billing.address_1" name="billing_1"> </ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label fixed>City</ion-label>
-                    <ion-input required type="text" [(ngModel)]="registerData.billing.city" name="billing_city"> </ion-input>
-                </ion-item>
+                </ion-row>-->
+                <ion-row class="orderer-row">
+                        <ion-label col-3>닉네임</ion-label>
+                        <ion-input required type="text" [(ngModel)]="registerData.display_name" (ionChange)="nickChange()" name="firstname" > </ion-input>
+                        <button col-2 ion-button block type="submit" outline text-uppercase (click)="nickChk()">중복확인</button>
+                </ion-row>
+                <ion-row class="orderer-row">
+                        <ion-label col-3>휴대폰 번호 </ion-label>
+                        <ion-input col-3 required [(ngModel)]="registerData.phone1" type="number" name="telephone"> </ion-input>
+                        <ion-input col-3 required [(ngModel)]="registerData.phone2" type="number" name="telephone"> </ion-input>
+                        <ion-input col-3 required [(ngModel)]="registerData.phone3" type="number" name="telephone"> </ion-input>
+                </ion-row>
+
+                <div class="term-box">
+                    <h4><ion-checkbox checked="true" class="term-chk" [(ngModel)]="termsChk" name="orderchk"> </ion-checkbox>미즈톡 이용약관에 동의 합니다.<a (click)="termsUse()">[약관확인]</a></h4>
+                    <h4><ion-checkbox checked="true" class="term-chk" [(ngModel)]="termsInfoChk" name="orderchk"> </ion-checkbox>미즈톡 개인정보처리 방침에 동의 합니다.<a (click)="terms()">[약관확인]</a></h4>
+                </div>
             </ion-list>
             <div *ngIf="errors" class="margin-error-message">
                 <h3>{{errors.message}} </h3>
-            </div> <br> <button ion-button block type="submit" outline text-uppercase [disabled]="disableSubmit" (click)="registerCustomer()">Register
-        </button> </form>
+            </div> <br> 
+            <div class="submit-btn">
+                <button ion-button block type="submit" outline text-uppercase [disabled]="disableSubmit" (click)="registerCustomer()">가입하기</button>
+            </div>
+         </form>
     </div>
     <!--div>
         <ion-row class="login-div">
@@ -54,5 +59,4 @@
             <ion-col class="col2"> <button ion-button outline type="submit" outline full text-uppercase [disabled]="disableSubmit" (click)="gmailLogin()"> Google</button> </ion-col>
         </ion-row>
     </div-->
-    <h4>By signing in you agree to our <a (click)="terms(this.values.data.pages.terms)">Terms & Conditions</a></h4>
 </ion-content>

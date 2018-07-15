@@ -1,3 +1,4 @@
+import { TermsPage } from './../pages/account/terms/terms';
 import { AccountLogin } from './../pages/account/login/login';
 import { CommunityWritePage } from './../pages/community-write/community-write';
 import { CommunityDetailPage } from './../pages/community-detail/community-detail';
@@ -82,6 +83,9 @@ import {EventAnouncePage} from '../pages/event-anounce/event-anounce';
 import { IamportService } from 'iamport-ionic-inicis3';
 import { Autosize } from '../services/components/autosize';
 import {KakaoTalk} from 'ionic-plugin-kakaotalk';
+import { Naver } from "ionic-plugin-naver";
+import { TermsUsePage } from '../pages/account/terms-use/terms-use';
+
 
 
 
@@ -115,6 +119,8 @@ import {KakaoTalk} from 'ionic-plugin-kakaotalk';
     PointDetailPage,
     ShoppingSearchPage,
     ShoppingProductsPage,
+    TermsPage,
+    TermsUsePage,
     Autosize
   ],
   imports: [
@@ -155,7 +161,9 @@ import {KakaoTalk} from 'ionic-plugin-kakaotalk';
     AddressSearchFormPage,
     PointDetailPage,
     ShoppingSearchPage,
-    ShoppingProductsPage
+    ShoppingProductsPage,
+    TermsUsePage,
+    TermsPage
   ],
   providers: [
     NativeStorage,
@@ -185,6 +193,7 @@ import {KakaoTalk} from 'ionic-plugin-kakaotalk';
     CmsService,
     File,
     ImagePicker,
+    Naver,
     //{ provide: Camera, useClass: CameraMock },
     Camera,
     KakaoTalk,

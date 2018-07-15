@@ -107,12 +107,6 @@
         <variable name="APP_NAME" value="misTalk" />
     </plugin>
     <plugin name="cordova-plugin-advanced-http" spec="^1.11.1" />
-    <plugin name="cordova-plugin-iamport-kcp" spec="^0.9.1">
-        <variable name="URL_SCHEME" value="ionickcp" />
-    </plugin>
-    <plugin name="cordova-plugin-iamport-inicis" spec="^0.9.1">
-        <variable name="URL_SCHEME" value="ionicinicis3" />
-    </plugin>
     <plugin name="com-badrit-base64" spec="^0.2.0" />
     <plugin name="cordova-plugin-ghyeok-kakaotalk" spec="^1.0.4">
         <variable name="KAKAO_APP_KEY" value="dc1867186fd80c3a28a1a4855747beee" />
@@ -120,4 +114,14 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-file" spec="~6.0.1" />
     <engine name="android" spec="7.0.0" />
+    <allow-navigation href="http://172.30.1.41:8100" />
+    <plugin name="cordova-plugin-iamport-inicis" spec="~0.9.1">
+        <variable name="URL_SCHEME" value="miztalk" />
+    </plugin>
+    <plugin name="cordova-plugin-naver" spec="~1.0.0">
+        <variable name="OAUTH_CLIENT_ID" value="9Bb0wKzZc1BwmvOpSB7J" />
+        <variable name="OAUTH_CLIENT_SECRET" value="fP9OC1HmqO" />
+        <variable name="OAUTH_CLIENT_NAME" value="“miztalk”" />
+    </plugin>
+    <allow-navigation href="http://192.168.0.7:8100" />
 </widget>

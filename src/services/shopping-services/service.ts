@@ -451,6 +451,44 @@ export class Service {
             });
         });
     }
+
+    facebookLoginChk(token){
+        var params = new URLSearchParams();
+        params.append("access_token", token);
+        return new Promise(resolve => {
+            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-facebook_loginchk', params, this.config.options).map(res => res.json()).subscribe(data => {
+                if (!data.status){
+                    if(data.msg == 'need_register')
+                        resolve(data.msg);
+                }
+                else if (data.status) {
+                    this.values.isLoggedIn = true;
+                    this.values.customerName = data.last_name;
+                    this.values.customerId = data.user_id;
+                    this.values.avatar = data.avatar;
+                    this.nativeStorage.setItem('loginData', {
+                        username: data.user_login,
+                        avatar: data.avatar,
+                        type: 'social',
+                        displayName: data.last_name
+                    }).then(data => console.log('Data Stored'), error => console.error(error));
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+    nicknameChk(nickname){
+        var params = new URLSearchParams();
+        params.append("display_name", nickname);
+        return new Promise(resolve => {
+            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-check_display_name', params, this.config.options).map(res => res.json()).subscribe(data => {
+                console.log(data);
+                resolve(data.status);
+            });
+        });
+    }
+
     googleLogin(res) {
         var params = new URLSearchParams();
         params.append("access_token", res.userId);

@@ -7,7 +7,8 @@ import { NavController, ToastController} from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import {AccountRegister} from '../register/register';
 import {TabsPage} from '../../tabs/tabs';
-import {AccountForgotten} from '../forgotten/forgotten'
+import {AccountForgotten} from '../forgotten/forgotten';
+import { Naver } from "ionic-plugin-naver";
 
 /**
  * Generated class for the LoginPage page.
@@ -35,7 +36,7 @@ export class AccountLogin {
     googleSpinner: boolean = false;
     gres: any;
 
-    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values, public fb: Facebook, public toast :ToastController) {
+    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values, public fb: Facebook, public toast :ToastController, public naver: Naver) {
         this.loginData = [];
         this.LogIn = "LogIn";
     }
@@ -90,20 +91,32 @@ export class AccountLogin {
   }
   facebookLogin() {
        this.facebookSpinner = true;
+       this.nav.push(AccountRegister);
+       /*
        this.fb.login(['public_profile', 'user_friends', 'email']).then((response) => {
-            this.service.sendToken(response.authResponse.accessToken).then((results) => {
+            this.service.facebookLoginChk(response.authResponse.accessToken).then((results) =>{
+                console.log(results);
                 this.facebookSpinner = false;
-                this.nav.setRoot(TabsPage);
-                this.functions.showAlert('success', 'Logged in successfully');
+                this.nav.push(AccountRegister, response.authResponse.accessToken);
+                //this.nav.setRoot(TabsPage);
+                //this.functions.showAlert('성공', '로그인 되었습니다.');
             });
         }).catch((error) => {
             console.log(error)
             this.facebookSpinner = false;
-            this.functions.showAlert('Error', error);
-        });
+            this.functions.showAlert('에러', error);
+        });*/
     }
     naverLogin(){
-
+        this.naver.login()
+        .then(
+            response => {
+                console.log(response)
+            }) // 성공
+        .catch(
+            error => {
+                console.error(error)}
+            ); // 실패
     }
     kakaoLogin(){
         console.log("kakaotest");
@@ -112,12 +125,10 @@ export class AccountLogin {
             function (result) {
               console.log('Successful login!');
               console.log(result);
-              this.presentToast(result);
             },
             function (message) {
               console.log('Error logging in');
               console.log(message);
-              this.presentToast(message);
             }
         );
     }
