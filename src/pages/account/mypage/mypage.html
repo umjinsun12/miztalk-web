@@ -28,7 +28,7 @@
               <ion-col col-8 class="col2 member-field">
                   <div class="member-name" *ngIf="values.customerName">{{values.customerName}}<span class="member-level">정회원</span> </div>
                   <div class="member-name" *ngIf="!values.customerName">미즈톡</div>
-                  <div class="member-point" (click)="showPointDetail()"><img src="assets/img/action-b-point-icon.png" class="Action_B_Point_Icon">{{values.point | number: '1.0-0'}}<span class="member-deletepoint">(소멸예정 10P)</span></div>
+                  <div class="member-point" (click)="showPointDetail()"><img src="assets/img/action-b-point-icon.png" class="Action_B_Point_Icon">{{values.point | number: '1.0-0'}}<span class="member-deletepoint">(소멸예정 0P)</span></div>
               </ion-col>
           </ion-row>
         </div>
@@ -37,7 +37,7 @@
               <!--<ion-item (click)="Address()"><ion-icon item-left ios="ios-person-add" md="md-person-add"></ion-icon>배송주소</ion-item>-->
               <ion-item (click)="orders()"><ion-icon item-left ios="ios-list-box" md="md-list-box"></ion-icon>구매내역<img src="assets/img/manu-next-arrow.png" class="next-arrow"></ion-item>
               <ion-item (click)="wishlist()"><ion-icon item-left ios="ios-heart" md="md-heart"></ion-icon>찜한상품<img src="assets/img/manu-next-arrow.png" class="next-arrow"></ion-item>
-              <ion-item (click)="myInfo()"><ion-icon item-left ios="ios-information-circle" md="ios-information-circle"></ion-icon>내 정보<img src="assets/img/manu-next-arrow.png" class="next-arrow"></ion-item>
+              <!--<ion-item (click)="myInfo()"><ion-icon item-left ios="ios-information-circle" md="ios-information-circle"></ion-icon>내 정보<img src="assets/img/manu-next-arrow.png" class="next-arrow"></ion-item>-->
               <ion-item (click)="service.logout()"><ion-icon item-left ios="ios-person-add" md="md-person-add"></ion-icon>로그아웃<img src="assets/img/manu-next-arrow.png" class="next-arrow"></ion-item>
             </ion-list>
         </div>

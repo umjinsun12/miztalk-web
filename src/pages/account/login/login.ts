@@ -91,46 +91,108 @@ export class AccountLogin {
   }
   facebookLogin() {
        this.facebookSpinner = true;
-       this.nav.push(AccountRegister);
-       /*
        this.fb.login(['public_profile', 'user_friends', 'email']).then((response) => {
             this.service.facebookLoginChk(response.authResponse.accessToken).then((results) =>{
                 console.log(results);
-                this.facebookSpinner = false;
-                this.nav.push(AccountRegister, response.authResponse.accessToken);
-                //this.nav.setRoot(TabsPage);
-                //this.functions.showAlert('성공', '로그인 되었습니다.');
+                if(results == 'need_register'){
+                    let param = {
+                        token : response.authResponse.accessToken,
+                        sns : 'facebook'
+                    };
+                    this.facebookSpinner = false;
+                    this.nav.push(AccountRegister, param);
+                }
+                else{
+                    this.nav.popAll();
+                    this.functions.showAlert('성공', '로그인 되었습니다.');
+                }
             });
         }).catch((error) => {
             console.log(error)
             this.facebookSpinner = false;
             this.functions.showAlert('에러', error);
-        });*/
+        });
     }
     naverLogin(){
+        
         this.naver.login()
         .then(
             response => {
-                console.log(response)
+                this.naver.requestMe().then(result =>{
+                    this.service.naverLoginChk(response.accessToken, result).then(results => {
+                        if(results == 'need_register'){
+                            let param = {
+                                token : response.accessToken,
+                                result : result.response,
+                                sns : 'naver'
+                            };
+                            this.facebookSpinner = false;
+                            this.nav.push(AccountRegister, param);
+                        }
+                        else{
+                            this.nav.popAll();
+                            this.functions.showAlert('성공', '로그인 되었습니다.');
+                        }
+                    });
+                });
             }) // 성공
         .catch(
             error => {
                 console.error(error)}
-            ); // 실패
+        ); 
     }
     kakaoLogin(){
         console.log("kakaotest");
-
-        KakaoTalk.login(
-            function (result) {
-              console.log('Successful login!');
-              console.log(result);
-            },
-            function (message) {
-              console.log('Error logging in');
-              console.log(message);
+        this.doKakaoLogin().then((userid) => {
+            this.doKakaoAccess().then((usertoken) =>{
+                this.service.kakaoLoginChk(usertoken, userid + '@kakao.com').then(result => {
+                    if(result == 'need_register'){
+                        let param = {
+                            token : usertoken,
+                            result : userid + '@kakao.com',
+                            sns : 'kakao'
+                        };
+                        this.facebookSpinner = false;
+                        this.nav.push(AccountRegister, param);
+                    }
+                    else{
+                        this.nav.popAll();
+                        this.functions.showAlert('성공', '로그인 되었습니다.');
+                    }
+                });
+            });
+        }).catch(
+            error => {
+                this.functions.showAlert('에러','로그인 에러');
             }
         );
+    }
+
+
+    doKakaoLogin(){
+        return new Promise((resolve, reject) => {
+            KakaoTalk.login(
+                userProfile =>{
+                    resolve(userProfile.id);
+                },
+                err => {
+                    reject(err);
+                }
+            )
+        });
+    }
+
+    doKakaoAccess(){
+        return new Promise((resolve, reject) => {
+            KakaoTalk.getAccessToken(
+                accessToken =>{
+                    resolve(accessToken);
+                },
+                err => {
+                    reject(err);
+                }
+            );
+        });
     }
  
     signup(){

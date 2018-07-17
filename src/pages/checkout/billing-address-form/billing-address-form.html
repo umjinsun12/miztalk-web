@@ -82,11 +82,11 @@
 
                 <ion-row class="orderer-row">
                     <ion-label *ngIf="enableBillingAddress" col-4>주문자 성함 </ion-label>
-                    <ion-input required type="text" [(ngModel)]="form.billing_first_name" name="firstname" *ngIf="enableBillingAddress"> </ion-input>
+                    <ion-input required type="text" [(ngModel)]="form.billing_last_name" name="firstname" *ngIf="enableBillingAddress"> </ion-input>
                 </ion-row>
                 <ion-row class="orderer-row">
                     <ion-label *ngIf="enableBillingAddress" col-4>휴대폰 번호 </ion-label>
-                    <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.billing_phone" name="telephone"> </ion-input>
+                    <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.billing_first_name" name="telephone"> </ion-input>
                 </ion-row>
 
                 <ion-row class="orderer-check-row">
@@ -104,12 +104,12 @@
 
                 <ion-row class="orderer-row">
                     <ion-label *ngIf="enableBillingAddress" col-3>수령자명</ion-label>
-                    <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_last_name" name="lastname"> </ion-input>
+                    <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.shipping_last_name" name="lastname"> </ion-input>
                 </ion-row>
 
                 <ion-row class="orderer-row">
                     <ion-label *ngIf="enableBillingAddress" col-3>휴대폰 번호</ion-label>
-                    <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.receiver_phone" name="receiver_phone"> </ion-input>
+                    <ion-input *ngIf="enableBillingAddress" required type="number" [(ngModel)]="form.shipping_fitst_name" name="receiver_phone"> </ion-input>
                 </ion-row>
 
 

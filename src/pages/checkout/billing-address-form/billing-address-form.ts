@@ -368,52 +368,17 @@ export class BillingAddressForm {
   }
   validateBillingForm() {
       if (this.form.billing_first_name == undefined || this.form.billing_first_name == "") {
-          this.functions.showAlert("ERROR", "Please enter billing First name");
+          this.functions.showAlert("에러", "휴대폰 번호를 입력해 주세요");
           return false
       }
-      if (this.form.billing_phone == undefined || this.form.billing_phone == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Phone number");
-          return false
-      }
-      if (this.form.receiver_phone == undefined || this.form.receiver_phone == "") {
-        this.functions.showAlert("ERROR", "Please enter billing Phone number");
-        return false
-    }
-      if (this.form.billing_address_1 == undefined || this.form.billing_address_1 == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Address");
-          return false
-      }
-      if (!this.values.isLoggedIn) {
-          if (this.form.password == undefined || this.form.password == "") {
-              this.functions.showAlert("ERROR", "Please enter Password");
-              return false
-          }
-      }
-      if (this.form.billing_postcode == undefined || this.form.billing_postcode == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Postcode");
-          return false
-      }
-      else {
-          return true
-      }
+      return true
   }
   validateShippingForm() {
       if (this.form.shipping_first_name == undefined || this.form.shipping_first_name == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping First name");
+          this.functions.showAlert("에러", "휴대폰 번호를 입력해 주세요");
           return false
       }
-      if (this.form.shipping_address_1 == undefined || this.form.shipping_address_1 == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping Address");
-          return false
-      }
-      if (this.form.shipping_postcode == undefined || this.form.shipping_postcode == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping Postcode");
-          return false
-      }
-      if (this.form.shipping_country == undefined || this.form.shipping_country == "") {
-          this.functions.showAlert("ERROR", "Please choose Shipping Country");
-          return false
-      }else {
+      else {
           return true
       }
   }
@@ -448,45 +413,18 @@ export class BillingAddressForm {
   }
   validateAddress() {
       if (this.form.show_terms && !this.form.terms) {
-          this.functions.showAlert("ERROR", "You must agree to our Terms & Conditions");
+          this.functions.showAlert("에러", "쇼핑 이용약관에 동의해야 합니다.");
           return false
       }
       if (this.form.billing_first_name == undefined || this.form.billing_first_name == "") {
-          this.functions.showAlert("ERROR", "Please enter billing First name");
+          this.functions.showAlert("에러", "휴대폰 번호를 입력해 주세요");
           //return false            
       }
-      if (this.form.billing_phone == undefined || this.form.billing_phone == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Phone number");
-          //return false
-      }
       if (this.form.billing_address_1 == undefined || this.form.billing_address_1 == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Address");
+          this.functions.showAlert("에러", "주소를 입력해 주세요");
           //return false
       }
-      if (this.form.billing_postcode == undefined || this.form.billing_postcode == "") {
-          this.functions.showAlert("ERROR", "Please enter billing Postcode");
-          //return false
-      }
-      if (this.form.billing_country == undefined || this.form.billing_country == "") {
-          this.functions.showAlert("ERROR", "Please choose billing Country");
-          //return false
-      }
-      if (this.form.shipping_first_name == undefined || this.form.shipping_first_name == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping First name");
-          //return false
-      }
-      if (this.form.shipping_address_1 == undefined || this.form.shipping_address_1 == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping Address");
-          //return false
-      }
-      if (this.form.shipping_country == undefined || this.form.shipping_country == "") {
-          this.functions.showAlert("ERROR", "Please choose Shipping Country");
-          // return false
-      }
-      if (this.form.shipping_postcode == undefined || this.form.shipping_postcode == "") {
-          this.functions.showAlert("ERROR", "Please enter Shipping Postcode");
-          //return false
-      } else {
+      else {
           return true
       }
   }

@@ -47,7 +47,7 @@
                                 <h2> 주문상태 </h2>
                             </ion-col>
                             <ion-col>
-                                <h2 style="color: green" text-capitalize *ngIf="item.status == 'processing'"> 처리중 </h2>
+                                <h2 style="color: green" text-capitalize *ngIf="item.status == 'processing'"> 처리중(결제완료) </h2>
                                 <h2 style="color: green" text-capitalize *ngIf="item.status == 'completed'"> 배송완료 </h2>
                                 <h2 style="color: green" text-capitalize *ngIf="item.status == 'refunded'"> 환불완료 </h2>
                                 <h2 style="color: red" text-capitalize *ngIf="item.status == 'cancelled'"> 주문취소 </h2>

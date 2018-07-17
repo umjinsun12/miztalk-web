@@ -229,6 +229,11 @@ export class Service {
     encodeUrl(href) {
         return href.replace(/&amp;/g, '&')
     }
+    encodeUrl_Auth(href){
+        return href.replace(' ','+');
+    }
+
+
     logout() {
         return new Promise(resolve => {
             this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-logout', this.config.options).subscribe(data => {
@@ -341,6 +346,77 @@ export class Service {
             });
         });
     }
+
+    registerSnsCustomer(token, response,sns, phone, display_name){
+        var params = new URLSearchParams();
+        params.append("access_token", token);
+        params.append("display_name", display_name);
+        params.append("phone_num", display_name);
+        if(sns == 'facebook'){
+            return new Promise(resolve => {
+                this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-facebook_join', params, this.config.options).map(res => res.json()).subscribe(data => {
+                    if (data.status) {
+                        this.values.isLoggedIn = true;
+                        this.values.customerName = data.display_name;
+                        this.values.customerId = data.user_id;
+                        this.values.avatar = data.avatar;
+                        this.nativeStorage.setItem('loginData', {
+                            username: data.display_name,
+                            avatar: data.avatar,
+                            type: 'social',
+                            displayName: data.display_name
+                        }).then(data => console.log('Data Stored'), error => console.error(error));
+                        resolve(data);
+                    }
+                });
+            });
+        }
+        else if(sns == 'naver'){
+            params.append("email", response.email);
+            return new Promise(resolve => {
+                this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-naver_join', params, this.config.options).map(res => res.json()).subscribe(data => {
+                    if (data.status) {
+                        this.values.isLoggedIn = true;
+                        this.values.customerName = data.display_name;
+                        this.values.customerId = data.user_id;
+                        this.values.avatar = data.avatar;
+                        this.nativeStorage.setItem('loginData', {
+                            username: data.display_name,
+                            avatar: data.avatar,
+                            type: 'social',
+                            displayName: data.display_name
+                        }).then(data => console.log('Data Stored'), error => console.error(error));
+                        console.log('service' + this.values.customerName);
+                        resolve(data);
+                    }
+                });
+            });
+        }
+        else if(sns == 'kakao'){
+            params.append("email", response);
+            return new Promise(resolve => {
+                this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-kakao_join', params, this.config.options).map(res => res.json()).subscribe(data => {
+                    if (data.status) {
+                        this.values.isLoggedIn = true;
+                        this.values.customerName = data.display_name;
+                        this.values.customerId = data.user_id;
+                        this.values.avatar = data.avatar;
+                        this.nativeStorage.setItem('loginData', {
+                            username: data.display_name,
+                            avatar: data.avatar,
+                            type: 'social',
+                            displayName: data.display_name
+                        }).then(data => console.log('Data Stored'), error => console.error(error));
+                        console.log('service' + this.values.customerName);
+                        resolve(data);
+                    }
+                });
+            })
+        }
+    }
+
+
+
     getOrders(filter) {
         return new Promise(resolve => {
             this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders?', filter), this.config.optionstwo).map(res => res.json()).subscribe(data => {
@@ -463,20 +539,77 @@ export class Service {
                 }
                 else if (data.status) {
                     this.values.isLoggedIn = true;
-                    this.values.customerName = data.last_name;
+                    this.values.customerName = data.display_name;
                     this.values.customerId = data.user_id;
                     this.values.avatar = data.avatar;
                     this.nativeStorage.setItem('loginData', {
                         username: data.user_login,
                         avatar: data.avatar,
                         type: 'social',
-                        displayName: data.last_name
+                        displayName: data.display_name
                     }).then(data => console.log('Data Stored'), error => console.error(error));
                     resolve(data);
                 }
             });
         });
     }
+
+    naverLoginChk(token, response){
+        var params = new URLSearchParams();
+        params.append("access_token", token);
+        params.append("email", response.response.email);
+        return new Promise(resolve => {
+            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-naver_loginchk', params, this.config.options).map(res => res.json()).subscribe(data => {
+                if (!data.status){
+                    if(data.msg == 'need_register')
+                        resolve(data.msg);
+                }
+                else if(data.status){
+                    this.values.isLoggedIn = true;
+                    this.values.customerName = data.display_name;
+                    this.values.customerId = data.user_id;
+                    this.values.avatar = data.avatar;
+                    this.nativeStorage.setItem('loginData', {
+                        username: data.user_login,
+                        avatar: data.avatar,
+                        type: 'social',
+                        displayName: data.display_name
+                    }).then(data => console.log('Data Stored'), error => console.error(error));
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+    kakaoLoginChk(token, email){
+        var params = new URLSearchParams();
+        params.append("access_token", token);
+        params.append("email", email);
+        return new Promise(resolve => {
+            this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-naver_loginchk', params, this.config.options).map(res => res.json()).subscribe(data => {
+                if (!data.status){
+                    if(data.msg == 'need_register')
+                        resolve(data.msg);
+                }
+                else if(data.status){
+                    this.values.isLoggedIn = true;
+                    this.values.customerName = data.display_name;
+                    this.values.customerId = data.user_id;
+                    this.values.avatar = data.avatar;
+                    this.nativeStorage.setItem('loginData', {
+                        username: data.user_login,
+                        avatar: data.avatar,
+                        type: 'social',
+                        displayName: data.display_name
+                    }).then(data => console.log('Data Stored'), error => console.error(error));
+                    resolve(data);
+                }
+            });
+        });
+    }
+
+
+
 
     nicknameChk(nickname){
         var params = new URLSearchParams();

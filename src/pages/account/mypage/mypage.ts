@@ -76,6 +76,10 @@ export class MypagePage {
         };
         this.appRate.promptForRating(true);
     }
+    ionViewWillEnter() {
+        console.log('mypage :  ' + this.values.customerName);
+    }
+
     showPointDetail(){
         if(this.values.isLoggedIn)
           this.nav.push(PointDetailPage);

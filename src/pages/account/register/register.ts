@@ -1,6 +1,6 @@
 import { TermsUsePage } from './../terms-use/terms-use';
 import { Component } from '@angular/core';
-import { Platform, NavController, AlertController } from 'ionic-angular';
+import { Platform, NavController, AlertController, NavParams } from 'ionic-angular';
 import { Service } from '../../../services/shopping-services/service';
 import { Functions } from '../../../services/shopping-services/functions';
 import { Values } from '../../../services/shopping-services/values';
@@ -37,13 +37,21 @@ export class AccountRegister {
     termsChk : boolean = false;
     termsInfoChk : boolean = false;
     nameChk : boolean = false;
+    token : any;
+    sns : any;
+    response_data : any;
 
-    constructor(public nav: NavController, public service: Service, public platform: Platform, public functions: Functions, private oneSignal: OneSignal, public values: Values, public alertCtrl: AlertController) {
+
+    constructor(public nav: NavController, public service: Service, public platform: Platform,params: NavParams, public functions: Functions, private oneSignal: OneSignal, public values: Values, public alertCtrl: AlertController) {
         this.Register = "Register";
         this.registerData = {};
         this.countries = {};
         this.registerData.billing = {};
         this.registerData.shipping = {};
+        this.token = params.data.token;
+        this.sns = params.data.sns;
+        this.response_data = params.data.result;
+        
         this.service.getNonce()
             .then((results) => this.handleResults(results));
     }
@@ -96,13 +104,16 @@ export class AccountRegister {
                     handler: () => {
                         this.disableSubmit = true;
                         this.Register = "등록중";
-                      console.log('Buy clicked');
+                        this.service.registerSnsCustomer(this.token,this.response_data, this.sns, phonenum, this.registerData.display_name).then(results =>{
+                            console.log(results);
+                            this.functions.showAlert('성공','회원가입 성공');
+                            this.nav.popAll();
+                        });
                     }
                   }
                 ]
               });
               alert.present();
-            //this.service.registerCustomer(this.registerData).then((results) => this.handleRegister(results));
         }
     }
     handleRegister(results) {
