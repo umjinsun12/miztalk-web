@@ -83,12 +83,18 @@ export class HomePage {
 
   getBannerConent(postType:number,postId:number){
     let passData = {name:'', id:0};
-    passData.name = "이벤트";
     passData.id = postId;
+
     if(postType == 0)
+      this.navCtrl.push(ShoppingProductPage, postId);
+    else if(postType == 1){
+      passData.name = "이벤트";
       this.navCtrl.push(EventDetailPage, passData);
-    else if(postType == 1)
-      this.nav.push(ShoppingProductPage, postId);
+    }
+    else if(postType == 4){
+      passData.name = "기획전";
+      this.navCtrl.push(ShoppingProductsPage, passData);
+    }
   }
   
   handlePostResults(results) {
@@ -96,7 +102,7 @@ export class HomePage {
     console.log(this.posts);
     for(let post of this.posts){
       post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-      if(post._embedded['wp:featuredmedia'][0].media_details != undefined){
+      if(post._embedded['wp:featuredmedia'] != undefined){
           post.thumnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
       }
 

@@ -1,23 +1,29 @@
 <!--
-  Generated template for the EventDetailPage page.
+  Generated template for the CommunityDetailPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>이벤트</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content no-padding>
+    <ion-navbar>
+    </ion-navbar>
+  
+  </ion-header>
+  
+  
+  <ion-content class="community-notice">
     <ion-list>
-    <ion-item no-padding>
-        <div class="event-content" [innerHtml]="post.content.rendered"></div>
-        <div class="like-btn">
+      <ion-item text-wrap no-padding>
+        <div class="community-title-wrapper">
+          <div class="community-category">[{{post.categoryName}}]</div>
+          <div class="community-title">{{post.title.rendered}}</div>
+          <div class="community-author">{{post.author}} {{post.date}}</div>
+        </div>
+      </ion-item>
+      <ion-item text-wrap no-padding>
+        <div class="community-content" [innerHtml]="post.content.rendered"></div>
+        <div class="like-btn" no-padding>
           <button ion-button clear *ngIf="likebtn" (click)="doLike()" item-right class="wishlist2" >
               <ion-icon name="thumbs-up"></ion-icon> 좋아요 {{post.like}}
             </button> <button ion-button clear *ngIf="!likebtn" (click)="doLike()" item-right class="wishlist1" > 

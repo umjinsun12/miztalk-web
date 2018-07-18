@@ -295,12 +295,12 @@ export class BillingAddressForm {
 
   ordererequal(){
       if(this.form.orderchk == true){
-        this.form.billing_last_name = this.form.billing_first_name;
-        this.form.receiver_phone = this.form.billing_phone;
+        this.form.shipping_last_name = this.form.billing_last_name;
+        this.form.shipping_fitst_name = this.form.billing_first_name;
       }
       else{
-        this.form.billing_last_name = "";
-        this.form.receiver_phone = "";
+        this.form.shipping_last_name = "";
+        this.form.shipping_fitst_name = "";
       }
   }
 

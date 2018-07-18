@@ -150,7 +150,9 @@ export class Service {
                                 };
                                 console.log(parse);
                                 this.values.maincard.push(parse);
+                                this.shuffle(this.values.maincard);
                             }
+
                         });
                 this.http.get(this.config.WORDPRESS_REST_API_URL + '/posts/1756', this.config.options).map(res=> res.json())
                         .subscribe(data =>{
@@ -169,6 +171,7 @@ export class Service {
                                     link : parselink_type[1]
                                 };
                                 this.values.mainad.push(parse);
+                                this.shuffle(this.values.mainad);
                             }
                         });
 
@@ -290,6 +293,14 @@ export class Service {
                 resolve(data);
             });
         });
+    }
+
+    shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
     }
 
     pushNotification(notification) {

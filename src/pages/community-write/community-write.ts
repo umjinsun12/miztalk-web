@@ -58,14 +58,14 @@ export class CommunityWritePage {
         value : "clinic"
       },
       {
-        name: "자랑하기",
+        name: "중고장터",
         id: 2,
-        value : "boast"
+        value : "usedmarket"
       },
       {
-        name: "중고장터",
+        name: "자랑하기",
         id: 3,
-        value : "usedmarket"
+        value : "boast"
       }
     ]
   }

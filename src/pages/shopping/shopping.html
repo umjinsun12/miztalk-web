@@ -104,7 +104,7 @@
 
           <div *ngIf="values?.mainad && values.mainad.length" class="home-banners">
               <ion-slides pager="false" loop="true" autoplay="5800">
-                  <ion-slide *ngFor='let value of values.mainad'> <img src="{{value.src}}"> </ion-slide>
+                  <ion-slide *ngFor='let value of values.mainad' (click)="getBannerConent(value.type, value.link)"> <img src="{{value.src}}"> </ion-slide>
               </ion-slides>
           </div>
 

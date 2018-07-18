@@ -1,3 +1,4 @@
+import { EventDetailPage } from './../event-detail/event-detail';
 import { ShoppingProductPage } from './../shopping-product/shopping-product';
 import { ShoppingCartPage } from './../shopping-cart/shopping-cart';
 import { Functions } from './../../services/shopping-services/functions';
@@ -12,6 +13,7 @@ import { WishlistPage } from '../account/wishlist/wishlist'
 import { PopoverPage } from '../about-popover/about-popover';
 import { ShoppingSearchPage } from '../shopping-search/shopping-search';
 import { ShoppingProductsPage } from '../shopping-products/shopping-products';
+
 
 /**
  * Generated class for the ShoppingPage page.
@@ -87,6 +89,22 @@ export class ShoppingPage {
         this.products = results;
         this.viewCtrl.showBackButton(true);
     }
+    getBannerConent(postType:number,postId:number){
+        let passData = {name:'', id:0};
+        passData.id = postId;
+    
+        if(postType == 0)
+          this.nav.push(ShoppingProductPage, postId);
+        else if(postType == 1){
+          passData.name = "이벤트";
+          this.nav.push(EventDetailPage, passData);
+        }
+        else if(postType == 4){
+          passData.name = "기획전";
+          this.nav.push(ShoppingProductsPage, passData);
+        }
+      }
+
     getCategory(id, slug, name) {
         this.items.id = id;
         this.items.slug = slug;

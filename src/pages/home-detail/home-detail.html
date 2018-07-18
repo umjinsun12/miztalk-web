@@ -1,19 +1,52 @@
-<!--<ion-header>
+<ion-header>
   <ion-navbar>
-    <ion-title class="home-detail-title">{{postName}}</ion-title>
+    <ion-title class="home-detail-title"></ion-title>
   </ion-navbar>
-</ion-header>-->
+</ion-header>
 
 
-<ion-content style="background-color: black">
-    <button style="position: absolute; z-index: 10;" ion-button navPop icon-only color="black">
-        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
-    </button>
-
-    <ion-slides loop="false">
+<ion-content >
+  <ion-list>
+      <ion-slides loop="false">
         <ion-slide *ngFor="let item of posts">
           <img style="width:100%; height:auto" data-src="{{item}}"/>
         </ion-slide>
       </ion-slides>
-    {{posts}}
-</ion-content>
+      <ion-item text-wrap no-padding>
+          <div class="like-btn" no-padding>
+            <button ion-button clear *ngIf="likebtn" (click)="doLike()" item-right class="wishlist2" >
+                <ion-icon name="thumbs-up"></ion-icon> 좋아요 {{post.like}}
+              </button> <button ion-button clear *ngIf="!likebtn" (click)="doLike()" item-right class="wishlist1" > 
+                <ion-icon name="thumbs-up"></ion-icon> 좋아요 {{post.like}}
+              </button>
+         </div>
+        </ion-item>
+    <ion-item no-padding>
+      <div class="community-comment-title">
+        댓글 {{post.commentSize}}
+      </div>
+    </ion-item>
+    <div class="comment-box">
+    <ion-item *ngFor="let reply of post.comments" no-padding>
+      <div class="comment-wrapper">
+        <div class="comment-auther">{{reply.name}}</div>
+        <div class="comment-content">{{reply.memo}}</div>
+        <div class="comment-date">{{reply.date}} <span *ngIf="reply.isMine" (click)="removeComment(reply._id)" style="text-decoration: underline;">  댓글삭제</span></div>
+      </div>
+    </ion-item>
+    </div>
+    
+  </ion-list>
+  </ion-content>
+
+  <ion-footer no-shadow>
+  <ion-row class="comment-write-box">
+    <ion-col col-10>
+      <ion-textarea [(ngModel)]="comment" rows="1" type="text" placeholder="댓글을 남겨보세요" autosize></ion-textarea>
+    </ion-col>
+    <ion-col col-2 no-shadow class="comment-submit-box">
+        <button class="comment-submit" ion-button full no-padding no-margin (click)="writeComment()" autosize>등록</button>
+    </ion-col>
+  </ion-row>
+    
+  </ion-footer>

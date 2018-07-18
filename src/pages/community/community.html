@@ -41,6 +41,16 @@
     <ion-slides class="community-slider" #mySlider (ionSlideDidChange)="onSlideChanged($event)">
         <ion-slide *ngFor="let slide of slides">
             <ion-list>
+                <ion-item  text-wrap *ngFor="let post of noticeposts" no-padding>
+                    <ion-row no-padding>
+                      <ion-col (click)="getNoticeConent(post.id, post.title.rendered)">
+                        <p class="post-notice-title" [innerHTML]="post.title.rendered"></p>
+                        <p class="post-author">{{post.author}}</p>
+                        <ion-icon name="ios-text" class="post-comment"> {{post.replies}}</ion-icon>
+                        <ion-icon name="thumbs-up" class="post-comment"> 0</ion-icon>
+                      </ion-col>
+                    </ion-row>
+                </ion-item>
                 <ion-item *ngFor="let post of posts" no-padding>
                   <ion-row no-padding>
                     <ion-col (click)="getPostConent(post._id, post.category)">

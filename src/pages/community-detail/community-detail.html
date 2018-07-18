@@ -36,13 +36,20 @@
           <button ion-button color="warm-grey" (click)="removePost()">글 삭제</button>
           <!--<button *ngIf="!likebtn" ion-button color="warm-grey">글 수정</button>-->
         </div>
-      <div  class="like-btn">
+      <!--<div  class="like-btn">
         <button *ngIf="likebtn" ion-button>
             <ion-icon name="thumbs-up" (click)="doLike()"> 좋아요 {{post.like}}</ion-icon>
         </button>
         <button *ngIf="!likebtn" ion-button color="warm-grey">
             <ion-icon name="thumbs-up" (click)="doLike()"> 좋아요 {{post.like}}</ion-icon>
         </button>
+      </div>-->
+      <div class="like-btn">
+          <button ion-button clear *ngIf="likebtn" (click)="doLike()" item-right class="wishlist2" >
+              <ion-icon name="thumbs-up"></ion-icon> 좋아요 {{post.like}}
+            </button> <button ion-button clear *ngIf="!likebtn" (click)="doLike()" item-right class="wishlist1" > 
+              <ion-icon name="thumbs-up"></ion-icon> 좋아요 {{post.like}}
+            </button>
       </div>
     </ion-item>
     <ion-item no-padding>

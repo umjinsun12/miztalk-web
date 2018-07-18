@@ -32,9 +32,9 @@ export class MenuPage {
   pages: PageInterface[] = [
     { title: '홈', pageName: 'TabsPage', tabComponent: 'HomePage', index: 0, icon: 'ai-tab-1-home-icon-off' },
     { title: '커뮤니티', pageName: 'TabsPage', tabComponent: 'CommunityPage', index: 1, icon: 'ai-tab-2-comu-icon-off' },
-    { title: '이벤트', pageName: 'TabsPage', tabComponent: 'ShoppingPage', index: 1, icon: 'ai-tab-3-event-off' },
-    { title: '쇼핑', pageName: 'TabsPage', tabComponent: 'EventPage', index: 1, icon: 'ai-tab-4-shop-icon-off' },
-    { title: '마이페이지', pageName: 'TabsPage', tabComponent: 'MypagePage', index: 1, icon: 'ai-tab-5-mypage-icon-off' },
+    { title: '이벤트', pageName: 'TabsPage', tabComponent: 'EventPage', index: 2, icon: 'ai-tab-3-event-off' },
+    { title: '쇼핑', pageName: 'TabsPage', tabComponent: 'ShoppingPage', index: 3, icon: 'ai-tab-4-shop-icon-off' },
+    { title: '마이페이지', pageName: 'TabsPage', tabComponent: 'MypagePage', index: 4, icon: 'ai-tab-5-mypage-icon-off' },
   ];
  
   constructor(

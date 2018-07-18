@@ -130,6 +130,10 @@ export class CmsService {
       return this.http.get(this.config.cmsurl + '/posts/showReview?page=' + page + '&postid=' + postid).map(res => res.json());
   }
 
+  getNotices(postid, category){
+      return this.http.get(this.config.cmsurl + '/posts/post?postid=' + postid + '&category=' + category).map(res => res.json());
+  }
+
 
   dataURItoBlob(b64Data) {
     let contentType = 'image/png';

@@ -76,8 +76,8 @@ export class CommunityDetailPage {
         else
           this.post.comments[i].isMine = false;
       }
-      for(var i=0 ; i < this.post.image.length ; i++){
-        this.post.image[i] = this.config.cmsurl + '/posts/image/' +this.post.image[i].split(':')[0];
+      for(var j=0 ; j < this.post.image.length ; j++){
+        this.post.image[j] = this.config.cmsurl + '/posts/image/' +this.post.image[j].split(':')[0];
       }
       var likeChk = this.post.likelist.indexOf(this.values.customerName);
       console.log(likeChk);

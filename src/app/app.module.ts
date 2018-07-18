@@ -85,6 +85,7 @@ import { Autosize } from '../services/components/autosize';
 import {KakaoTalk} from 'ionic-plugin-kakaotalk';
 import { Naver } from "ionic-plugin-naver";
 import { TermsUsePage } from '../pages/account/terms-use/terms-use';
+import { CommunityNoticePage } from '../pages/community-notice/community-notice';
 
 
 
@@ -121,7 +122,8 @@ import { TermsUsePage } from '../pages/account/terms-use/terms-use';
     ShoppingProductsPage,
     TermsPage,
     TermsUsePage,
-    Autosize
+    Autosize,
+    CommunityNoticePage
   ],
   imports: [
     HttpModule,
@@ -148,6 +150,7 @@ import { TermsUsePage } from '../pages/account/terms-use/terms-use';
     MenuPage,
     AccountLogin,
     BillingAddressForm,
+    CommunityNoticePage,
     OrderSummary,
     MyInformation,
     Address,

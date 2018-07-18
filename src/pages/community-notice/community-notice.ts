@@ -1,43 +1,43 @@
 import { Values } from './../../services/shopping-services/values';
+import { DomSanitizer } from '@angular/platform-browser';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
-import { CardnewsService } from './../../services/shopping-services/cardnews-service';
 import { CmsService } from '../../services/cms-service.service';
 import * as moment from 'moment';
 import { Functions } from '../../services/shopping-services/functions';
 
-
 /**
- * Generated class for the HomeDetailPage page.
+ * Generated class for the CommunityNoticePage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 @Component({
-  templateUrl: 'home-detail.html',
+  templateUrl: 'community-notice.html',
 })
-export class HomeDetailPage {
+export class CommunityNoticePage {
 
   postId: number;
   postName: string;
-  posts: Array<any> = new Array<any>();
   post: any;
-  contents: any;
+  comments: any;
   cmsId: any;
   likebtn: boolean;
   comment: any;
+
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController,
-    public service: CardnewsService,
     public cmsService: CmsService,
     public values : Values,
-    public functions : Functions) {
+    public sanitizer: DomSanitizer,
+    public functions : Functions
+  ) {
       console.log(navParams.data);
       this.postId = navParams.data.id;
       this.postName = navParams.data.name;
@@ -58,49 +58,43 @@ export class HomeDetailPage {
         commentSize: 0
       }
       this.likebtn = true;
+      this.loadPost();
   }
 
   ionViewDidLoad() {
-    this.service.presentLoading('카드뉴스 로딩중 입니다.');
-
-    this.service.getDetailCards(this.postId).then(data => {
-      this.contents = data;
-      let imgs = [];
-      this.contents.content.rendered = this.contents.content.rendered.replace('<p>',"");
-      this.contents.content.rendered = this.contents.content.rendered.replace('</p>',"").trim();
-      imgs = this.contents.content.rendered.split('<img');
-      for(let post of imgs){
-        if(post == "")
-          continue;
-        post = post.split("src=\"")[1].split("\"")[0];
-        post = post.replace('-300x300',"");
-        post = post.replace('-231x300',"");
-        this.posts.push(post);
-      }
-      console.log(this.posts);
-      this.loadPost();
-      this.service.dismissLoading();
-    });
+    
   }
 
   loadPost(){
-    this.cmsService.getNotices(this.postId, 9091).subscribe(result => {
-      console.log(result);
-      this.cmsId = result.contents[0]._id;
-      this.post.like = result.contents[0].likelist.length;
-      this.post.comments = [];
-      this.post.commentSize = result.contents[0].comments.length;
-      for(var i=0 ; i < result.contents[0].comments.length ; i++){
-        result.contents[0].comments[i].date = moment(result.contents[0].comments[i].date).fromNow();
-        if(result.contents[0].comments[i].name == this.values.customerName){
-          result.contents[0].comments[i].isMine = true;
+    let loading = this.loadingCtrl.create();
+    loading.present();
+    this.wordpressService.getPostbyId(this.postId).subscribe(data =>{
+      this.post = data;
+      this.post.categoryName = data._embedded['wp:term'][0][0].name.replace("커뮤니티-","");
+      this.post.author = data._embedded['author'][0].name;
+      this.post.content.rendered = this.sanitizer.bypassSecurityTrustHtml(data.content.rendered);;
+      this.post.date = moment(data.date).fromNow();
+
+      this.cmsService.getNotices(this.postId, 9091).subscribe(result => {
+        console.log(result);
+        this.cmsId = result.contents[0]._id;
+        this.post.like = result.contents[0].likelist.length;
+        this.post.comments = [];
+        this.post.commentSize = result.contents[0].comments.length;
+        for(var i=0 ; i < result.contents[0].comments.length ; i++){
+          result.contents[0].comments[i].date = moment(result.contents[0].comments[i].date).fromNow();
+          if(result.contents[0].comments[i].name == this.values.customerName){
+            result.contents[0].comments[i].isMine = true;
+          }
+          else
+            result.contents[0].comments[i].isMine = false;
+          console.log(result.contents[0].comments[i]);
+          this.post.comments.push(result.contents[0].comments[i]); 
         }
-        else
-          result.contents[0].comments[i].isMine = false;
-        console.log(result.contents[0].comments[i]);
-        this.post.comments.push(result.contents[0].comments[i]); 
-      }
+      });
+      loading.dismiss();
     });
+
   }
 
   doLike(){
@@ -143,6 +137,8 @@ export class HomeDetailPage {
       });
     }
   }
+
+
 
 
 

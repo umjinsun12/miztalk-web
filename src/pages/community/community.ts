@@ -1,3 +1,4 @@
+import { CommunityNoticePage } from './../community-notice/community-notice';
 import { CommunityWritePage } from './../community-write/community-write';
 import { Values } from './../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
@@ -46,10 +47,12 @@ export class CommunityPage {
   topTab = 'tab1Root';
 
   posts: Array<any> = new Array<any>();
+  noticeposts: Array<any> = new Array<any>();
   morePagesAvailable: boolean = true;
   loggedUser: boolean = false;
 
   categoryId: number;
+  noticeId: number;
   categoryTitle: string;
   http: Http;
 
@@ -71,26 +74,31 @@ export class CommunityPage {
     this.myIndex = navParams.data.tabIndex || 0;
     this.selectedSegment = 'main';
     moment.locale('ko');
+    this.noticeId = 23;
     this.slides = [
       {
         id: "main",
         title: "메인",
-        categoryid: 0
+        categoryid: 0,
+        noticeid: 23
       },
       {
         id: "clinic",
         title: "부부클리닉",
-        categoryid: 1
+        categoryid: 1,
+        noticeid: 25
       },
       {
         id: "usedmarket",
         title: "중고장터",
-        categoryid: 2
+        categoryid: 2,
+        noticeid:26
       },
       {
         id: "boast",
         title: "자랑거리",
-        categoryid: 3
+        categoryid: 3,
+        noticeid:24
       }
     ];
     
@@ -121,13 +129,34 @@ export class CommunityPage {
       });
   }
 
+  getNoticeCategory(categoryid){
+    this.noticeposts = [];
+    this.wordpressService.getPostEmbedbyCategory(categoryid).subscribe((data) => {
+      for(let post of data){
+        post.excerpt.rendered = post.excerpt.rendered.split('<a')[0].replace("<p>","").replace("</p>","");
+          post.author = post._embedded['author'][0].name;
+          post.reltime = moment(post.date).fromNow();
+          post.replies = 0;
+          if(post._embedded.replies != undefined)
+            post.replies = post._embedded.replies[0].length;
+          else
+            post.replies = 0;
+          this.noticeposts.push(post);
+          if(this.noticeposts.length >= 3)
+            break;
+      }
+    });
+  }
+
 
   onSegmentChanged(segmentButton) {
     console.log("Segment changed to", segmentButton.value);
     const selectedIndex = this.slides.findIndex((slide) => {
       if(slide.id === segmentButton.value){
         this.categoryId = slide.categoryid;
+        this.noticeId = slide.noticeid;
         this.getPostCategory(slide.categoryid);
+        this.getNoticeCategory(slide.noticeid);
         return slide.id === segmentButton.value;
       }
     });
@@ -162,7 +191,7 @@ export class CommunityPage {
     console.log(this.categoryId);
     this.categoryTitle = this.navParams.get('title');
     this.getPostCategory(this.categoryId);
-
+    this.getNoticeCategory(this.noticeId);
   }
 
   
@@ -255,6 +284,13 @@ export class CommunityPage {
       categoryTitle : categoryTitle.title
     }
     this.navCtrl.push(CommunityDetailPage, param);
+  }
+
+  getNoticeConent(postId:number, postName:string){
+    let passData = {name:'', id:0};
+    passData.name = postName;
+    passData.id = postId;
+    this.navCtrl.push(CommunityNoticePage, passData);
   }
 
   doWrite(){
