@@ -1,6 +1,11 @@
 <ion-header>
     <ion-navbar color="header">
-      <ion-buttons end>
+
+            <ion-title>
+                    <img src="assets/img/logo-main.png" srcset="assets/img/logo-main@2x.png 2x,assets/img/logo-main@3x.png 3x" height=30>
+                </ion-title>
+                
+      <ion-buttons style="padding-right:11px" end>
         <button ion-button icon-only light class="has-icon icon-only has-badge" (click)="getCart()">
           <ion-icon class="ion-md-cart item-icon"></ion-icon>
           <ion-badge class="badge badge-light" *ngIf="values.count">{{values.count}}
@@ -8,6 +13,9 @@
         </button>
       </ion-buttons>
     </ion-navbar>
+
+
+
     <div class="segment" *ngIf="product">
             <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule($event)">
                 <ion-segment-button tappable value="overview">

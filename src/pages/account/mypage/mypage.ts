@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController, IonicPage } from 'ionic-angular';
+import { NavController, ViewController, IonicPage, Platform, AlertController } from 'ionic-angular';
 import { Service } from '../../../services/shopping-services/service';
 import { Config } from '../../../services/shopping-services/config';
 import { Values } from '../../../services/shopping-services/values';
@@ -28,12 +28,56 @@ export class MypagePage {
 
   tabBarElement: any;
     showtab: boolean = false;
-    constructor(public viewCtrl: ViewController, private appRate: AppRate, private socialSharing: SocialSharing, public nav: NavController, public service: Service, public values: Values, private emailComposer: EmailComposer, public config: Config) {
+    public alertShown:boolean = false;
+    constructor(public viewCtrl: ViewController, private appRate: AppRate, private socialSharing: SocialSharing, public nav: NavController, public service: Service, public values: Values, private emailComposer: EmailComposer, public config: Config
+    ,public platform: Platform, public alertCtrl: AlertController ) {
         
         //if(document.querySelector(".tabbar"))
         //this.tabBarElement = document.querySelector(".tabbar")['style'].display = 'none';
         //this.showtab = false;
     }
+
+    ionViewDidEnter(){
+        this.platform.registerBackButtonAction(() => {
+          if (this.alertShown==false) {
+            this.presentConfirm();
+          }
+        }, 0)
+      }
+    
+      ionViewWillLeave() {
+        this.platform.registerBackButtonAction(() => {
+            this.nav.pop();
+        });
+    }
+    
+      presentConfirm() {
+        let alert = this.alertCtrl.create({
+          title: '종료',
+          message: '미즈톡을 종료하시겠습니까?',
+          buttons: [
+            {
+              text: '취소',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+                this.alertShown=false;
+              }
+            },
+            {
+              text: '확인',
+              handler: () => {
+                console.log('Yes clicked');
+                this.platform.exitApp();
+              }
+            }
+          ]
+        });
+         alert.present().then(()=>{
+          this.alertShown=true;
+        });
+      }
+
     hidetabs() {
         this.showtab = false;
         if (document.querySelector(".tabbar")) this.tabBarElement = document.querySelector(".tabbar")['style'].display = 'none';

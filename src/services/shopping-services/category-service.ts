@@ -5,6 +5,7 @@ import { Values } from './values';
 import { URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { LoadingController } from 'ionic-angular';
+import { HTTP } from '@ionic-native/http';
 
 var headers = new Headers();
 headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -25,23 +26,30 @@ export class CategoryService {
     attributes: any;
     attribTerms: any;
     
-    constructor(private http: Http, private config: Config, private values: Values, private loadingController: LoadingController) {
-
+    constructor(private reqhttp: HTTP, private http: Http, private config: Config, private values: Values, private loadingController: LoadingController) {
+       this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
     } 
     load(params) {
         //this.presentLoading(this.values.lan.WaitTitle);
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', params), this.config.optionstwo).map(res => res.json()).subscribe(data => {
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', params), {}, {}).then(data => {
                 //this.dismissLoading();
-                this.products = data;
+                this.products = JSON.parse(data.data);
                 resolve(this.products);
             });
+            // this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', params), {}).subscribe(data => {
+            //         //this.dismissLoading();
+            //         this.products = data;
+            //         resolve(this.products);
+            //     });
         });
     }
     loadMore(filter) {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', filter), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                this.products = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', filter), {}, {}).then(data => {
+                this.products = JSON.parse(data.data);
                 resolve(this.products);
             });
         });
@@ -125,8 +133,9 @@ export class CategoryService {
     }
     search(params) {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', params), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                this.products = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', params), {}, {}).then(data => {
+                this.products = JSON.parse(data.data);
                 resolve(this.products);
             });
         });
@@ -157,8 +166,11 @@ export class CategoryService {
             return Promise.resolve(this.values.attributes);
         }
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/attributes?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                this.values.attributes = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/attributes?', {
+                per_page: 100
+            }), {}, {}).then(data => {
+                this.values.attributes = JSON.parse(data.data);
                 resolve(this.values.attributes);
             });
         });
@@ -168,8 +180,11 @@ export class CategoryService {
             return Promise.resolve(this.values.attributeTerms[id]);
         }
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/attributes/' + id + '/terms?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                this.values.attributeTerms[id] = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/attributes/' + id + '/terms?', {
+                per_page: 100
+            }), {}, {}).then(data => {
+                this.values.attributeTerms[id] = JSON.parse(data.data);
                 resolve(this.values.attributeTerms[id]);
             });
         });

@@ -4,7 +4,7 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import { Values } from './../../services/shopping-services/values';
 import { HomeDetailPage } from './../home-detail/home-detail';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController ,Nav} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Nav, Platform, AlertController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { WordpressService } from '../../services/wordpress.service';
 import { CardnewsService } from '../../services/shopping-services/cardnews-service';
@@ -15,6 +15,7 @@ import { CmsService } from '../../services/cms-service.service';
 import { Config } from '../../services/shopping-services/config';
 
 import {ShoppingProductsPage} from '../../pages/shopping-products/shopping-products';
+import {ShoppingSearchPage} from '../../pages/shopping-search/shopping-search';
 
 
 
@@ -56,6 +57,8 @@ export class HomePage {
 
   http: Http;
 
+  public alertShown:boolean = false;
+
 
   @ViewChild(Nav) nav: Nav;
 
@@ -69,10 +72,57 @@ export class HomePage {
     public functions: Functions,
     public service : CardnewsService,
     public cmsService : CmsService,
-    public config : Config) {
+    public config : Config,
+    public platform: Platform,
+    public alertCtrl: AlertController) {
       this.service.presentLoading('로딩중입니다.');
       this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
+      
   }
+
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction(() => {
+      if (this.alertShown==false) {
+        this.presentConfirm();
+      }
+    }, 0)
+  }
+
+  ionViewWillLeave() {
+    this.platform.registerBackButtonAction(() => {
+        this.navCtrl.pop();
+    });
+}
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: '종료',
+      message: '미즈톡을 종료하시겠습니까?',
+      buttons: [
+        {
+          text: '취소',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            this.alertShown=false;
+          }
+        },
+        {
+          text: '확인',
+          handler: () => {
+            console.log('Yes clicked');
+            this.platform.exitApp();
+          }
+        }
+      ]
+    });
+     alert.present().then(()=>{
+      this.alertShown=true;
+    });
+  }
+
+
 
   getPostConent(postId:number, postName:string){
     let passData = {name:'', id:0};
@@ -118,7 +168,20 @@ export class HomePage {
     this.service.dismissLoading();
   }
 
+  shuffle(a) {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+
   ionViewWillEnter() {
+  }
+
+  getSearch() {
+    this.navCtrl.push(ShoppingSearchPage);
   }
 
   showPointDetail(){
@@ -178,6 +241,7 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
+    this.shuffle(this.values.maincard);
     this.has_more_items = true;
     this.service.getRandomCardnews().then((results) => this.handleRefresh(results, refresher));
   };

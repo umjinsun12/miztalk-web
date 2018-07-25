@@ -1,7 +1,7 @@
 import { Values } from './../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Platform, AlertController } from 'ionic-angular';
 import { EventDetailPage } from '../event-detail/event-detail';
 import {EventAnouncePage} from '../event-anounce/event-anounce'
 import * as moment from 'moment';
@@ -32,6 +32,7 @@ export class EventPage {
   showOverview: boolean = true;
   showAnounce : boolean = false;
   segment = 'overview';
+  public alertShown:boolean = false;
 
 
   constructor(
@@ -39,7 +40,9 @@ export class EventPage {
     public navParams: NavParams, 
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController,
-    public values : Values) { 
+    public values : Values,
+    public platform : Platform,
+    public alertCtrl : AlertController) { 
     this.morePagesAvailable = true;
     moment.locale('ko');
 
@@ -63,6 +66,49 @@ export class EventPage {
 
     this.getPostCategory(173);
   }
+
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction(() => {
+      if (this.alertShown==false) {
+        this.presentConfirm();
+      }
+    }, 0)
+  }
+
+  ionViewWillLeave() {
+    this.platform.registerBackButtonAction(() => {
+        this.navCtrl.pop();
+    });
+}
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: '종료',
+      message: '미즈톡을 종료하시겠습니까?',
+      buttons: [
+        {
+          text: '취소',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            this.alertShown=false;
+          }
+        },
+        {
+          text: '확인',
+          handler: () => {
+            console.log('Yes clicked');
+            this.platform.exitApp();
+          }
+        }
+      ]
+    });
+     alert.present().then(()=>{
+      this.alertShown=true;
+    });
+  }
+
 
   updateSchedule(event) {
     console.log(event._value);

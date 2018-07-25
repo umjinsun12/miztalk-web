@@ -120,7 +120,7 @@ export class HomeDetailPage {
         });
       }
     }else{
-      this.functions.showAlert("에러", "로그인이 필요합니다.");
+      this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요.");
     }
   }
 

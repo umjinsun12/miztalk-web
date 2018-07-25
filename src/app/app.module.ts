@@ -72,6 +72,8 @@ import { AccountRegister } from '../pages/account/register/register';
 import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
 
+import { HTTP } from '@ionic-native/http';
+
  
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
@@ -197,6 +199,7 @@ import { CommunityNoticePage } from '../pages/community-notice/community-notice'
     File,
     ImagePicker,
     Naver,
+    HTTP,
     //{ provide: Camera, useClass: CameraMock },
     Camera,
     KakaoTalk,

@@ -5,6 +5,7 @@ import { URLSearchParams } from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
+import { HTTP } from '@ionic-native/http';
 
 var headers = new Headers();
 headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -27,8 +28,8 @@ export class CheckoutService {
     address: any;
     shippingUpdate : any;
 
-    constructor(private http: Http, private config: Config) { 
-        
+    constructor(private reqhttp: HTTP, private http: Http, private config: Config) {
+        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
     }
     updateOrderReview(form) {
         var params = new URLSearchParams();
@@ -324,11 +325,11 @@ export class CheckoutService {
     }
     getOrderSummary(id) {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders/' + id + '?', false), this.config.optionstwo).map(res => res.json())
-                .subscribe(data => {
-                    this.orderSummary = data;
-                    resolve(this.orderSummary);
-                });
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders/' + id + '?', false), {}, {}).then(data => {
+                this.orderSummary = JSON.parse(data.data);
+                resolve(this.orderSummary);
+            });
         });
     }
     updateShipping(method) {

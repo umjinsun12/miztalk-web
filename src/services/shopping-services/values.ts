@@ -44,6 +44,9 @@ export class Values {
   mainad : any = [];
   user_pass : any;
   user_login : any;
+  product_total : any;
+  product_order : any = [];
+  product_page_num : any;
 
   constructor() {
   	this.filter = {};

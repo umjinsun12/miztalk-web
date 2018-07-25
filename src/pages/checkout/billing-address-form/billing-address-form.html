@@ -138,10 +138,6 @@
                     <ion-label *ngIf="enableBillingAddress" col-3>배송 시<br>요청사항 </ion-label>
                     <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_company" name="company"> </ion-input>
                 </ion-row>
-                <div *ngIf="!values.isLoggedIn && enableBillingAddress">
-                    <ion-label>Password </ion-label>
-                    <ion-input required type="password" [(ngModel)]="form.password" name="password"> </ion-input>
-                </div>
             </ion-list>
 
 

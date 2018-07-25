@@ -5,6 +5,7 @@ import { Values } from './values';
 import { URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { LoadingController } from 'ionic-angular';
+import { HTTP } from '@ionic-native/http';
 
 var headers = new Headers();
 headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -26,16 +27,19 @@ export class ProductService {
     upsell: any;
     crossSell: any;
 
-    constructor(private http: Http, private config: Config, private values: Values, private loadingController: LoadingController) {
+    constructor(private reqhttp: HTTP, private http: Http, private config: Config, private values: Values, private loadingController: LoadingController) {
+        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
     }
     getProduct(id) {
-         return new Promise(resolve => {
-             this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                 this.product = data;
-                 resolve(this.product);
-             });
-         });
-     }
+        return new Promise(resolve => {
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '?', false), {}, {}).then(data => {
+                this.product = JSON.parse(data.data);
+                resolve(this.product);
+            });
+
+        });
+    }
      getReviews(id) {
          return new Promise(resolve => {
              this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '/reviews/' + '?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {
@@ -190,11 +194,12 @@ export class ProductService {
              });
          });
      }
-    getVariationProducts(id) {
+     getVariationProducts(id) {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '/variations' + '?', false ), this.config.optionstwo).map(res => res.json())
-                .subscribe(data => {
-                    resolve(data);
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '/variations' + '?', false ), {}, {})
+                .then(data => {
+                    resolve(JSON.parse(data.data));
                 });
         });
     }

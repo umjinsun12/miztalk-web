@@ -5,7 +5,7 @@ import { Functions } from './../../services/shopping-services/functions';
 import { Values } from './../../services/shopping-services/values';
 import { CategoryService } from './../../services/shopping-services/category-service';
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController,IonicPage } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, ViewController, IonicPage, Platform, AlertController } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { Service} from './../../services/shopping-services/service'
@@ -51,16 +51,22 @@ export class ShoppingPage {
     categoryName: any;
     loading: boolean = false;
     data: any;
+    pos: number = 0;
+    public alertShown:boolean = false;
+
     private tabBarHeight;
     private topOrBottom:string;
     private contentBox;
     related: any;
 
-    constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions, public homeservice: Service) {
+    constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions, 
+        public homeservice: Service,
+        public platform : Platform,
+        public alertCtrl: AlertController) {
         this.data = {};
         this.filter = {};
         this.q = "";
-        this.filter.page = 1;
+        this.filter.page = this.values.product_order[this.pos];
         this.count = 10;
         this.offset = 0;
         this.values.filter = {};
@@ -68,7 +74,6 @@ export class ShoppingPage {
         this.subCategories = [];
         this.items = [];
         this.quantity = "1";
-        this.filter.category = params.data.id;
         this.categoryName = params.data.name;
         if (params.data.categories) {
             this.categories = params.data.categories;
@@ -83,9 +88,56 @@ export class ShoppingPage {
             this.filter.attribute_term = params.data.attributeId;
         }
         this.service.load(this.filter).then((results) => this.handleProducts(results));
+        
     }
+
+
+    ionViewDidEnter(){
+        this.contentBox = document.querySelector(".scroll-content")['style'];
+        this.tabBarHeight = this.contentBox.marginBottom;
+        this.platform.registerBackButtonAction(() => {
+          if (this.alertShown==false) {
+            this.presentConfirm();
+          }
+        }, 0)
+      }
+    
+      ionViewWillLeave() {
+        this.platform.registerBackButtonAction(() => {
+            this.nav.pop();
+        });
+    }
+    
+      presentConfirm() {
+        let alert = this.alertCtrl.create({
+          title: '종료',
+          message: '미즈톡을 종료하시겠습니까?',
+          buttons: [
+            {
+              text: '취소',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+                this.alertShown=false;
+              }
+            },
+            {
+              text: '확인',
+              handler: () => {
+                console.log('Yes clicked');
+                this.platform.exitApp();
+              }
+            }
+          ]
+        });
+         alert.present().then(()=>{
+          this.alertShown=true;
+        });
+      }
+
     handleProducts(results) {
         console.log(results);
+        this.shuffle(results);
         this.products = results;
         this.viewCtrl.showBackButton(true);
     }
@@ -112,6 +164,15 @@ export class ShoppingPage {
         this.items.categories = this.categories;
         this.nav.push(ShoppingProductPage, this.items);
     }
+
+    shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
     parseText(id, count, offset, obj2) {
         var text = '{';
         text += '"category' + '":"' + id + '"}';
@@ -151,11 +212,13 @@ export class ShoppingPage {
     }
 
     doInfinite(infiniteScroll) {
-        this.filter.page += 1;
+        this.pos += 1;
+        this.filter.page = this.values.product_order[this.pos];
         this.service.loadMore(this.filter).then((results) => this.handleMore(results, infiniteScroll));
     }
     handleMore(results, infiniteScroll) {
         if (results != undefined) {
+            this.shuffle(results);
             for (var i = 0; i < results.length; i++) {
                 this.products.push(results[i]);
             };
@@ -168,7 +231,9 @@ export class ShoppingPage {
 
     doRefresh(refresher){
         this.has_more_items = true;
-        this.filter.page = 1;
+        this.shuffle(this.values.product_order); 
+        this.pos = 0;
+        this.filter.page = this.values.product_order[this.pos];
         this.service.load(this.filter).then((results) => this.handleRefreshProducts(results, refresher));
     }
     handleRefreshProducts(results, refresher){
@@ -229,7 +294,7 @@ export class ShoppingPage {
             this.values.wishlistId[id] = true;
             this.service.addToWishlist(id).then((results) => this.update(results, id));
         } else {
-            this.functions.showAlert("Warning", "You must login to add product to wishlist");
+            this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요.");
         }
     }
     update(results, id) {
@@ -299,10 +364,7 @@ export class ShoppingPage {
             }
         } //if else
     }
-    ionViewDidEnter() {
-        this.contentBox = document.querySelector(".scroll-content")['style'];
-        this.tabBarHeight = this.contentBox.marginBottom;
-    }
+    
     ionViewDidLeave() {
         this.related = "";
     }

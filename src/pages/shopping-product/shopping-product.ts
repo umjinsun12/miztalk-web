@@ -84,6 +84,7 @@ export class ShoppingProductPage {
     necessaryCnt: number = 0;
     necessaryList : any = [];
     reviewList : any = [];
+    disableSubmit : boolean = false;
 
     fileimgs : any = [];
 
@@ -199,6 +200,7 @@ export class ShoppingProductPage {
                 for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
                     this.service.addToCart(this.selectOptionProduct[i]).then((results) => {
                         cnt += 1;
+                        this.functions.showAlert('알림','상품이 추가되었습니다.');
                         if(cnt == this.selectOptionProduct.length)
                             this.disableAddButton = false;
                     });
@@ -427,7 +429,7 @@ export class ShoppingProductPage {
             this.values.wishlistId[id] = true;
             this.service.addToWishlist(id).then((results) => this.update(results));
         } else {
-            this.functions.showAlert("Warning", "You must login to add product to wishlist");
+            this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요.");
         }
     }
     update(a) {
@@ -612,7 +614,7 @@ export class ShoppingProductPage {
     }
     showSubmitReview() {
         if(!this.values.isLoggedIn)
-            this.functions.showAlert('에러', '로그인이 필요합니다.');
+            this.functions.showAlert('에러', '마이페이지에서 로그인을 먼저 해주세요.');
         else if (this.showAddReview) this.showAddReview = false;
         else this.showAddReview = true;
     }

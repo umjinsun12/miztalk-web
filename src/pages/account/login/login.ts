@@ -91,7 +91,7 @@ export class AccountLogin {
   }
   facebookLogin() {
        this.facebookSpinner = true;
-       this.fb.login(['public_profile', 'user_friends', 'email']).then((response) => {
+       this.fb.login(['public_profile', 'email']).then((response) => {
             this.service.facebookLoginChk(response.authResponse.accessToken).then((results) =>{
                 console.log(results);
                 if(results == 'need_register'){
@@ -105,6 +105,7 @@ export class AccountLogin {
                 else{
                     this.nav.popAll();
                     this.functions.showAlert('성공', '로그인 되었습니다.');
+                    this.service.getPoint();
                 }
             });
         }).catch((error) => {
@@ -132,6 +133,7 @@ export class AccountLogin {
                         else{
                             this.nav.popAll();
                             this.functions.showAlert('성공', '로그인 되었습니다.');
+                            this.service.getPoint();
                         }
                     });
                 });
@@ -158,6 +160,7 @@ export class AccountLogin {
                     else{
                         this.nav.popAll();
                         this.functions.showAlert('성공', '로그인 되었습니다.');
+                        this.service.getPoint();
                     }
                 });
             });

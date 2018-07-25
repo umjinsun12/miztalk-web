@@ -9,6 +9,10 @@ import { AuthenticationService } from '../authentication.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/forkJoin';
 import { CmsService } from '../cms-service.service';
+import { HTTP } from '@ionic-native/http';
+
+var headers = new Headers();
+headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
 @Injectable() 
 export class Service {
@@ -39,23 +43,21 @@ export class Service {
     trending: any;
     deals : any;
     jusoResponse: any;
+    headers: any;
+
 
     communityCategories: any;
     postoptions: any = {};
 
 
-    constructor(private http: Http, private config: Config, private values: Values, public loadingCtrl: LoadingController, private nativeStorage: NativeStorage, private cmsService: CmsService) {
+    constructor(private reqhttp: HTTP,private http: Http, private config: Config, private values: Values, public loadingCtrl: LoadingController, private nativeStorage: NativeStorage, private cmsService: CmsService) {
         this.mainCategories = [];
         this.filter.page = 1;
         this.deals = {};
+        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
+        this.reqhttp.clearCookies();
     }
     load() {
-        this.filter = {};
-        this.filter.page = 1;
-        this.filter.status = 'publish';
-        this.http.get(this.config.setUrl('GET', '/wp-json/wc/v1/products/?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-            this.products = data;
-        });
         return new Promise(resolve => {
             this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-keys', this.config.options).map(res => res.json()).subscribe(data => {
                 console.log(data);
@@ -91,14 +93,12 @@ export class Service {
                         }
                     }, error => console.error(error));
                 }
-                this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', {
-                    per_page: 100
-                }), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                    this.categories = data;
+                this.reqhttp.clearCookies();
+                 this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', {per_page : 100}), {}, {}).then(data => {
+                     this.categories = JSON.parse(data.data);
                     this.mainCategories = [];
                     for (var i = 0; i < this.categories.length; i++) {
                         if (this.categories[i].parent == '0') {
-                            this.categories[i].activated = false;
                             this.mainCategories.push(this.categories[i]);
                         }
                     }
@@ -174,6 +174,17 @@ export class Service {
                                 this.shuffle(this.values.mainad);
                             }
                         });
+
+                this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-product_count', this.config.options).map(res => res.json())
+                        .subscribe(data => {
+                           this.values.product_total = data.publish;
+                           this.values.product_page_num = Math.ceil(data.publish/10);
+                           for(var i= 1 ; i <= this.values.product_page_num ; i++){
+                               this.values.product_order.push(i);
+                           }
+                           this.shuffle(this.values.product_order);
+                           console.log(this.values.product_order);
+                });
 
                 var params = new URLSearchParams();
                 params.append("postid", "106");
@@ -271,20 +282,22 @@ export class Service {
     }
     getAddress() {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                this.address = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), {}, {}).then(data => {
+                this.address = JSON.parse(data.data);
                 resolve(this.address);
             });
         });
     }
     saveAddress(address) {
         var params = address;
+        this.reqhttp.setHeader(this.config.url, 'Content-Type', 'application/json; charset=UTF-8');
+        this.reqhttp.setDataSerializer('json');
+        this.reqhttp.clearCookies();
         return new Promise(resolve => {
-            this.http.put(this.config.setUrl('PUT', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), params, {withCredentials: false}).map(res => res.json()).subscribe(data => {
-                resolve(data.data);
-            }, err => {
-                resolve(JSON.parse(err._body));
-            });
+            this.reqhttp.put(this.config.setUrl('PUT', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), params, {}).then(data => {
+                resolve(JSON.parse(data.data));
+            }, err => console.log(err));
         });
     }
     getPointlogs(){
@@ -330,6 +343,15 @@ export class Service {
             });
         });
     }
+
+    getPoint(){
+        this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mshop-point-ex-get_mypoint', this.config.options).map(res => res.json())
+                        .subscribe(data => {
+                           this.values.point = data.free_point;
+        });
+    }
+
+
     getOrder(id) {
         return new Promise(resolve => {
             this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders/' + id + '?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {

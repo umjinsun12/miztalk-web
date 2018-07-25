@@ -4,6 +4,7 @@ import { Config } from './config'
 import { URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Values } from './values';
+import { HTTP } from '@ionic-native/http';
 
 var headers = new Headers();
 headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -21,27 +22,29 @@ export class SearchService {
     categories: any;
     mainCategories: any;
 
-    constructor(private http: Http, private config: Config, private values: Values) {
+    constructor(private reqhttp: HTTP, private http: Http, private config: Config, private values: Values) {
         this.mainCategories = [];
+        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
     }
     load() {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                this.categories = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), {}, {}).then(data => {
+                this.categories = JSON.parse(data.data);
                 this.mainCategories = [];
                 for (var i = 0; i < this.categories.length; i++) {
                     if (this.categories[i].parent == '0') {
                         this.mainCategories.push(this.categories[i]);
                     }
                 }
-                resolve(this.categories);
             });
         });
     }
     getSearch(filter) {
         return new Promise(resolve => {
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', filter), this.config.optionstwo).map(res => res.json()).subscribe(data => {
-                this.products = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', filter), {}, {}).then(data => {
+                this.products = JSON.parse(data.data);
                 resolve(this.products);
             });
         });

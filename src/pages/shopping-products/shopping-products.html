@@ -7,8 +7,11 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title> {{categoryName}}</ion-title>
-    <ion-buttons end > 
+
+        <ion-title>
+                <img src="assets/img/logo-main.png" srcset="assets/img/logo-main@2x.png 2x,assets/img/logo-main@3x.png 3x" height=30>
+            </ion-title>
+    <ion-buttons style="padding-right:11px" end > 
             <button ion-button icon-only (click)="getSearch()" style="color:#fff;margin-left:6px;margin-right:6px;">
                   <ion-icon ios="md-search" md="md-search" style="font-size:30px;"></ion-icon>
             </button>
@@ -26,6 +29,36 @@
     <ion-refresher (ionRefresh)="doRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
+
+      <div>
+            <ion-row class="category-listing">
+              <ion-col class="col-3 category-title" (click)="goCategory(15, '육아·생활')">
+                  <img src="assets/img/sh-ct-baby.png" class="category-icon">
+                  <div class="category-text">
+                    육아·생활
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title" (click)="goCategory(17, '주방·가전')">
+                  <img src="assets/img/sp-ct-living.png" class="category-icon">
+                  <div class="category-text">
+                  주방·가전
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title" (click)="goCategory(18, '뷰티·다이어트')">
+                  <img src="assets/img/Sp_CT_Beuty.png" class="category-icon">
+                  <div class="category-text">
+                  뷰티·다이어트
+                  </div>
+              </ion-col>
+              <ion-col class="col-3 category-title" (click)="goCategory(19, '식품')">
+                  <img src="assets/img/sp-ct-food.png"  class="category-icon">
+                  <div class="category-text">
+                  식품
+                  </div>
+              </ion-col>
+            </ion-row>
+          </div>
+        
 
     <div *ngIf="products" class="products-listing">
       <div *ngIf="!products.length && !loading" class="no-products">

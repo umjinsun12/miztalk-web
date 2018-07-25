@@ -32,6 +32,7 @@
     "@ionic-native/file": "^4.9.0",
     "@ionic-native/file-transfer": "^4.9.0",
     "@ionic-native/header-color": "^4.7.0",
+    "@ionic-native/http": "^4.10.0",
     "@ionic-native/image-picker": "^4.9.0",
     "@ionic-native/in-app-browser": "^4.7.0",
     "@ionic-native/native-storage": "^4.6.0",

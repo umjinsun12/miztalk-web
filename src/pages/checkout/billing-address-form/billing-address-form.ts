@@ -3,7 +3,7 @@ import { Values } from './../../../services/shopping-services/values';
 import { Functions } from './../../../services/shopping-services/functions';
 import { Service } from './../../../services/shopping-services/service'
 import { CheckoutService } from './../../../services/shopping-services/checkout-service';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { OrderSummary } from '../../checkout/order-summary/order-summary';
 import { FormGroup,  FormBuilder, Validators }	from '@angular/forms';
@@ -61,6 +61,7 @@ export class BillingAddressForm {
   enablePaymentMethods : boolean = true;
   showAddress: boolean = true;
   tabBarElement: any;
+  payloading:any;
 
   addrForm: FormGroup = this.builder.group({
     zip: ['', [Validators.required]],
@@ -80,7 +81,8 @@ export class BillingAddressForm {
       public values: Values, 
       public addressservice : Service,
       private builder: FormBuilder,
-      public iamport: IamportService) {
+      public iamport: IamportService,
+      public loadingCtrl: LoadingController) {
 
 
       this.PlaceOrder = "Place Order";
@@ -158,6 +160,8 @@ export class BillingAddressForm {
               this.service.getStripeToken(this.form).then((results) => this.handleStripeToken(results));
           } else {
               console.log('paymethod');
+              this.payloading = this.loadingCtrl.create();
+              this.payloading.present();
               this.service.checkout(this.form).then((results) => this.handlePayment(results));
           }
       }
@@ -170,6 +174,8 @@ export class BillingAddressForm {
               merchant_uid : results.iamport.merchant_uid,
               order_id : results.order_id
           }
+
+          
 
           const param = {
             pay_method : this.form.payment_method.split('_')[1],
@@ -189,6 +195,7 @@ export class BillingAddressForm {
             .then((response)=> {
               console.log(response);
               if ( response.isSuccess() ) {
+                 this.payloading.dismiss();
                   mdata.imp_uid = response.getResponse()['imp_uid'];
                   console.log(mdata);
                   this.service.checkPaymentResponse(mdata).then((payresults) => {
@@ -204,10 +211,12 @@ export class BillingAddressForm {
                     });
                   });
               }else{
+                  this.payloading.dismiss();
                   this.functions.showAlert("실패", "주문이 실패하였습니다. 다시 시도해 주세요.")
               }
             })
             .catch((err)=> {
+              this.payloading.dismiss();
               alert(err)
           });
       }

@@ -62,6 +62,7 @@ export class CommunityDetailPage {
     this.service.getPost(this.postId).subscribe(data => {
       console.log(data);
       this.post = data.content;
+      this.post.contents = this.post.contents.replace(/\\r\\n|\\r|\\n/gi, '<br/>');
       this.post.date = moment(data.content.date).fromNow();
       this.post.like = data.content.likelist.length;
       if(this.post.writer == this.values.customerName)
@@ -104,7 +105,7 @@ export class CommunityDetailPage {
         });
       }
     }else{
-      this.functions.showAlert("에러", "로그인이 필요합니다.");
+      this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요.");
     }
   }
 
@@ -124,6 +125,9 @@ export class CommunityDetailPage {
   writeComment(){
     if(this.comment == undefined || this.comment == ''){
       this.functions.showAlert("에러", "댓글 내용을 입력해 주세요.");
+    }
+    else if(this.values.isLoggedIn == false){
+      this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요.")
     }
     else{
       this.service.createReply(this.postId, this.comment, this.values.token).then(data =>{

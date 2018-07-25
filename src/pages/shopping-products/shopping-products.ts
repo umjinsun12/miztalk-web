@@ -92,6 +92,20 @@ getCategory(id, slug, name) {
     this.items.categories = this.categories;
     this.nav.push(ShoppingProductPage, this.items);
 }
+
+goCategory(id, name){
+    let item = {
+        id : 0,
+        name : "",
+        categories : []
+    };
+    item.categories.push(id);
+    item.id = id;
+    item.name = name;
+    this.nav.pop();
+    this.nav.push(ShoppingProductsPage,item);
+}
+
 parseText(id, count, offset, obj2) {
     var text = '{';
     text += '"category' + '":"' + id + '"}';

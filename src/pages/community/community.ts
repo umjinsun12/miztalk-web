@@ -3,7 +3,7 @@ import { CommunityWritePage } from './../community-write/community-write';
 import { Values } from './../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides, Platform, AlertController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import * as moment from 'moment';
 import { CommunityDetailPage } from '../community-detail/community-detail';
@@ -58,6 +58,7 @@ export class CommunityPage {
 
   activeIndex: any = 0;
 
+  public alertShown:boolean = false;
  
   // Reference to the app's root nav
   @ViewChild(Nav) nav: Nav;
@@ -70,7 +71,9 @@ export class CommunityPage {
     public loadingCtrl: LoadingController,
     public values: Values,
     public cmsService: CmsService,
-    public funtions : Functions) { 
+    public funtions : Functions,
+    public platform : Platform,
+    public alertCtrl: AlertController) { 
     this.myIndex = navParams.data.tabIndex || 0;
     this.selectedSegment = 'main';
     moment.locale('ko');
@@ -103,6 +106,49 @@ export class CommunityPage {
     ];
     
   }
+
+
+  ionViewDidEnter(){
+    this.platform.registerBackButtonAction(() => {
+      if (this.alertShown==false) {
+        this.presentConfirm();
+      }
+    }, 0)
+  }
+
+  ionViewWillLeave() {
+    this.platform.registerBackButtonAction(() => {
+        this.navCtrl.pop();
+    });
+}
+
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: '종료',
+      message: '미즈톡을 종료하시겠습니까?',
+      buttons: [
+        {
+          text: '취소',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            this.alertShown=false;
+          }
+        },
+        {
+          text: '확인',
+          handler: () => {
+            console.log('Yes clicked');
+            this.platform.exitApp();
+          }
+        }
+      ]
+    });
+     alert.present().then(()=>{
+      this.alertShown=true;
+    });
+  }
+
 
 
   segmentChanged(){
@@ -297,7 +343,7 @@ export class CommunityPage {
     if(this.values.isLoggedIn){
       this.navCtrl.push(CommunityWritePage, this.categoryId);
     }else{
-      this.funtions.showAlert('에러', '로그인을 먼저 해주세요.');
+      this.funtions.showAlert('에러', '마이페이지에서 로그인을 먼저 해주세요.');
     }
   }
 
