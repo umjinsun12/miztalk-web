@@ -127,7 +127,10 @@ export class EventDetailPage {
   }
 
   writeComment(){
-    if(this.comment == undefined || this.comment == ''){
+    if(this.values.isLoggedIn == false){
+      this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요. ");
+    }
+    else if(this.comment == undefined || this.comment == ''){
       this.functions.showAlert("에러", "댓글 내용을 입력해 주세요.");
     }
     else{

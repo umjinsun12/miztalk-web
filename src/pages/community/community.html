@@ -21,7 +21,7 @@
 <ion-content>
     <ion-segment mode="md" [(ngModel)]="selectedSegment" (ionChange)="onSegmentChanged($event)">
       <ion-segment-button value="main">
-        메인
+        최신글
       </ion-segment-button>
       <ion-segment-button value="clinic">
         부부클리닉
@@ -55,6 +55,9 @@
                   <ion-row no-padding>
                     <ion-col (click)="getPostConent(post._id, post.category)">
                       <p class="post-title">{{post.title}}</p>
+                      <p *ngIf="categoryId == 0 && post.category == 1" class="post-author">[부부클리닉]</p>
+                      <p *ngIf="categoryId == 0 && post.category == 2" class="post-author">[중고장터]</p>
+                      <p *ngIf="categoryId == 0 && post.category == 3" class="post-author">[자랑거리]</p>
                       <p class="post-author">{{post.writer}}</p>
                       <p class="post-date">{{post.date}}</p>
                       <ion-icon name="ios-text" class="post-comment"> {{post.commentsCnt}}</ion-icon>

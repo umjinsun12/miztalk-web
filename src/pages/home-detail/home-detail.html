@@ -9,9 +9,19 @@
 
 <ion-content >
   <ion-list>
-      <ion-slides loop="false">
+      <ion-slides loop="false" pager="true" paginationType="fraction" (ionSlideWillChange)="slideChanged($event)">
         <ion-slide *ngFor="let item of posts">
           <img style="width:100%; height:auto" data-src="{{item}}"/>
+          <div class="card-arrow" *ngIf="cardBegin">
+            <ion-row class="arrow-box">
+              <ion-col col-10 class="arrow-msg">
+                좌우로 넘겨 보세요
+              </ion-col>
+              <ion-col col-2>
+                <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </div>
         </ion-slide>
       </ion-slides>
       <ion-item text-wrap no-padding>

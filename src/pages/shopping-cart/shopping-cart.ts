@@ -2,7 +2,7 @@ import { Functions } from './../../services/shopping-services/functions';
 import { Values } from './../../services/shopping-services/values';
 import { CartService } from './../../services/shopping-services/cart-service';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ToastController, AlertController } from 'ionic-angular';
 import { ShoppingProductPage } from '../shopping-product/shopping-product';
 import { ShoppingPage } from '../shopping/shopping';
 import { BillingAddressForm } from '../../pages/checkout/billing-address-form/billing-address-form';
@@ -41,7 +41,7 @@ export class ShoppingCartPage {
     tabBarElement: any;
     allpointchk: boolean = false;
 
-    constructor(public viewCtrl: ViewController, public nav: NavController, public service: CartService, public values: Values, public params: NavParams, public functions: Functions, private toastCtrl: ToastController) {
+    constructor(public alertCtrl: AlertController,public viewCtrl: ViewController, public nav: NavController, public service: CartService, public values: Values, public params: NavParams, public functions: Functions, private toastCtrl: ToastController) {
         this.Apply = "적용";
         this.Checkout = "Checkout";
         this.quantity = 1;
@@ -70,7 +70,36 @@ export class ShoppingCartPage {
     checkout() {
         this.disableSubmit = true;
         this.Checkout = "Please Wait";
-        this.service.checkout().then((results) => this.handleBilling(results));
+
+
+        if(this.values.isLoggedIn == false){
+            let alert = this.alertCtrl.create({
+                title: '안내',
+                message: '비회원 구매시 구매 포인트 적립 및 이벤트 쿠폰 제공 등 각종 할인혜택에서 제외됩니다.',
+                buttons: [
+                  {
+                    text: '취소',
+                    role: 'cancel',
+                    handler: () => {
+                      console.log('Cancel clicked');
+                      this.disableSubmit = false;
+                    }
+                  },
+                  {
+                    text: '확인',
+                    handler: () => {
+                        this.service.checkout().then((results) => this.handleBilling(results));
+                    }
+                  }
+                ]
+              });
+    
+            alert.present().then(()=>{
+            });
+        }
+        else{
+            this.service.checkout().then((results) => this.handleBilling(results));
+        }
     }
     handleBilling(results) {
         this.disableSubmit = false;
@@ -212,4 +241,30 @@ export class ShoppingCartPage {
             if(document.querySelector(".tabbar"))
             this.tabBarElement.display = 'flex';
     }
+
+    presentConfirm() {
+        let alert = this.alertCtrl.create({
+          title: '안내',
+          message: '비회원 구매시 구매 포인트 적립 및 이벤트 쿠폰 제공 등 각종 할인혜택에서 제외됩니다.',
+          buttons: [
+            {
+              text: '취소',
+              role: 'cancel',
+              handler: () => {
+                console.log('Cancel clicked');
+              }
+            },
+            {
+              text: '확인',
+              handler: () => {
+                console.log('Yes clicked');
+              }
+            }
+          ]
+        });
+
+         
+        
+      }
+
 }

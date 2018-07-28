@@ -157,22 +157,32 @@ export class CommunityPage {
   }
 
   getPostCategory(categoryid){
-      let loading = this.loadingCtrl.create();
-      loading.present();
 
-
-      this.cmsService.getPosts(1, categoryid).subscribe((data) => {
-        console.log(data);
-        this.posts = [];
-        for(let post of data.contents){
-          console.log(post);
-          post.date = moment(post.date).fromNow();
-          post.like = post.likelist.length;
-          post.commentsCnt = post.comments.length;
-          this.posts.push(post);
-        }
-        loading.dismiss();
-      });
+      console.log(categoryid);
+      if(categoryid == 0){
+        this.cmsService.getRecentPosts(1).subscribe((data) => {
+          this.posts = [];
+          for(let post of data.contents){
+            console.log(post);
+            post.date = moment(post.date).fromNow();
+            post.like = post.likelist.length;
+            post.commentsCnt = post.comments.length;
+            this.posts.push(post);
+          }
+        });
+      }else{
+        this.cmsService.getPosts(1, categoryid).subscribe((data) => {
+          console.log(data);
+          this.posts = [];
+          for(let post of data.contents){
+            console.log(post);
+            post.date = moment(post.date).fromNow();
+            post.like = post.likelist.length;
+            post.commentsCnt = post.comments.length;
+            this.posts.push(post);
+          }
+        });
+      }
   }
 
   getNoticeCategory(categoryid){
@@ -309,7 +319,8 @@ export class CommunityPage {
     let page = (Math.ceil(this.posts.length/10)) + 1;
     let loading = true;
 
-    this.cmsService.getPosts(page, this.categoryId).subscribe((data) => {
+    if(this.categoryId == 0){
+      this.cmsService.getRecentPosts(page).subscribe((data) => {
         for(let post of data.contents){
           post.date = moment(post.date).fromNow();
           post.like = post.likelist.length;
@@ -317,7 +328,18 @@ export class CommunityPage {
           this.posts.push(post);
         }
         infiniteScroll.complete();
-    });
+      });
+    }else{
+      this.cmsService.getPosts(page, this.categoryId).subscribe((data) => {
+        for(let post of data.contents){
+          post.date = moment(post.date).fromNow();
+          post.like = post.likelist.length;
+          post.commentsCnt = post.comments.length;
+          this.posts.push(post);
+        }
+        infiniteScroll.complete();
+      });
+    }
 
   }
 

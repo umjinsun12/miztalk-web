@@ -23,10 +23,7 @@
 
       <ion-item class="community-content-item">
           <ion-label>게시판 선택</ion-label>
-          <ion-select [(ngModel)]="selectCategory" multiple="false" cancelText="취소" okText="확인">
-              <ion-option value="0" selected="true">
-                메인
-              </ion-option>
+          <ion-select placeholder="카테고리 선택" [(ngModel)]="selectCategory" multiple="false" cancelText="취소" okText="확인">
               <ion-option value="1">
                 부부클리닉
               </ion-option>

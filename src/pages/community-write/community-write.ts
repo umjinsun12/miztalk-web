@@ -82,6 +82,8 @@ export class CommunityWritePage {
       this.functions.showAlert("에러", "제목을 적어 주세요");
     else if(this.content == undefined)
       this.functions.showAlert("에러", "내용을 입력해 주세요");
+    else if(this.selectCategory == undefined || this.selectCategory == 0)
+      this.functions.showAlert("에러", "카테고리를 선택해 주세요");
     else{
       let loading = this.loadingCtrl.create({
         content: "글을 업로드 중입니다"

@@ -19,6 +19,7 @@ import { Functions } from '../../services/shopping-services/functions';
   templateUrl: 'home-detail.html',
 })
 export class HomeDetailPage {
+  
 
   postId: number;
   postName: string;
@@ -28,6 +29,7 @@ export class HomeDetailPage {
   cmsId: any;
   likebtn: boolean;
   comment: any;
+  cardBegin: boolean = true;
 
   constructor(
     public navCtrl: NavController, 
@@ -38,6 +40,7 @@ export class HomeDetailPage {
     public cmsService: CmsService,
     public values : Values,
     public functions : Functions) {
+      moment.locale('ko');
       console.log(navParams.data);
       this.postId = navParams.data.id;
       this.postName = navParams.data.name;
@@ -84,23 +87,27 @@ export class HomeDetailPage {
   }
 
   loadPost(){
-    this.cmsService.getNotices(this.postId, 9091).subscribe(result => {
-      console.log(result);
-      this.cmsId = result.contents[0]._id;
-      this.post.like = result.contents[0].likelist.length;
+    this.cmsService.getNotices(this.postId, 9091).subscribe(results => {
+      this.cmsId = results.contents[0]._id;
+      this.post.like = results.contents[0].likelist.length;
       this.post.comments = [];
-      this.post.commentSize = result.contents[0].comments.length;
-      for(var i=0 ; i < result.contents[0].comments.length ; i++){
-        result.contents[0].comments[i].date = moment(result.contents[0].comments[i].date).fromNow();
-        if(result.contents[0].comments[i].name == this.values.customerName){
-          result.contents[0].comments[i].isMine = true;
+      this.post.commentSize = results.contents[0].comments.length;
+      for(var i=0 ; i < results.contents[0].comments.length ; i++){
+        results.contents[0].comments[i].date = moment(results.contents[0].comments[i].date).fromNow();
+        if(results.contents[0].comments[i].name == this.values.customerName){
+          results.contents[0].comments[i].isMine = true;
         }
         else
-          result.contents[0].comments[i].isMine = false;
-        console.log(result.contents[0].comments[i]);
-        this.post.comments.push(result.contents[0].comments[i]); 
+          results.contents[0].comments[i].isMine = false;
+        console.log(results.contents[0].comments[i]);
+        this.post.comments.push(results.contents[0].comments[i]);
       }
+      var likeChk = results.contents[0].likelist.indexOf(this.values.customerName);
+      if(likeChk == -1){this.likebtn = true;}
+      else{this.likebtn = false;}
     });
+
+
   }
 
   doLike(){
@@ -132,16 +139,22 @@ export class HomeDetailPage {
   }
 
   writeComment(){
-    if(this.comment == undefined || this.comment == ''){
+    if(this.values.isLoggedIn == false){
+      this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요. ");
+    }
+    else if(this.comment == undefined || this.comment == ''){
       this.functions.showAlert("에러", "댓글 내용을 입력해 주세요.");
     }
     else{
       this.cmsService.createReply(this.cmsId, this.comment, this.values.token).then(data =>{
-        console.log(data);
         this.loadPost();
         this.comment = '';
       });
     }
+  }
+
+  slideChanged(ev){
+    this.cardBegin = false;
   }
 
 

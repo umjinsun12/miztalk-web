@@ -118,13 +118,16 @@ export class CmsService {
   }
 
   getPosts(page:number = 1, category:number = 0){
-      return this.http.get(this.config.cmsurl + '/posts/?page=' + page + '&category=' + category).map(res=> res.json())
+      return this.http.get(this.config.cmsurl + '/posts/?page=' + page + '&category=' + category).map(res=> res.json());
   }
 
   getPost(postid){
-      return this.http.get(this.config.cmsurl + '/posts/view?id=' + postid).map(res=> res.json())
+      return this.http.get(this.config.cmsurl + '/posts/view?id=' + postid).map(res=> res.json());
   }
 
+  getRecentPosts(page:number = 1){
+      return this.http.get(this.config.cmsurl+ '/posts/getCommunityPost?page=' + page).map(res=>res.json());
+  }
 
   getReviews(page: number = 1, postid: number = 0){
       return this.http.get(this.config.cmsurl + '/posts/showReview?page=' + page + '&postid=' + postid).map(res => res.json());
