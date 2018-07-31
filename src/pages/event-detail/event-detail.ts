@@ -1,4 +1,4 @@
-import { Values } from './../../services/shopping-services/values';
+import { Values } from '../../services/shopping-services/values';
 import { DomSanitizer } from '@angular/platform-browser';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
@@ -76,21 +76,27 @@ export class EventDetailPage {
       this.post.date = moment(data.date).fromNow();
       
       this.cmsService.getNotices(this.postId, 9091).subscribe(result => {
-        console.log(result);
         this.cmsId = result.contents[0]._id;
         this.post.like = result.contents[0].likelist.length;
         this.post.comments = [];
         this.post.commentSize = result.contents[0].comments.length;
+        console.log(this.post);
         for(var i=0 ; i < result.contents[0].comments.length ; i++){
           result.contents[0].comments[i].date = moment(result.contents[0].comments[i].date).fromNow();
+          console.log(this.values.customerName);
+          console.log(result.contents[0].comments[i].name);
           if(result.contents[0].comments[i].name == this.values.customerName){
             result.contents[0].comments[i].isMine = true;
           }
           else
             result.contents[0].comments[i].isMine = false;
           console.log(result.contents[0].comments[i]);
-          this.post.comments.push(result.contents[0].comments[i]); 
+          this.post.comments.push(result.contents[0].comments[i]);
         }
+        var likeChk = result.contents[0].likelist.indexOf(this.values.customerName);
+        console.log(likeChk);
+        if(likeChk == -1){this.likebtn = true;}
+        else{this.likebtn = false;}
       });
 
 

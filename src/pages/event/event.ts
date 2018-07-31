@@ -1,4 +1,4 @@
-import { Values } from './../../services/shopping-services/values';
+import { Values } from '../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Platform, AlertController } from 'ionic-angular';

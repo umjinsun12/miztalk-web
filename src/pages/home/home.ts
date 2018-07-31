@@ -1,7 +1,7 @@
-import { Functions } from './../../services/shopping-services/functions';
+import { Functions } from '../../services/shopping-services/functions';
 import { Storage } from '@ionic/storage';
 import { NativeStorage } from '@ionic-native/native-storage';
-import { Values } from './../../services/shopping-services/values';
+import { Values } from '../../services/shopping-services/values';
 import { HomeDetailPage } from './../home-detail/home-detail';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, Nav, Platform, AlertController } from 'ionic-angular';

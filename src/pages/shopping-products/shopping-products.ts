@@ -1,13 +1,13 @@
 import { ShoppingProductPage } from './../shopping-product/shopping-product';
 import { ShoppingCartPage } from './../shopping-cart/shopping-cart';
-import { Functions } from './../../services/shopping-services/functions';
-import { Values } from './../../services/shopping-services/values';
-import { CategoryService } from './../../services/shopping-services/category-service';
+import { Functions } from '../../services/shopping-services/functions';
+import { Values } from '../../services/shopping-services/values';
+import { CategoryService } from '../../services/shopping-services/category-service';
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, PopoverController, ViewController,IonicPage } from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { Content } from 'ionic-angular';
-import { Service} from './../../services/shopping-services/service'
+import { Service} from '../../services/shopping-services/service'
 import { WishlistPage } from '../account/wishlist/wishlist'
 import { PopoverPage } from '../about-popover/about-popover';
 import { ShoppingSearchPage } from '../shopping-search/shopping-search';

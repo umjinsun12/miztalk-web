@@ -1,5 +1,9 @@
 .cart {
     background: white;
+    .cart-clear{
+      text-align: right;
+      border-bottom: 1px solid #f2f2f2;
+    }
     .empty {
         margin-top: 50px;
         h4 {
@@ -206,7 +210,7 @@
     .list .item-block .item-inner {
         border-bottom: none;
     }
-    .list .item-block:last-child, {
+    .list .item-block:last-child {
         border-bottom: none;
     }
     .list>.item-block:first-child {

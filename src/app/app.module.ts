@@ -29,16 +29,16 @@ import { MenuPage } from './../pages/menu/menu';
 import { Facebook } from '@ionic-native/facebook';
 
 // shopping service
-import { WishlistService } from './../services/shopping-services/wishlist-service';
-import { Values } from './../services/shopping-services/values';
-import { Service } from './../services/shopping-services/service';
-import { SearchService } from './../services/shopping-services/search-service';
-import { ProductService } from './../services/shopping-services/product-service';
-import { Functions } from './../services/shopping-services/functions';
-import { Config } from './../services/shopping-services/config';
-import { CheckoutService } from './../services/shopping-services/checkout-service';
-import { CategoryService } from './../services/shopping-services/category-service';
-import { CartService } from './../services/shopping-services/cart-service';
+import { WishlistService } from '../services/shopping-services/wishlist-service';
+import { Values } from '../services/shopping-services/values';
+import { Service } from '../services/shopping-services/service';
+import { SearchService } from '../services/shopping-services/search-service';
+import { ProductService } from '../services/shopping-services/product-service';
+import { Functions } from '../services/shopping-services/functions';
+import { Config } from '../services/shopping-services/config';
+import { CheckoutService } from '../services/shopping-services/checkout-service';
+import { CategoryService } from '../services/shopping-services/category-service';
+import { CartService } from '../services/shopping-services/cart-service';
 import { ShoppingProductPage } from '../pages/shopping-product/shopping-product';
 import { ShoppingCartPage } from '../pages/shopping-cart/shopping-cart';
 import { EventDetailPage } from '../pages/event-detail/event-detail';

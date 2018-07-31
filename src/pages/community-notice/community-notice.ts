@@ -1,4 +1,4 @@
-import { Values } from './../../services/shopping-services/values';
+import { Values } from '../../services/shopping-services/values';
 import { DomSanitizer } from '@angular/platform-browser';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';

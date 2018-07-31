@@ -2,7 +2,7 @@ import { EventDetailPage } from './../pages/event-detail/event-detail';
 import { ShoppingProductsPage } from './../pages/shopping-products/shopping-products';
 import { OneSignal } from '@ionic-native/onesignal';
 import { ShoppingProductPage } from './../pages/shopping-product/shopping-product';
-import { Service } from './../services/shopping-services/service';
+import { Service } from '../services/shopping-services/service';
 
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';

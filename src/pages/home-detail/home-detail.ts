@@ -1,8 +1,8 @@
-import { Values } from './../../services/shopping-services/values';
+import { Values } from '../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
-import { CardnewsService } from './../../services/shopping-services/cardnews-service';
+import { CardnewsService } from '../../services/shopping-services/cardnews-service';
 import { CmsService } from '../../services/cms-service.service';
 import * as moment from 'moment';
 import { Functions } from '../../services/shopping-services/functions';

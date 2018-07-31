@@ -102,6 +102,7 @@ export class MypagePage {
     logout() {
         this.service.logout();
         if (!this.values.hideCloseButton) {
+            this.service.getPoint();
             this.nav.pop();
         }
     }

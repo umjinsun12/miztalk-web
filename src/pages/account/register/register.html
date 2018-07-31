@@ -35,9 +35,13 @@
                 </ion-row>
                 <ion-row class="orderer-row">
                         <ion-label col-3>휴대폰 번호 </ion-label>
-                        <ion-input col-3 required [(ngModel)]="registerData.phone1" type="number" name="telephone"> </ion-input>
-                        <ion-input col-3 required [(ngModel)]="registerData.phone2" type="number" name="telephone"> </ion-input>
-                        <ion-input col-3 required [(ngModel)]="registerData.phone3" type="number" name="telephone"> </ion-input>
+                        <ion-input required [disabled]="isVerify" [(ngModel)]="registerData.phone1" type="number" name="telephone"> </ion-input>
+                        <button col-4 ion-button block type="submit" [disabled]="isVerify" outline text-uppercase (click)="receiveOtpSms()">인증번호 전송</button>
+                </ion-row>
+                <ion-row class="orderer-row" *ngIf="sendSms">
+                  <ion-label col-3>인증번호</ion-label>
+                  <ion-input required [(ngModel)]="verifyCode" type="number" name="verify"> </ion-input>
+                  <button col-2 ion-button block type="submit" outline text-uppercase (click)="verifyOtpSms()">인증확인</button>
                 </ion-row>
 
                 <div class="term-box">

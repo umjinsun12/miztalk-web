@@ -1,7 +1,7 @@
-import { Config } from './../../../services/shopping-services/config';
-import { Service } from './../../../services/shopping-services/service';
-import { Functions } from './../../../services/shopping-services/functions';
-import { Values } from './../../../services/shopping-services/values';
+import { Config } from '../../../services/shopping-services/config';
+import { Service } from '../../../services/shopping-services/service';
+import { Functions } from '../../../services/shopping-services/functions';
+import { Values } from '../../../services/shopping-services/values';
 import { Component } from '@angular/core';
 import { NavController, ToastController} from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
@@ -59,6 +59,14 @@ export class AccountLogin {
             return true
         }
     }
+    goregister(){
+      let param = {
+        token : 'test',
+        sns : 'facebook'
+      };
+      this.facebookSpinner = false;
+      this.nav.push(AccountRegister, param);
+    }
     handleResults(results) {
         this.disableSubmit = false;
         this.LogIn = "LogIn";
@@ -95,6 +103,7 @@ export class AccountLogin {
             this.service.facebookLoginChk(response.authResponse.accessToken).then((results) =>{
                 console.log(results);
                 if(results == 'need_register'){
+                    this.functions.showAlert('에러', response.authResponse.accessToken);
                     let param = {
                         token : response.authResponse.accessToken,
                         sns : 'facebook'
@@ -103,15 +112,22 @@ export class AccountLogin {
                     this.nav.push(AccountRegister, param);
                 }
                 else{
+                  this.service.load().then(results => {
                     this.nav.popAll();
                     this.functions.showAlert('성공', '로그인 되었습니다.');
                     this.service.getPoint();
+                  });
                 }
             });
         }).catch((error) => {
-            console.log(error)
-            this.facebookSpinner = false;
-            this.functions.showAlert('에러', error);
+            console.log(error);
+            this.functions.showAlert('에러', this.error.errorMessage);
+            if(error.errorMessage == "Facebook error: User logged in as different Facebook user."){
+              this.facebookSpinner = false;
+              this.facebookLogin();
+            }else{
+              this.functions.showAlert('에러', '다시 로그인 해주세요.');
+            }
         });
     }
     naverLogin(){
@@ -131,9 +147,11 @@ export class AccountLogin {
                             this.nav.push(AccountRegister, param);
                         }
                         else{
-                            this.nav.popAll();
-                            this.functions.showAlert('성공', '로그인 되었습니다.');
-                            this.service.getPoint();
+                            this.service.load().then(results => {
+                              this.nav.popAll();
+                              this.functions.showAlert('성공', '로그인 되었습니다.');
+                              this.service.getPoint();
+                            });
                         }
                     });
                 });
@@ -158,9 +176,11 @@ export class AccountLogin {
                         this.nav.push(AccountRegister, param);
                     }
                     else{
-                        this.nav.popAll();
-                        this.functions.showAlert('성공', '로그인 되었습니다.');
-                        this.service.getPoint();
+                        this.service.load().then(results => {
+                          this.nav.popAll();
+                          this.functions.showAlert('성공', '로그인 되었습니다.');
+                          this.service.getPoint();
+                        });
                     }
                 });
             });

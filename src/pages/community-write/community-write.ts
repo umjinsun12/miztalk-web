@@ -1,8 +1,8 @@
-import { Values } from './../../services/shopping-services/values';
+import { Values } from '../../services/shopping-services/values';
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController} from 'ionic-angular';
 import { Service } from '../../services/shopping-services/service';
-import { Functions } from './../../services/shopping-services/functions';
+import { Functions } from '../../services/shopping-services/functions';
 import { CmsService } from '../../services/cms-service.service';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 

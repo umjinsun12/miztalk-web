@@ -1,8 +1,8 @@
 import { Component, ViewChild, ElementRef} from '@angular/core';
-import { Values } from './../../../services/shopping-services/values';
-import { Functions } from './../../../services/shopping-services/functions';
-import { Service } from './../../../services/shopping-services/service'
-import { CheckoutService } from './../../../services/shopping-services/checkout-service';
+import { Values } from '../../../services/shopping-services/values';
+import { Functions } from '../../../services/shopping-services/functions';
+import { Service } from '../../../services/shopping-services/service'
+import { CheckoutService } from '../../../services/shopping-services/checkout-service';
 import { NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { OrderSummary } from '../../checkout/order-summary/order-summary';
@@ -12,6 +12,7 @@ import { AddressSearchFormPage } from '../address-search-form/address-search-for
 import { IamportService } from 'iamport-ionic-inicis3';
 
 import {TabsPage} from '../../tabs/tabs';
+import {CmsService} from "../../../services/cms-service.service";
 
 
 /**
@@ -82,7 +83,8 @@ export class BillingAddressForm {
       public addressservice : Service,
       private builder: FormBuilder,
       public iamport: IamportService,
-      public loadingCtrl: LoadingController) {
+      public loadingCtrl: LoadingController,
+      public cmsService : CmsService) {
 
 
       this.PlaceOrder = "Place Order";
@@ -143,6 +145,7 @@ export class BillingAddressForm {
       if (this.validateAddress()) {
           this.buttonSubmit = true;
           this.PlaceOrder = "Placing Order";
+          console.log(this.form.payment_method);
           if (this.form.shipping) {
               this.form.shipping_first_name = this.form.billing_first_name;
               this.form.shipping_last_name = this.form.billing_last_name;
@@ -155,6 +158,8 @@ export class BillingAddressForm {
               this.form.shipping_postcode = this.form.billing_postcode;
           }
           if (this.form.payment_method == 'bacs' || this.form.payment_method == 'cheque' || this.form.payment_method == 'cod') {
+              this.payloading = this.loadingCtrl.create();
+              this.payloading.present();
               this.service.checkout(this.form).then((results) => this.handleBilling(results));
           } else if (this.form.payment_method == 'stripe') {
               this.service.getStripeToken(this.form).then((results) => this.handleStripeToken(results));
@@ -173,7 +178,7 @@ export class BillingAddressForm {
               imp_uid : results.iamport.user_code,
               merchant_uid : results.iamport.merchant_uid,
               order_id : results.order_id
-          }
+          };
 
           
 
@@ -247,7 +252,10 @@ export class BillingAddressForm {
           var pos2 = str.lastIndexOf("?key=wc_order");
           var pos3 = pos2 - (pos1 + 15);
           var order_id = str.substr(pos1 + 15, pos3);
-          this.nav.push(OrderSummary, order_id);
+          this.cmsService.receiveSmsAcount(this.form.billing_first_name, this.OrderReview.totals.total).subscribe(result => {
+            this.payloading.dismiss();
+            this.nav.push(OrderSummary, order_id);
+          });
       } else if (results.result == "failure") {
           this.functions.showAlert("ERROR", results.messages);
       }

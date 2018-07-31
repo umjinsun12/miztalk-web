@@ -138,6 +138,18 @@ export class CmsService {
   }
 
 
+  receiveSmsVerify(phonenum){
+      return this.http.get(this.config.cmsurl + '/sms/sendOtp?phonenum=' + phonenum).map(res => res.json());
+  }
+
+  verifySms(phonenum, code){
+    return this.http.get(this.config.cmsurl + '/sms/verifyOtp?phonenum=' + phonenum + '&code=' + code).map(res => res.json());
+  }
+
+  receiveSmsAcount(phonenum, price){
+    return this.http.get(this.config.cmsurl + '/sms/sendAccount?phonenum=' + phonenum + '&price=' + price).map(res => res.json());
+  }
+
   dataURItoBlob(b64Data) {
     let contentType = 'image/png';
     let sliceSize = 512;
@@ -161,7 +173,6 @@ export class CmsService {
 
     let blob = new Blob(byteArrays, {type: contentType});
     return blob;
-
   }
 
 }

@@ -1,6 +1,6 @@
-import { Functions } from './../../services/shopping-services/functions';
-import { Values } from './../../services/shopping-services/values';
-import { ProductService } from './../../services/shopping-services/product-service';
+import { Functions } from '../../services/shopping-services/functions';
+import { Values } from '../../services/shopping-services/values';
+import { ProductService } from '../../services/shopping-services/product-service';
 import { Component, ViewChild } from '@angular/core';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { md5 } from './md5';
@@ -155,13 +155,12 @@ export class ShoppingProductPage {
         this.getRelatedProducts();
         this.getUpsellProducts();
         this.getCrossSellProducts();
-        
-        console.log(this.options[0]);
+
     }
     getVariationProducts() {
         this.service.getVariationProducts(this.product.id).then((results) => {
+          console.log(this.variations);
             this.variations = results
-            console.log(this.variations);
         });
     }
     getProduct(id) {

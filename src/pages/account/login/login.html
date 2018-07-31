@@ -21,8 +21,9 @@
                     <ion-icon item-right name="ios-eye-off" (click)="hidePassword()" style="font-size: 2.5rem;z-index:10"></ion-icon>
                 </ion-item>
                 <h2 tappable (click)="forgotten()">비밀번호를 잊으셨나요?</h2>
-                
+                <h2 tappable (click)="goregister()">회원가입하러가기?</h2>
             </ion-list>-->
+
             <button ion-button outline full class="facebookbtn" type="submit" text-uppercase [disabled]="disableSubmit" (click)="facebookLogin()"><img src="assets/img/9.png"srcset="assets/img/9@2x.png 2x,assets/img/9@3x.png 3x" class="facebookicon">페이스북 로그인
             </button> <br> 
             <button ion-button outline full class="naverbtn" type="submit" text-uppercase [disabled]="disableSubmit" (click)="naverLogin()"><img src="assets/img/10.png"srcset="assets/img/10@2x.png 2x,assets/img/10@3x.png 3x"class="navericon">네이버 로그인

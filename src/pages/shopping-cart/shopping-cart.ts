@@ -1,6 +1,6 @@
-import { Functions } from './../../services/shopping-services/functions';
-import { Values } from './../../services/shopping-services/values';
-import { CartService } from './../../services/shopping-services/cart-service';
+import { Functions } from '../../services/shopping-services/functions';
+import { Values } from '../../services/shopping-services/values';
+import { CartService } from '../../services/shopping-services/cart-service';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, ToastController, AlertController } from 'ionic-angular';
 import { ShoppingProductPage } from '../shopping-product/shopping-product';
@@ -107,6 +107,12 @@ export class ShoppingCartPage {
         if(this.disableSubmitCoupon)
             results.point = this.cart.coupon;
         this.nav.push(BillingAddressForm, results);
+    }
+
+    cartClear(){
+      for(let key in this.cart.cart_contents){
+        this.delete(key);
+      }
     }
     
     deleteFromCart(id, key) {

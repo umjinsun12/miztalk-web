@@ -1,6 +1,6 @@
 import { CommunityNoticePage } from './../community-notice/community-notice';
 import { CommunityWritePage } from './../community-write/community-write';
-import { Values } from './../../services/shopping-services/values';
+import { Values } from '../../services/shopping-services/values';
 import { WordpressService } from './../../services/wordpress.service';
 import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Nav, LoadingController, Slides, Platform, AlertController } from 'ionic-angular';

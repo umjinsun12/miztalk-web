@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Values } from './../../services/shopping-services/values';
-import { Service} from './../../services/shopping-services/service';
+import { Values } from '../../services/shopping-services/values';
+import { Service} from '../../services/shopping-services/service';
 
 /**
  * Generated class for the PointDetailPage page.
