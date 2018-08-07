@@ -1,0 +1,240 @@
+2018-08-02T04:31:27.612+0900 I CONTROL  [main] Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten] MongoDB starting : pid=6850 port=27017 dbpath=/data/db 64-bit host=eomjinseob-ui-MacBook-Pro.local
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten] db version v4.0.0
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten] git version: 3b07af3d4f471ae89e8186d33bbb1d5259597d51
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten] allocator: system
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten] modules: none
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten] build environment:
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten]     distarch: x86_64
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten]     target_arch: x86_64
+2018-08-02T04:31:27.629+0900 I CONTROL  [initandlisten] options: {}
+2018-08-02T04:31:27.630+0900 I STORAGE  [initandlisten] Detected data files in /data/db created by the 'wiredTiger' storage engine, so setting the active storage engine to 'wiredTiger'.
+2018-08-02T04:31:27.630+0900 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=3584M,session_max=20000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),statistics_log=(wait=0),verbose=(recovery_progress),
+2018-08-02T04:31:28.297+0900 I STORAGE  [initandlisten] WiredTiger message [1533151888:297345][6850:0x7fff8a3a1380], txn-recover: Main recovery loop: starting at 5/6528
+2018-08-02T04:31:28.392+0900 I STORAGE  [initandlisten] WiredTiger message [1533151888:392080][6850:0x7fff8a3a1380], txn-recover: Recovering log 5 through 6
+2018-08-02T04:31:28.458+0900 I STORAGE  [initandlisten] WiredTiger message [1533151888:458541][6850:0x7fff8a3a1380], txn-recover: Recovering log 6 through 6
+2018-08-02T04:31:28.526+0900 I STORAGE  [initandlisten] WiredTiger message [1533151888:526738][6850:0x7fff8a3a1380], txn-recover: Set global recovery timestamp: 0
+2018-08-02T04:31:28.574+0900 I RECOVERY [initandlisten] WiredTiger recoveryTimestamp. Ts: Timestamp(0, 0)
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] 
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] 
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] ** WARNING: This server is bound to localhost.
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] **          Remote systems will be unable to connect to this server. 
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] **          Start the server with --bind_ip <address> to specify which IP 
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] **          addresses it should serve responses from, or with --bind_ip_all to
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] **          bind to all interfaces. If this behavior is desired, start the
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] **          server with --bind_ip 127.0.0.1 to disable this warning.
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] 
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] 
+2018-08-02T04:31:28.612+0900 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. Number of files is 256, should be at least 1000
+2018-08-02T04:31:28.652+0900 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'
+2018-08-02T04:31:28.655+0900 I NETWORK  [initandlisten] waiting for connections on port 27017
+2018-08-02T04:31:28.689+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63523 #1 (1 connection now open)
+2018-08-02T04:31:36.230+0900 I NETWORK  [conn1] end connection 127.0.0.1:63523 (0 connections now open)
+2018-08-02T04:31:38.170+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63658 #2 (1 connection now open)
+2018-08-02T04:31:38.176+0900 I NETWORK  [conn2] received client metadata from 127.0.0.1:63658 conn2: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:31:41.348+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63700 #3 (2 connections now open)
+2018-08-02T04:31:41.351+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63702 #4 (3 connections now open)
+2018-08-02T04:31:41.365+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63704 #5 (4 connections now open)
+2018-08-02T04:31:41.368+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63706 #6 (5 connections now open)
+2018-08-02T04:32:31.751+0900 I NETWORK  [conn6] end connection 127.0.0.1:63706 (4 connections now open)
+2018-08-02T04:32:31.751+0900 I NETWORK  [conn5] end connection 127.0.0.1:63704 (3 connections now open)
+2018-08-02T04:32:31.751+0900 I NETWORK  [conn4] end connection 127.0.0.1:63702 (2 connections now open)
+2018-08-02T04:32:31.751+0900 I NETWORK  [conn3] end connection 127.0.0.1:63700 (1 connection now open)
+2018-08-02T04:32:31.751+0900 I NETWORK  [conn2] end connection 127.0.0.1:63658 (0 connections now open)
+2018-08-02T04:34:20.755+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:49456 #7 (1 connection now open)
+2018-08-02T04:34:20.759+0900 I NETWORK  [conn7] received client metadata from 127.0.0.1:49456 conn7: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:34:26.815+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:49537 #8 (2 connections now open)
+2018-08-02T04:34:26.818+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:49539 #9 (3 connections now open)
+2018-08-02T04:34:26.821+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:49541 #10 (4 connections now open)
+2018-08-02T04:34:26.826+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:49543 #11 (5 connections now open)
+2018-08-02T04:34:57.564+0900 I NETWORK  [conn11] end connection 127.0.0.1:49543 (4 connections now open)
+2018-08-02T04:34:57.564+0900 I NETWORK  [conn10] end connection 127.0.0.1:49541 (3 connections now open)
+2018-08-02T04:34:57.564+0900 I NETWORK  [conn9] end connection 127.0.0.1:49539 (2 connections now open)
+2018-08-02T04:34:57.564+0900 I NETWORK  [conn8] end connection 127.0.0.1:49537 (1 connection now open)
+2018-08-02T04:34:57.564+0900 I NETWORK  [conn7] end connection 127.0.0.1:49456 (0 connections now open)
+2018-08-02T04:35:23.301+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:50313 #12 (1 connection now open)
+2018-08-02T04:35:23.306+0900 I NETWORK  [conn12] received client metadata from 127.0.0.1:50313 conn12: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:35:26.503+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:50355 #13 (2 connections now open)
+2018-08-02T04:35:26.506+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:50357 #14 (3 connections now open)
+2018-08-02T04:35:26.510+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:50359 #15 (4 connections now open)
+2018-08-02T04:35:26.515+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:50361 #16 (5 connections now open)
+2018-08-02T04:36:08.303+0900 I NETWORK  [conn16] end connection 127.0.0.1:50361 (3 connections now open)
+2018-08-02T04:36:08.303+0900 I NETWORK  [conn15] end connection 127.0.0.1:50359 (4 connections now open)
+2018-08-02T04:36:08.303+0900 I NETWORK  [conn14] end connection 127.0.0.1:50357 (2 connections now open)
+2018-08-02T04:36:08.303+0900 I NETWORK  [conn13] end connection 127.0.0.1:50355 (1 connection now open)
+2018-08-02T04:36:08.303+0900 I NETWORK  [conn12] end connection 127.0.0.1:50313 (0 connections now open)
+2018-08-02T04:36:34.235+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:51314 #17 (1 connection now open)
+2018-08-02T04:36:34.241+0900 I NETWORK  [conn17] received client metadata from 127.0.0.1:51314 conn17: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:36:36.527+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:51343 #18 (2 connections now open)
+2018-08-02T04:36:36.532+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:51345 #19 (3 connections now open)
+2018-08-02T04:36:36.537+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:51347 #20 (4 connections now open)
+2018-08-02T04:36:36.543+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:51349 #21 (5 connections now open)
+2018-08-02T04:38:34.577+0900 I NETWORK  [conn20] end connection 127.0.0.1:51347 (3 connections now open)
+2018-08-02T04:38:34.577+0900 I NETWORK  [conn19] end connection 127.0.0.1:51345 (2 connections now open)
+2018-08-02T04:38:34.577+0900 I NETWORK  [conn17] end connection 127.0.0.1:51314 (1 connection now open)
+2018-08-02T04:38:34.577+0900 I NETWORK  [conn18] end connection 127.0.0.1:51343 (0 connections now open)
+2018-08-02T04:38:34.577+0900 I NETWORK  [conn21] end connection 127.0.0.1:51349 (4 connections now open)
+2018-08-02T04:38:41.278+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53042 #22 (1 connection now open)
+2018-08-02T04:38:41.282+0900 I NETWORK  [conn22] received client metadata from 127.0.0.1:53042 conn22: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:38:46.386+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53112 #23 (2 connections now open)
+2018-08-02T04:38:46.389+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53114 #24 (3 connections now open)
+2018-08-02T04:38:46.391+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53116 #25 (4 connections now open)
+2018-08-02T04:38:46.396+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53118 #26 (5 connections now open)
+2018-08-02T04:39:15.941+0900 I NETWORK  [conn26] end connection 127.0.0.1:53118 (4 connections now open)
+2018-08-02T04:39:15.941+0900 I NETWORK  [conn25] end connection 127.0.0.1:53116 (3 connections now open)
+2018-08-02T04:39:15.941+0900 I NETWORK  [conn24] end connection 127.0.0.1:53114 (2 connections now open)
+2018-08-02T04:39:15.941+0900 I NETWORK  [conn23] end connection 127.0.0.1:53112 (1 connection now open)
+2018-08-02T04:39:15.941+0900 I NETWORK  [conn22] end connection 127.0.0.1:53042 (0 connections now open)
+2018-08-02T04:39:33.452+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53762 #27 (1 connection now open)
+2018-08-02T04:39:33.456+0900 I NETWORK  [conn27] received client metadata from 127.0.0.1:53762 conn27: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:39:36.418+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53806 #28 (2 connections now open)
+2018-08-02T04:39:36.422+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53808 #29 (3 connections now open)
+2018-08-02T04:39:36.426+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53810 #30 (4 connections now open)
+2018-08-02T04:39:36.439+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:53812 #31 (5 connections now open)
+2018-08-02T04:39:54.342+0900 I NETWORK  [conn31] end connection 127.0.0.1:53812 (4 connections now open)
+2018-08-02T04:39:54.342+0900 I NETWORK  [conn30] end connection 127.0.0.1:53810 (3 connections now open)
+2018-08-02T04:39:54.342+0900 I NETWORK  [conn29] end connection 127.0.0.1:53808 (2 connections now open)
+2018-08-02T04:39:54.343+0900 I NETWORK  [conn28] end connection 127.0.0.1:53806 (1 connection now open)
+2018-08-02T04:39:54.343+0900 I NETWORK  [conn27] end connection 127.0.0.1:53762 (0 connections now open)
+2018-08-02T04:40:34.533+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:54603 #32 (1 connection now open)
+2018-08-02T04:40:34.537+0900 I NETWORK  [conn32] received client metadata from 127.0.0.1:54603 conn32: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:40:36.608+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:54632 #33 (2 connections now open)
+2018-08-02T04:40:36.613+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:54634 #34 (3 connections now open)
+2018-08-02T04:40:36.630+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:54636 #35 (4 connections now open)
+2018-08-02T04:40:36.639+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:54638 #36 (5 connections now open)
+2018-08-02T04:41:08.449+0900 I NETWORK  [conn34] end connection 127.0.0.1:54634 (3 connections now open)
+2018-08-02T04:41:08.449+0900 I NETWORK  [conn36] end connection 127.0.0.1:54638 (4 connections now open)
+2018-08-02T04:41:08.449+0900 I NETWORK  [conn35] end connection 127.0.0.1:54636 (2 connections now open)
+2018-08-02T04:41:08.449+0900 I NETWORK  [conn33] end connection 127.0.0.1:54632 (1 connection now open)
+2018-08-02T04:41:08.449+0900 I NETWORK  [conn32] end connection 127.0.0.1:54603 (0 connections now open)
+2018-08-02T04:41:21.841+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:55236 #37 (1 connection now open)
+2018-08-02T04:41:21.846+0900 I NETWORK  [conn37] received client metadata from 127.0.0.1:55236 conn37: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:41:26.491+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:55304 #38 (2 connections now open)
+2018-08-02T04:41:26.518+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:55306 #39 (3 connections now open)
+2018-08-02T04:41:26.555+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:55308 #40 (4 connections now open)
+2018-08-02T04:41:26.567+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:55310 #41 (5 connections now open)
+2018-08-02T04:43:21.160+0900 I NETWORK  [conn41] end connection 127.0.0.1:55310 (4 connections now open)
+2018-08-02T04:43:21.160+0900 I NETWORK  [conn40] end connection 127.0.0.1:55308 (3 connections now open)
+2018-08-02T04:43:21.161+0900 I NETWORK  [conn39] end connection 127.0.0.1:55306 (2 connections now open)
+2018-08-02T04:43:21.161+0900 I NETWORK  [conn38] end connection 127.0.0.1:55304 (1 connection now open)
+2018-08-02T04:43:21.161+0900 I NETWORK  [conn37] end connection 127.0.0.1:55236 (0 connections now open)
+2018-08-02T04:43:24.669+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:56856 #42 (1 connection now open)
+2018-08-02T04:43:24.676+0900 I NETWORK  [conn42] received client metadata from 127.0.0.1:56856 conn42: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:43:26.526+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:56881 #43 (2 connections now open)
+2018-08-02T04:43:26.529+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:56887 #44 (3 connections now open)
+2018-08-02T04:43:26.532+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:56889 #45 (4 connections now open)
+2018-08-02T04:43:26.537+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:56891 #46 (5 connections now open)
+2018-08-02T04:45:48.341+0900 I NETWORK  [conn46] end connection 127.0.0.1:56891 (4 connections now open)
+2018-08-02T04:45:48.341+0900 I NETWORK  [conn45] end connection 127.0.0.1:56889 (3 connections now open)
+2018-08-02T04:45:48.341+0900 I NETWORK  [conn44] end connection 127.0.0.1:56887 (2 connections now open)
+2018-08-02T04:45:48.341+0900 I NETWORK  [conn43] end connection 127.0.0.1:56881 (1 connection now open)
+2018-08-02T04:45:48.341+0900 I NETWORK  [conn42] end connection 127.0.0.1:56856 (0 connections now open)
+2018-08-02T04:45:50.486+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:58902 #47 (1 connection now open)
+2018-08-02T04:45:50.490+0900 I NETWORK  [conn47] received client metadata from 127.0.0.1:58902 conn47: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-02T04:45:56.448+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59004 #48 (2 connections now open)
+2018-08-02T04:45:56.451+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59006 #49 (3 connections now open)
+2018-08-02T04:45:56.455+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59008 #50 (4 connections now open)
+2018-08-02T04:45:56.463+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59010 #51 (5 connections now open)
+2018-08-02T09:27:58.536+0900 I COMMAND  [conn49] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 2002, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("4253c991-2c39-44eb-aeec-be503c589a10") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:23 cursorExhausted:1 numYields:0 nreturned:1 reslen:446 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 3234981ms
+2018-08-02T09:27:58.536+0900 I COMMAND  [conn47] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 1902, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("6a8879f3-96f2-4066-84ea-ec219d0d9286") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:41 cursorExhausted:1 numYields:1 nreturned:1 reslen:486 locks:{ Global: { acquireCount: { r: 2 } }, Database: { acquireCount: { r: 2 } }, Collection: { acquireCount: { r: 2 } } } protocol:op_query 3234980ms
+2018-08-02T11:16:16.809+0900 I COMMAND  [conn47] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 5665, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("5538a12d-830d-4f9b-80fc-a2c72ce0fde7") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:99 cursorExhausted:1 numYields:0 nreturned:1 reslen:287 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 118ms
+2018-08-02T11:16:16.809+0900 I COMMAND  [conn48] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 5329, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("30aeb090-86b8-4c67-b051-3b85afb21fde") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:5 cursorExhausted:1 numYields:0 nreturned:1 reslen:287 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 118ms
+2018-08-02T11:16:16.809+0900 I COMMAND  [conn49] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 5425, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("f56cf0b8-e638-41f6-a052-94af789ab997") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:4 cursorExhausted:1 numYields:0 nreturned:1 reslen:287 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 119ms
+2018-08-02T11:16:16.809+0900 I COMMAND  [conn50] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 5331, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("0c0d97dd-493f-45af-b753-40d884e64a64") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:2 cursorExhausted:1 numYields:0 nreturned:1 reslen:287 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 116ms
+2018-08-02T11:16:16.809+0900 I COMMAND  [conn51] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 5609, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("e8bdefe6-cfd9-4da6-82bd-cc95385d9896") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:98 cursorExhausted:1 numYields:0 nreturned:1 reslen:287 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 121ms
+2018-08-02T12:10:14.205+0900 I COMMAND  [LogicalSessionCacheRefresh] command config.$cmd command: createIndexes { createIndexes: "system.sessions", indexes: [ { key: { lastUse: 1 }, name: "lsidTTLIndex", expireAfterSeconds: 1800 } ], $db: "config" } numYields:0 reslen:150 locks:{ Global: { acquireCount: { r: 1, w: 1 } }, Database: { acquireCount: { W: 1 } } } protocol:op_msg 444ms
+2018-08-02T12:10:14.669+0900 I COMMAND  [LogicalSessionCacheRefresh] command config.$cmd command: update { update: "system.sessions", ordered: false, allowImplicitCollectionCreation: false, writeConcern: { w: "majority", wtimeout: 15000 }, $db: "config" } numYields:0 reslen:97965 locks:{ Global: { acquireCount: { r: 1001, w: 1001 } }, Database: { acquireCount: { w: 1000, W: 1 } }, Collection: { acquireCount: { w: 1000 } } } protocol:op_msg 113ms
+2018-08-05T13:11:55.779+0900 I COMMAND  [conn47] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 3953, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("c716c863-8b1a-4685-8a74-7db7b6e657c0") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:81 cursorExhausted:1 numYields:0 nreturned:1 reslen:447 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 3234106ms
+2018-08-05T14:31:14.883+0900 I COMMAND  [PeriodicTaskRunner] task: UnusedLockCleaner took: 121ms
+2018-08-05T15:30:20.457+0900 I COMMAND  [conn47] command boards.boardcontents command: find { find: "boardcontents", filter: { postid: 3531, category: 9091 }, projection: {}, limit: 1, singleBatch: true, batchSize: 1, returnKey: false, showRecordId: false, lsid: { id: UUID("c5fa75b1-73e7-43aa-89e2-75452ee42a12") }, $db: "boards" } planSummary: COLLSCAN keysExamined:0 docsExamined:34 cursorExhausted:1 numYields:0 nreturned:1 reslen:287 locks:{ Global: { acquireCount: { r: 1 } }, Database: { acquireCount: { r: 1 } }, Collection: { acquireCount: { r: 1 } } } protocol:op_query 3069018ms
+2018-08-05T23:37:03.051+0900 I COMMAND  [LogicalSessionCacheRefresh] command config.$cmd command: update { update: "system.sessions", ordered: false, allowImplicitCollectionCreation: false, writeConcern: { w: "majority", wtimeout: 15000 }, $db: "config" } numYields:0 reslen:90223 locks:{ Global: { acquireCount: { r: 1003, w: 1003 } }, Database: { acquireCount: { w: 1002, W: 1 } }, Collection: { acquireCount: { w: 1002 } } } protocol:op_msg 139ms
+2018-08-06T12:58:32.108+0900 I COMMAND  [LogicalSessionCacheRefresh] command config.$cmd command: createIndexes { createIndexes: "system.sessions", indexes: [ { key: { lastUse: 1 }, name: "lsidTTLIndex", expireAfterSeconds: 1800 } ], $db: "config" } numYields:0 reslen:150 locks:{ Global: { acquireCount: { r: 1, w: 1 } }, Database: { acquireCount: { W: 1 } } } protocol:op_msg 514ms
+2018-08-06T12:58:32.849+0900 I WRITE    [LogicalSessionCacheRefresh] update config.system.sessions command: { q: { _id: { id: UUID("77275083-2830-4c62-bd76-b7ebf3089fda"), uid: BinData(0, E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855) } }, u: { $currentDate: { lastUse: true } }, multi: false, upsert: true } planSummary: IDHACK keysExamined:0 docsExamined:0 nMatched:0 nModified:0 upsert:1 keysInserted:2 numYields:1 locks:{ Global: { acquireCount: { r: 4, w: 4 } }, Database: { acquireCount: { w: 3, W: 1 } }, Collection: { acquireCount: { w: 3 } } } 423ms
+2018-08-06T12:58:33.273+0900 I COMMAND  [LogicalSessionCacheRefresh] command config.$cmd command: update { update: "system.sessions", ordered: false, allowImplicitCollectionCreation: false, writeConcern: { w: "majority", wtimeout: 15000 }, $db: "config" } numYields:0 reslen:97965 locks:{ Global: { acquireCount: { r: 1008, w: 1008 } }, Database: { acquireCount: { w: 1007, W: 1 } }, Collection: { acquireCount: { w: 1007 } } } protocol:op_msg 945ms
+2018-08-06T12:58:33.416+0900 I COMMAND  [LogicalSessionCacheRefresh] command config.$cmd command: update { update: "system.sessions", ordered: false, allowImplicitCollectionCreation: false, writeConcern: { w: "majority", wtimeout: 15000 }, $db: "config" } numYields:0 reslen:61215 locks:{ Global: { acquireCount: { r: 1633, w: 1633 } }, Database: { acquireCount: { w: 1632, W: 1 } }, Collection: { acquireCount: { w: 1632 } } } protocol:op_msg 138ms
+2018-08-06T20:58:31.137+0900 I NETWORK  [conn51] end connection 127.0.0.1:59010 (3 connections now open)
+2018-08-06T20:58:31.137+0900 I NETWORK  [conn48] end connection 127.0.0.1:59004 (1 connection now open)
+2018-08-06T20:58:31.137+0900 I NETWORK  [conn50] end connection 127.0.0.1:59008 (2 connections now open)
+2018-08-06T20:58:31.137+0900 I NETWORK  [conn49] end connection 127.0.0.1:59006 (0 connections now open)
+2018-08-06T20:58:31.137+0900 I NETWORK  [conn47] end connection 127.0.0.1:58902 (4 connections now open)
+2018-08-06T20:58:33.111+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59214 #52 (1 connection now open)
+2018-08-06T20:58:33.126+0900 I NETWORK  [conn52] received client metadata from 127.0.0.1:59214 conn52: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-06T20:58:36.453+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59269 #53 (2 connections now open)
+2018-08-06T20:58:36.456+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59271 #54 (3 connections now open)
+2018-08-06T20:58:36.459+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59273 #55 (4 connections now open)
+2018-08-06T20:58:36.465+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:59275 #56 (5 connections now open)
+2018-08-06T21:00:54.921+0900 I NETWORK  [conn56] end connection 127.0.0.1:59275 (4 connections now open)
+2018-08-06T21:00:54.921+0900 I NETWORK  [conn52] end connection 127.0.0.1:59214 (3 connections now open)
+2018-08-06T21:00:54.922+0900 I NETWORK  [conn55] end connection 127.0.0.1:59273 (2 connections now open)
+2018-08-06T21:00:54.922+0900 I NETWORK  [conn54] end connection 127.0.0.1:59271 (1 connection now open)
+2018-08-06T21:00:54.922+0900 I NETWORK  [conn53] end connection 127.0.0.1:59269 (0 connections now open)
+2018-08-06T21:00:56.477+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61113 #57 (1 connection now open)
+2018-08-06T21:00:56.482+0900 I NETWORK  [conn57] received client metadata from 127.0.0.1:61113 conn57: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-06T21:01:01.417+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61182 #58 (2 connections now open)
+2018-08-06T21:01:01.420+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61184 #59 (3 connections now open)
+2018-08-06T21:01:01.426+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61186 #60 (4 connections now open)
+2018-08-06T21:01:01.429+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61188 #61 (5 connections now open)
+2018-08-06T21:01:56.796+0900 I NETWORK  [conn60] end connection 127.0.0.1:61186 (3 connections now open)
+2018-08-06T21:01:56.796+0900 I NETWORK  [conn61] end connection 127.0.0.1:61188 (4 connections now open)
+2018-08-06T21:01:56.796+0900 I NETWORK  [conn59] end connection 127.0.0.1:61184 (2 connections now open)
+2018-08-06T21:01:56.796+0900 I NETWORK  [conn58] end connection 127.0.0.1:61182 (1 connection now open)
+2018-08-06T21:01:56.796+0900 I NETWORK  [conn57] end connection 127.0.0.1:61113 (0 connections now open)
+2018-08-06T21:01:58.343+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61952 #62 (1 connection now open)
+2018-08-06T21:01:58.347+0900 I NETWORK  [conn62] received client metadata from 127.0.0.1:61952 conn62: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-06T21:02:01.491+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61995 #63 (2 connections now open)
+2018-08-06T21:02:01.494+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61997 #64 (3 connections now open)
+2018-08-06T21:02:01.496+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:61999 #65 (4 connections now open)
+2018-08-06T21:02:01.500+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62001 #66 (5 connections now open)
+2018-08-06T21:02:16.449+0900 I NETWORK  [conn66] end connection 127.0.0.1:62001 (4 connections now open)
+2018-08-06T21:02:16.449+0900 I NETWORK  [conn65] end connection 127.0.0.1:61999 (3 connections now open)
+2018-08-06T21:02:16.449+0900 I NETWORK  [conn64] end connection 127.0.0.1:61997 (2 connections now open)
+2018-08-06T21:02:16.449+0900 I NETWORK  [conn63] end connection 127.0.0.1:61995 (1 connection now open)
+2018-08-06T21:02:16.450+0900 I NETWORK  [conn62] end connection 127.0.0.1:61952 (0 connections now open)
+2018-08-06T21:02:19.709+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62246 #67 (1 connection now open)
+2018-08-06T21:02:19.717+0900 I NETWORK  [conn67] received client metadata from 127.0.0.1:62246 conn67: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-06T21:02:21.397+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62275 #68 (2 connections now open)
+2018-08-06T21:02:21.401+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62277 #69 (3 connections now open)
+2018-08-06T21:02:21.406+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62279 #70 (4 connections now open)
+2018-08-06T21:02:21.415+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62281 #71 (5 connections now open)
+2018-08-06T21:02:55.480+0900 I NETWORK  [conn71] end connection 127.0.0.1:62281 (4 connections now open)
+2018-08-06T21:02:55.481+0900 I NETWORK  [conn70] end connection 127.0.0.1:62279 (3 connections now open)
+2018-08-06T21:02:55.481+0900 I NETWORK  [conn69] end connection 127.0.0.1:62277 (2 connections now open)
+2018-08-06T21:02:55.481+0900 I NETWORK  [conn68] end connection 127.0.0.1:62275 (1 connection now open)
+2018-08-06T21:02:55.481+0900 I NETWORK  [conn67] end connection 127.0.0.1:62246 (0 connections now open)
+2018-08-06T21:02:57.596+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62761 #72 (1 connection now open)
+2018-08-06T21:02:57.601+0900 I NETWORK  [conn72] received client metadata from 127.0.0.1:62761 conn72: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-06T21:03:01.544+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62818 #73 (2 connections now open)
+2018-08-06T21:03:01.556+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62820 #74 (3 connections now open)
+2018-08-06T21:03:01.557+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62822 #75 (4 connections now open)
+2018-08-06T21:03:01.557+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:62824 #76 (5 connections now open)
+2018-08-06T21:03:14.703+0900 I NETWORK  [conn75] end connection 127.0.0.1:62822 (3 connections now open)
+2018-08-06T21:03:14.703+0900 I NETWORK  [conn76] end connection 127.0.0.1:62824 (4 connections now open)
+2018-08-06T21:03:14.703+0900 I NETWORK  [conn74] end connection 127.0.0.1:62820 (2 connections now open)
+2018-08-06T21:03:14.703+0900 I NETWORK  [conn73] end connection 127.0.0.1:62818 (1 connection now open)
+2018-08-06T21:03:14.703+0900 I NETWORK  [conn72] end connection 127.0.0.1:62761 (0 connections now open)
+2018-08-06T21:03:21.124+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63077 #77 (1 connection now open)
+2018-08-06T21:03:21.133+0900 I NETWORK  [conn77] received client metadata from 127.0.0.1:63077 conn77: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-06T21:03:26.371+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63161 #78 (2 connections now open)
+2018-08-06T21:03:26.374+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63163 #79 (3 connections now open)
+2018-08-06T21:03:26.376+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63165 #80 (4 connections now open)
+2018-08-06T21:03:26.380+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63167 #81 (5 connections now open)
+2018-08-06T21:03:37.465+0900 I NETWORK  [conn81] end connection 127.0.0.1:63167 (4 connections now open)
+2018-08-06T21:03:37.465+0900 I NETWORK  [conn80] end connection 127.0.0.1:63165 (3 connections now open)
+2018-08-06T21:03:37.465+0900 I NETWORK  [conn78] end connection 127.0.0.1:63161 (2 connections now open)
+2018-08-06T21:03:37.465+0900 I NETWORK  [conn79] end connection 127.0.0.1:63163 (1 connection now open)
+2018-08-06T21:03:37.465+0900 I NETWORK  [conn77] end connection 127.0.0.1:63077 (0 connections now open)
+2018-08-06T21:03:39.076+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63328 #82 (1 connection now open)
+2018-08-06T21:03:39.080+0900 I NETWORK  [conn82] received client metadata from 127.0.0.1:63328 conn82: { driver: { name: "nodejs", version: "3.1.0" }, os: { type: "Darwin", name: "darwin", architecture: "x64", version: "17.7.0" }, platform: "Node.js v8.9.4, LE, mongodb-core: 3.1.0" }
+2018-08-06T21:03:41.445+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63372 #83 (2 connections now open)
+2018-08-06T21:03:41.448+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63374 #84 (3 connections now open)
+2018-08-06T21:03:41.451+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63376 #85 (4 connections now open)
+2018-08-06T21:03:41.456+0900 I NETWORK  [listener] connection accepted from 127.0.0.1:63378 #86 (5 connections now open)
+2018-08-06T21:04:21.292+0900 I NETWORK  [conn86] end connection 127.0.0.1:63378 (3 connections now open)
+2018-08-06T21:04:21.292+0900 I NETWORK  [conn85] end connection 127.0.0.1:63376 (4 connections now open)
+2018-08-06T21:04:21.292+0900 I NETWORK  [conn84] end connection 127.0.0.1:63374 (2 connections now open)
+2018-08-06T21:04:21.292+0900 I NETWORK  [conn83] end connection 127.0.0.1:63372 (1 connection now open)
+2018-08-06T21:04:21.292+0900 I NETWORK  [conn82] end connection 127.0.0.1:63328 (0 connections now open)
+2018-08-07T04:04:07.523+0900 I COMMAND  [PeriodicTaskRunner] task: UnusedLockCleaner took: 285ms
+2018-08-07T12:29:33.481+0900 I COMMAND  [ftdc] serverStatus was very slow: { after basic: 0, after asserts: 0, after backgroundFlushing: 0, after connections: 0, after dur: 0, after extra_info: 0, after freeMonitoring: 0, after globalLock: 0, after locks: 0, after logicalSessionRecordCache: 0, after network: 0, after opLatencies: 0, after opcounters: 0, after opcountersRepl: 0, after repl: 0, after security: 0, after storageEngine: 0, after transactions: 0, after wiredTiger: 976322, at end: 976322 }

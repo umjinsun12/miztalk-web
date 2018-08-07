@@ -49,7 +49,7 @@
                       <h6 *ngIf="cart.cart_totals.discount_total == 0">포인트 사용</h6>
                       <h6 *ngIf="cart.cart_totals.discount_total != 0">포인트 {{cart.applied_coupons}} 사용</h6>
                   </ion-item>
-                  <div *ngIf="enableCoupon">
+                  <div>
                       <form #f="ngForm" class="coupon">
                           <ion-item>
                               사용가능 포인트 : {{values.point | number: '1.0-0'}}

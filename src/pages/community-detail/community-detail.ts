@@ -6,6 +6,7 @@ import { CmsService } from '../../services/cms-service.service';
 import { Functions } from '../../services/shopping-services/functions';
 import { Values } from '../../services/shopping-services/values';
 import { Config } from '../../services/shopping-services/config';
+import {CommunityWritePage} from "../community-write/community-write";
 
 /**
  * Generated class for the CommunityDetailPage page.
@@ -26,6 +27,7 @@ export class CommunityDetailPage {
   comment: any;
   likebtn : boolean;
   isMine : boolean;
+  categoryId: any;
 
   constructor(
     public navCtrl: NavController, 
@@ -37,9 +39,9 @@ export class CommunityDetailPage {
     public values : Values,
     public config : Config
   ) {
-      console.log(navParams.data);
       this.postId = navParams.data.id;
       this.categoryTitle = navParams.data.categoryTitle;
+      this.categoryId = navParams.data.category;
       this.post = {
         date : '',
         writer : '',
@@ -52,7 +54,7 @@ export class CommunityDetailPage {
       this.isMine = false;
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter(){
     this.loadPost();
   }
 
@@ -114,6 +116,17 @@ export class CommunityDetailPage {
       this.navCtrl.pop();
       console.log(data);
     });
+  }
+
+  modifyPost(){
+
+    var param = {
+      id : this.postId,
+      category : this.categoryId,
+      mod : true
+    };
+    console.log(param);
+    this.navCtrl.push(CommunityWritePage, param);
   }
 
   removeComment(replyid){

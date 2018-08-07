@@ -37,6 +37,7 @@
       <div class="community-content" [innerHTML]="post.contents"></div>
       <div *ngIf="isMine" class="community-removebtn">
           <button ion-button color="warm-grey" (click)="removePost()">글 삭제</button>
+          <button ion-button color="warm-grey" (click)="modifyPost()">글 수정</button>
           <!--<button *ngIf="!likebtn" ion-button color="warm-grey">글 수정</button>-->
         </div>
       <!--<div  class="like-btn">

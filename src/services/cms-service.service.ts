@@ -9,6 +9,7 @@ import 'rxjs/add/observable/forkJoin';
 export class CmsService {
     posts : any = [];
     post : any;
+    public appVersion : any = "1.0";
   constructor(public http: Http, public values : Values, public config : Config){}
 
   validateAuthToken(token){
@@ -38,6 +39,20 @@ export class CmsService {
             resolve(data);
         });
       });
+  }
+
+  modifyPost(id, title, content, token, files){
+    let params = new FormData();
+    params.append('addContentSubject', title);
+    params.append('addContents', content);
+    params.append('userToken', token);
+    params.append('modId', id);
+    return new Promise(resolve =>{
+      this.http.post(this.config.cmsurl + '/posts?mode=mod', params).map(res => res.json())
+        .subscribe(data => {
+          resolve(data);
+        });
+    });
   }
 
   createLike(postid, token){
@@ -148,6 +163,14 @@ export class CmsService {
 
   receiveSmsAcount(phonenum, price){
     return this.http.get(this.config.cmsurl + '/sms/sendAccount?phonenum=' + phonenum + '&price=' + price).map(res => res.json());
+  }
+
+  activatePhone(phonenum){
+    return this.http.get(this.config.cmsurl + '/sms/activateOtp?phonenum=' + phonenum).map(res => res.json());
+  }
+
+  versionChk(){
+    return this.http.get(this.config.cmsurl + '/version').map(res => res.json());
   }
 
   dataURItoBlob(b64Data) {

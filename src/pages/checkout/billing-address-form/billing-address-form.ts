@@ -13,6 +13,7 @@ import { IamportService } from 'iamport-ionic-inicis3';
 
 import {TabsPage} from '../../tabs/tabs';
 import {CmsService} from "../../../services/cms-service.service";
+import {TermsPage} from "../../account/terms/terms";
 
 
 /**
@@ -87,6 +88,8 @@ export class BillingAddressForm {
       public cmsService : CmsService) {
 
 
+
+
       this.PlaceOrder = "Place Order";
       this.buttonText1 = "Apply";
       this.LogIn = "LogIn";
@@ -104,6 +107,8 @@ export class BillingAddressForm {
       this.shipping = {};
       this.shipping.save_in_address_book = true;
 
+
+
       if(this.values.isLoggedIn){
           if(this.form.billing_country == "" || this.form.billing_country == undefined || this.form.billing_state =="" || this.form.billing_state == undefined || this.form.billing_postcode == "" || this.form.billing_postcode == undefined){
               this.enableBillingAddress = true;
@@ -114,6 +119,7 @@ export class BillingAddressForm {
           this.enableLogin = false;
           this.enableShippingMethods = true;
           this.enablePaymentMethods = true;
+          this.form.biterms = true;
           }
       }
       else if(!this.values.isLoggedIn){
@@ -139,7 +145,19 @@ export class BillingAddressForm {
       console.log(results);
       this.OrderReview = results;
       this.chosen_shipping = this.OrderReview.chosen_shipping;
-      console.log(this.chosen_shipping);
+
+      console.log(this.form.payment);
+      if(this.OrderReview.totals.total == 0){
+        this.form.payment = {
+          'cod' : this.form.payment['cod']
+        };
+      }else{
+        this.form.payment = {
+          'bacs' : this.form.payment['bacs'],
+          'iamport_card' : this.form.payment['iamport_card'],
+          'iamport_trans' : this.form.payment['iamport_trans']
+        };
+      }
   }
   checkout() {
       if (this.validateAddress()) {
@@ -157,11 +175,17 @@ export class BillingAddressForm {
               this.form.shipping_state = this.form.billing_state;
               this.form.shipping_postcode = this.form.billing_postcode;
           }
-          if (this.form.payment_method == 'bacs' || this.form.payment_method == 'cheque' || this.form.payment_method == 'cod') {
+          if (this.form.payment_method == 'bacs' || this.form.payment_method == 'cheque') {
               this.payloading = this.loadingCtrl.create();
               this.payloading.present();
               this.service.checkout(this.form).then((results) => this.handleBilling(results));
-          } else if (this.form.payment_method == 'stripe') {
+          }
+          else if(this.form.payment_method == 'cod'){
+              this.payloading = this.loadingCtrl.create();
+              this.payloading.present();
+              this.service.checkout(this.form).then((results) => this.handlePoint(results));
+          }
+          else if (this.form.payment_method == 'stripe') {
               this.service.getStripeToken(this.form).then((results) => this.handleStripeToken(results));
           } else {
               console.log('paymethod');
@@ -245,6 +269,27 @@ export class BillingAddressForm {
           this.buttonSubmit = false;
       }
   }
+
+  biterms(){
+    this.nav.push(TermsPage);
+  }
+
+  handlePoint(results){
+    if (results.result == "success") {
+      var str = results.redirect;
+      var pos1 = str.lastIndexOf("order-received/");
+      var pos2 = str.lastIndexOf("?key=wc_order");
+      var pos3 = pos2 - (pos1 + 15);
+      var order_id = str.substr(pos1 + 15, pos3);
+      this.payloading.dismiss();
+      this.nav.push(OrderSummary, order_id);
+    } else if (results.result == "failure") {
+      this.functions.showAlert("ERROR", results.messages);
+    }
+    this.buttonSubmit = false;
+    this.PlaceOrder = "Place Order";
+  }
+
   handleBilling(results) {
       if (results.result == "success") {
           var str = results.redirect;
@@ -431,7 +476,11 @@ export class BillingAddressForm {
   validateAddress() {
       if (this.form.show_terms && !this.form.terms) {
           this.functions.showAlert("에러", "쇼핑 이용약관에 동의해야 합니다.");
-          return false
+          return false;
+      }
+      if (!this.values.isLoggedIn && !this.form.biterms){
+          this.functions.showAlert("에러", "비회원 개인정보내역 수집에 동의하셔야 합니다.");
+          return false;
       }
       if (this.form.billing_first_name == undefined || this.form.billing_first_name == "") {
           this.functions.showAlert("에러", "휴대폰 번호를 입력해 주세요");

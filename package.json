@@ -35,6 +35,7 @@
     "@ionic-native/http": "^4.10.0",
     "@ionic-native/image-picker": "^4.9.0",
     "@ionic-native/in-app-browser": "^4.7.0",
+    "@ionic-native/market": "^4.11.0",
     "@ionic-native/native-storage": "^4.6.0",
     "@ionic-native/onesignal": "^4.7.0",
     "@ionic-native/photo-viewer": "^4.7.0",

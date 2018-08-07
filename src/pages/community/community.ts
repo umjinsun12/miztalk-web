@@ -303,7 +303,7 @@ export class CommunityPage {
 
   doRefresh(refresher) {
       this.posts = [];
-      this.cmsService.getPosts(1, this.categoryId).subscribe((data) => {
+      this.cmsService.getRecentPosts(1).subscribe((data) => {
         for(let post of data.contents){
           post.date = moment(post.date).fromNow();
           post.like = post.likelist.length;
@@ -349,7 +349,8 @@ export class CommunityPage {
     console.log(postId);
     var param = {
       id : postId,
-      categoryTitle : categoryTitle.title
+      categoryTitle : categoryTitle.title,
+      category : this.categoryId
     }
     this.navCtrl.push(CommunityDetailPage, param);
   }
@@ -362,8 +363,12 @@ export class CommunityPage {
   }
 
   doWrite(){
+    var param = {
+      id : this.categoryId,
+      mod : false
+    };
     if(this.values.isLoggedIn){
-      this.navCtrl.push(CommunityWritePage, this.categoryId);
+      this.navCtrl.push(CommunityWritePage, param);
     }else{
       this.funtions.showAlert('에러', '마이페이지에서 로그인을 먼저 해주세요.');
     }

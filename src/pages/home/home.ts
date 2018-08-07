@@ -16,7 +16,9 @@ import { Config } from '../../services/shopping-services/config';
 
 import {ShoppingProductsPage} from '../../pages/shopping-products/shopping-products';
 import {ShoppingSearchPage} from '../../pages/shopping-search/shopping-search';
+import {Service} from "../../services/shopping-services/service";
 
+import {Market} from "@ionic-native/market";
 
 
 /**
@@ -59,6 +61,8 @@ export class HomePage {
 
   public alertShown:boolean = false;
 
+  versionChk: boolean = true;
+
 
   @ViewChild(Nav) nav: Nav;
 
@@ -74,14 +78,26 @@ export class HomePage {
     public cmsService : CmsService,
     public config : Config,
     public platform: Platform,
+    public appService : Service,
+    public market : Market,
     public alertCtrl: AlertController) {
       this.service.presentLoading('로딩중입니다.');
       this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
-      
+
+      if(this.versionChk == true){
+        this.cmsService.versionChk().subscribe(results => {
+          if(results.version == this.cmsService.appVersion){
+            this.versionChk = false;
+          }else{
+            this.presentVersion();
+          }
+        });
+      }
   }
 
 
   ionViewDidEnter(){
+    this.appService.getPoint();
     this.platform.registerBackButtonAction(() => {
       if (this.alertShown==false) {
         this.presentConfirm();
@@ -118,6 +134,33 @@ export class HomePage {
       ]
     });
      alert.present().then(()=>{
+      this.alertShown=true;
+    });
+  }
+
+
+  presentVersion() {
+    let alert = this.alertCtrl.create({
+      title: '업데이트',
+      message: '미즈톡 새로운 버전이 나왔어요. 업데이트를 해주세요.',
+      buttons: [
+        {
+          text: '취소',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+            this.versionChk = false;
+          }
+        },
+        {
+          text: '설치',
+          handler: () => {
+            this.market.open('com.mistalk.mistalk');
+          }
+        }
+      ]
+    });
+    alert.present().then(()=>{
       this.alertShown=true;
     });
   }

@@ -32,6 +32,8 @@ export class CommunityWritePage {
   processedImages: any = [];
   fileimgs : any = [];
   showTitle: boolean = false;
+  mod : boolean = false;
+  postId: any;
 
   constructor(
     public navCtrl: NavController, 
@@ -45,7 +47,10 @@ export class CommunityWritePage {
     public toastCtrl: ToastController,
     //public imagePicker : ImagePicker
     ) {
-    this.selectCategory = navParams.data;
+    this.selectCategory = navParams.data.category;
+    this.mod = navParams.data.mod;
+    this.postId = navParams.data.id;
+
     this.categories = [
       {
         name: "메인",
@@ -68,6 +73,15 @@ export class CommunityWritePage {
         value : "boast"
       }
     ]
+
+    if(this.postId != undefined && this.mod == true){
+      this.cmsService.getPost(this.postId).subscribe(results => {
+        console.log(results);
+        this.content = results.content.contents.replace(/\\r\\n|\\r|\\n/gi, '\n');
+        this.selectCategory = results.content.category;
+        this.title = results.content.title;
+      });
+    }
   }
 
   ionViewDidLoad() {
@@ -89,17 +103,27 @@ export class CommunityWritePage {
         content: "글을 업로드 중입니다"
       });
       loading.present();
-      let fileblobs = []
+      let fileblobs = [];
       for(let file of this.fileimgs){
         fileblobs.push(this.cmsService.dataURItoBlob(file));
       }
 
 
-      this.cmsService.createPost(this.title, this.content, this.selectCategory, this.values.token, fileblobs).then((results) => {
-        this.functions.showAlert("성공", "글쓰기 성공!");
-        loading.dismiss();
-        this.navCtrl.pop();
-      })
+
+      if(this.mod == false){
+        this.cmsService.createPost(this.title, this.content, this.selectCategory, this.values.token, fileblobs).then((results) => {
+          this.functions.showAlert("성공", "글쓰기 성공!");
+          loading.dismiss();
+          this.navCtrl.pop();
+        });
+      }
+      else{
+        this.cmsService.modifyPost(this.postId ,this.title, this.content, this.values.token, fileblobs).then( results => {
+          this.functions.showAlert("성공", "글 수정 성공!");
+          loading.dismiss();
+          this.navCtrl.pop();
+        });
+      }
     } 
   }
 
@@ -108,7 +132,7 @@ export class CommunityWritePage {
       quality: 40,
       destinationType: this.camera.DestinationType.DATA_URL,
       sourceType:this.camera.PictureSourceType.PHOTOLIBRARY
-    }
+    };
 
     if(this.fileimgs.length >= 3){
       this.functions.showAlert('에러', '이미지는 최대 3장 업로드 가능합니다.')

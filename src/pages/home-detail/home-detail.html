@@ -43,7 +43,7 @@
       <div class="comment-wrapper">
         <div class="comment-auther">{{reply.name}}</div>
         <div class="comment-content">{{reply.memo}}</div>
-        <div class="comment-date">{{reply.date}} <span *ngIf="reply.isMine" (click)="removeComment(reply._id)" style="text-decoration: underline;">  댓글삭제</span></div>
+        <div class="comment-date">{{reply.date}} <span  (click)="removeComment(reply._id)" style="text-decoration: underline;">  댓글삭제</span></div>
       </div>
     </ion-item>
     </div>

@@ -21,9 +21,6 @@
                 <h2>주문날짜 : {{orderSummary.date_created | date:'medium'}} </h2>
                 <h2>합계  : {{(1*orderSummary.total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원 </h2>
                 <h2>결제방법  : {{orderSummary.payment_method_title}} </h2>
-                <div *ngFor="let item of orderSummary.shipping_lines | keys">
-                    <h2>배송비  : {{item.value.method_title}} </h2>
-                </div>
             </ion-item>
         </div>
         <div class="order-details">

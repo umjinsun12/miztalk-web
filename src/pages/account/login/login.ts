@@ -3,7 +3,7 @@ import { Service } from '../../../services/shopping-services/service';
 import { Functions } from '../../../services/shopping-services/functions';
 import { Values } from '../../../services/shopping-services/values';
 import { Component } from '@angular/core';
-import { NavController, ToastController} from 'ionic-angular';
+import { NavController, ToastController,LoadingController} from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import {AccountRegister} from '../register/register';
 import {TabsPage} from '../../tabs/tabs';
@@ -35,10 +35,12 @@ export class AccountLogin {
     facebookSpinner: boolean = false;
     googleSpinner: boolean = false;
     gres: any;
+    payloading: any;
 
-    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values, public fb: Facebook, public toast :ToastController, public naver: Naver) {
+    constructor(public nav: NavController, public service: Service, public functions: Functions, public config: Config, public values: Values, public fb: Facebook, public toast :ToastController, public naver: Naver, public loadingCtrl:LoadingController) {
         this.loginData = [];
         this.LogIn = "LogIn";
+        this.payloading = this.loadingCtrl.create();
     }
     login() {
         if (this.validateForm()) {
@@ -99,13 +101,14 @@ export class AccountLogin {
   }
   facebookLogin() {
        this.facebookSpinner = true;
+        this.payloading.present();
        this.fb.login(['public_profile', 'email']).then((response) => {
-            this.service.facebookLoginChk(response.authResponse.accessToken).then((results) =>{
-                console.log(results);
+            this.service.facebookLoginChk(response.authResponse.accessToken, response.authResponse.userID + "@facebook.com").then((results) =>{
+                this.payloading.dismiss();
                 if(results == 'need_register'){
-                    this.functions.showAlert('에러', response.authResponse.accessToken);
                     let param = {
                         token : response.authResponse.accessToken,
+                        result : response.authResponse.userID + "@facebook.com",
                         sns : 'facebook'
                     };
                     this.facebookSpinner = false;
@@ -120,8 +123,6 @@ export class AccountLogin {
                 }
             });
         }).catch((error) => {
-            console.log(error);
-            this.functions.showAlert('에러', this.error.errorMessage);
             if(error.errorMessage == "Facebook error: User logged in as different Facebook user."){
               this.facebookSpinner = false;
               this.facebookLogin();
@@ -131,12 +132,13 @@ export class AccountLogin {
         });
     }
     naverLogin(){
-        
+      this.payloading.present();
         this.naver.login()
         .then(
             response => {
                 this.naver.requestMe().then(result =>{
                     this.service.naverLoginChk(response.accessToken, result).then(results => {
+                      this.payloading.dismiss();
                         if(results == 'need_register'){
                             let param = {
                                 token : response.accessToken,
@@ -162,10 +164,11 @@ export class AccountLogin {
         ); 
     }
     kakaoLogin(){
-        console.log("kakaotest");
+      this.payloading.present();
         this.doKakaoLogin().then((userid) => {
             this.doKakaoAccess().then((usertoken) =>{
                 this.service.kakaoLoginChk(usertoken, userid + '@kakao.com').then(result => {
+                  this.payloading.dismiss();
                     if(result == 'need_register'){
                         let param = {
                             token : usertoken,

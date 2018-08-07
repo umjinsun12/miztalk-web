@@ -15,6 +15,7 @@ import { AlertController } from 'ionic-angular';
 import { Config } from '../services/shopping-services/config';
 
 
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -29,7 +30,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
 
-      if (platform.is('cordova')) {
+      /*if (platform.is('cordova')) {
         this.oneSignal.startInit(this.config.oneSignalAppId, this.config.googleProjectId);
         this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.InAppAlert);
         this.oneSignal.handleNotificationReceived().subscribe(result => {});
@@ -46,7 +47,7 @@ export class MyApp {
             }
         });
         this.oneSignal.endInit();
-      }
+      }*/
 
       statusBar.styleDefault();
       splashScreen.hide();

@@ -28,6 +28,8 @@ import { MenuPage } from './../pages/menu/menu';
 
 import { Facebook } from '@ionic-native/facebook';
 
+import {Market} from "@ionic-native/market";
+
 // shopping service
 import { WishlistService } from '../services/shopping-services/wishlist-service';
 import { Values } from '../services/shopping-services/values';
@@ -200,6 +202,7 @@ import { CommunityNoticePage } from '../pages/community-notice/community-notice'
     ImagePicker,
     Naver,
     HTTP,
+    Market,
     //{ provide: Camera, useClass: CameraMock },
     Camera,
     KakaoTalk,
