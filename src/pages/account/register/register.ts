@@ -171,7 +171,7 @@ export class AccountRegister {
               this.Register = "등록중";
               this.service.registerSnsCustomer(this.token,this.response_data, this.sns, phonenum, this.registerData.display_name).then(results =>{
                 console.log(results);
-                this.cmsService.activatePhone(phonenum).subscribe(re =>{
+                this.cmsService.activatePhone(phonenum, this.registerData.display_name).subscribe(re =>{
                   this.service.load().then(results => {
                     this.service.getPoint();
                     this.functions.showAlert('성공','회원가입 성공');

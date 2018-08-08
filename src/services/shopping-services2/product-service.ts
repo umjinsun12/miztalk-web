@@ -28,13 +28,17 @@ export class ProductService {
     crossSell: any;
 
     constructor(private reqhttp: HTTP, private http: Http, private config: Config, private values: Values, private loadingController: LoadingController) {
-        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
+        //this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
     }
     getProduct(id) {
         return new Promise(resolve => {
-            this.reqhttp.clearCookies();
-            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '?', false), {}, {}).then(data => {
-                this.product = JSON.parse(data.data);
+            // this.reqhttp.clearCookies();
+            // this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '?', false), {}, {}).then(data => {
+            //     this.product = JSON.parse(data.data);
+            //     resolve(this.product);
+            // });
+            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '?', false), {}).map(res => res.json()).subscribe(data => {
+                this.product = data;
                 resolve(this.product);
             });
 
@@ -196,10 +200,14 @@ export class ProductService {
      }
      getVariationProducts(id) {
         return new Promise(resolve => {
-            this.reqhttp.clearCookies();
-            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '/variations' + '?', false ), {}, {})
-                .then(data => {
-                    resolve(JSON.parse(data.data));
+            // this.reqhttp.clearCookies();
+            // this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '/variations' + '?', false ), {}, {})
+            //     .then(data => {
+            //         resolve(JSON.parse(data.data));
+            //     });
+            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/' + id + '/variations' + '?', false ), {}).map(res => res.json())
+                .subscribe(data => {
+                    resolve(data);
                 });
         });
     }

@@ -23,8 +23,8 @@ export class CartService {
     mainCategories: any;
     constructor(private reqhttp: HTTP, private http: Http, private config: Config, private values: Values, private loadingController: LoadingController) {
         this.mainCategories = [];
-        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
-        this.reqhttp.clearCookies();
+        // this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
+        // this.reqhttp.clearCookies();
     }
     loadCart() {
        return new Promise(resolve => {
@@ -33,16 +33,25 @@ export class CartService {
                this.values.cartNonce = data.cart_nonce;
                this.values.updateCart(this.cart);
                resolve(this.cart);
-               this.reqhttp.clearCookies();
-               this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), {}, {}).then(data => {
-                   this.categories = JSON.parse(data.data);
-                   this.mainCategories = [];
-                   for (var i = 0; i < this.categories.length; i++) {
-                       if (this.categories[i].parent == '0') {
-                           this.mainCategories.push(this.categories[i]);
-                       }
-                   }
-               });
+            //    this.reqhttp.clearCookies();
+            //    this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), {}, {}).then(data => {
+            //        this.categories = JSON.parse(data.data);
+            //        this.mainCategories = [];
+            //        for (var i = 0; i < this.categories.length; i++) {
+            //            if (this.categories[i].parent == '0') {
+            //                this.mainCategories.push(this.categories[i]);
+            //            }
+            //        }
+            //    });
+            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), {}).map(res => res.json()).subscribe(data => {
+                this.categories = data;
+                this.mainCategories = [];
+                for (var i = 0; i < this.categories.length; i++) {
+                    if (this.categories[i].parent == '0') {
+                        this.mainCategories.push(this.categories[i]);
+                    }
+                }
+            });
            });
        });
    }

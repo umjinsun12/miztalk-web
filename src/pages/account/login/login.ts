@@ -123,6 +123,7 @@ export class AccountLogin {
                 }
             });
         }).catch((error) => {
+          this.payloading.dismiss();
             if(error.errorMessage == "Facebook error: User logged in as different Facebook user."){
               this.facebookSpinner = false;
               this.facebookLogin();
@@ -160,7 +161,9 @@ export class AccountLogin {
             }) // 성공
         .catch(
             error => {
-                console.error(error)}
+                this.payloading.dismiss();
+                console.error(error);
+            }
         ); 
     }
     kakaoLogin(){
@@ -189,7 +192,8 @@ export class AccountLogin {
             });
         }).catch(
             error => {
-                this.functions.showAlert('에러','로그인 에러');
+                this.payloading.dismiss();
+                this.functions.showAlert('에러','다시 로그인 해 주세요');
             }
         );
     }

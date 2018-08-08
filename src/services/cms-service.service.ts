@@ -9,7 +9,7 @@ import 'rxjs/add/observable/forkJoin';
 export class CmsService {
     posts : any = [];
     post : any;
-    public appVersion : any = "1.0";
+    public appVersion : any = "1.2";
   constructor(public http: Http, public values : Values, public config : Config){}
 
   validateAuthToken(token){
@@ -165,8 +165,8 @@ export class CmsService {
     return this.http.get(this.config.cmsurl + '/sms/sendAccount?phonenum=' + phonenum + '&price=' + price).map(res => res.json());
   }
 
-  activatePhone(phonenum){
-    return this.http.get(this.config.cmsurl + '/sms/activateOtp?phonenum=' + phonenum).map(res => res.json());
+  activatePhone(phonenum, username){
+    return this.http.get(this.config.cmsurl + '/sms/activateOtp?phonenum=' + phonenum + '&username=' + username).map(res => res.json());
   }
 
   versionChk(){
