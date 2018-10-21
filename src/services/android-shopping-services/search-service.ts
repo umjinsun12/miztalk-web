@@ -24,22 +24,13 @@ export class SearchService {
 
     constructor(private reqhttp: HTTP, private http: Http, private config: Config, private values: Values) {
         this.mainCategories = [];
-        //this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
+        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
     }
     load() {
         return new Promise(resolve => {
-            // this.reqhttp.clearCookies();
-            // this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), {}, {}).then(data => {
-            //     this.categories = JSON.parse(data.data);
-            //     this.mainCategories = [];
-            //     for (var i = 0; i < this.categories.length; i++) {
-            //         if (this.categories[i].parent == '0') {
-            //             this.mainCategories.push(this.categories[i]);
-            //         }
-            //     }
-            // });
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), {}).map(res => res.json()).subscribe(data => {
-                this.categories = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', false), {}, {}).then(data => {
+                this.categories = JSON.parse(data.data);
                 this.mainCategories = [];
                 for (var i = 0; i < this.categories.length; i++) {
                     if (this.categories[i].parent == '0') {
@@ -51,13 +42,9 @@ export class SearchService {
     }
     getSearch(filter) {
         return new Promise(resolve => {
-            // this.reqhttp.clearCookies();
-            // this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', filter), {}, {}).then(data => {
-            //     this.products = JSON.parse(data.data);
-            //     resolve(this.products);
-            // });
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', filter), {}).map(res => res.json()).subscribe(data => {
-                this.products = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products?', filter), {}, {}).then(data => {
+                this.products = JSON.parse(data.data);
                 resolve(this.products);
             });
         });
@@ -97,7 +84,7 @@ export class SearchService {
         params.set('_wpnonce', this.values.cartNonce);
         params.set('update_cart', 'Update Cart');
         return new Promise(resolve => {
-            this.http.post(this.config.url + '/cart/', params, this.config.options).map(res => res.json()).subscribe(data => {
+            this.http.post(this.config.url + '/cart/', params, this.config.options).subscribe(data => {
                 this.status = data;
                 resolve(this.status);
             });

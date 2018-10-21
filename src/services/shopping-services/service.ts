@@ -1,3 +1,5 @@
+import { ClayfulService } from './clayful-service';
+import { Storage } from '@ionic/storage';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { LoadingController } from 'ionic-angular';
@@ -50,16 +52,13 @@ export class Service {
     postoptions: any = {};
 
 
-    constructor(private reqhttp: HTTP,private http: Http, private config: Config, private values: Values, public loadingCtrl: LoadingController, private nativeStorage: NativeStorage, private cmsService: CmsService) {
+    constructor(private reqhttp: HTTP,private http: Http, private config: Config, private values: Values, public loadingCtrl: LoadingController, private nativeStorage: NativeStorage, private cmsService: CmsService, public storage: Storage, public clayfulService : ClayfulService) {
         this.mainCategories = [];
         this.filter.page = 1;
         this.deals = {};
-        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
-        this.reqhttp.clearCookies();
     }
     load() {
         return new Promise(resolve => {
-            this.reqhttp.clearCookies();
             this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-keys', this.config.options).map(res => res.json()).subscribe(data => {
                 console.log(data);
                 this.values.data = data;
@@ -94,29 +93,19 @@ export class Service {
                         }
                     }, error => console.error(error));
                 }
-                this.reqhttp.clearCookies();
-                 this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', {per_page : 100}), {}, {}).then(data => {
-                     this.categories = JSON.parse(data.data);
-                    this.mainCategories = [];
-                    for (var i = 0; i < this.categories.length; i++) {
-                        if (this.categories[i].parent == '0') {
-                            this.mainCategories.push(this.categories[i]);
-                        }
-                    }
+                this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/products/categories?', {per_page : 100}), {}).map(res => res.json()).subscribe(data => {
+                    this.categories = data;
+                   this.mainCategories = [];
+                   for (var i = 0; i < this.categories.length; i++) {
+                       if (this.categories[i].parent == '0') {
+                           this.mainCategories.push(this.categories[i]);
+                       }
+                   }
                     this.nativeStorage.getItem('loginData').then(data => this.login(data), error => console.error(error));
                     this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-cart', this.config.options).map(res => res.json()).subscribe(data => {
                         this.cart = data;
                         this.values.updateCart(this.cart);
                     });
-                    if (this.values.isLoggedIn) {
-                        var params = new URLSearchParams();
-                        params.append("customer_id", this.values.customerId.toString());
-                        this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-get_wishlist', params, this.config.options).map(res => res.json()).subscribe(data => {
-                            for (let item in data) {
-                                this.values.wishlistId[data[item].id] = data[item].id;
-                            }
-                        });
-                    }
                     resolve(this.categories);
                 });
 
@@ -153,7 +142,6 @@ export class Service {
                                 this.values.maincard.push(parse);
                                 this.shuffle(this.values.maincard);
                             }
-
                         });
                 this.http.get(this.config.WORDPRESS_REST_API_URL + '/posts/1756', this.config.options).map(res=> res.json())
                         .subscribe(data =>{
@@ -192,10 +180,6 @@ export class Service {
                 this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-like', params, this.config.options).map(res=> res.json()).subscribe(data => {
                     console.log(data);
                 });
-                        
-                        
-                        
-
             });
         });
     }
@@ -206,6 +190,7 @@ export class Service {
             });
         });
     }
+
     login(loginData) {
         var params = new URLSearchParams();
         params.append("username", loginData.username);
@@ -251,6 +236,7 @@ export class Service {
 
     logout() {
         return new Promise(resolve => {
+            this.storage.clear();
             this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-logout', this.config.options).subscribe(data => {
                 this.values.isLoggedIn = false;
                 this.values.customerName = "";
@@ -284,21 +270,28 @@ export class Service {
     }
     getAddress() {
         return new Promise(resolve => {
-            this.reqhttp.clearCookies();
-            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), {}, {}).then(data => {
-                this.address = JSON.parse(data.data);
+            // this.reqhttp.clearCookies();
+            // this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), {}, {}).then(data => {
+            //     this.address = JSON.parse(data.data);
+            //     resolve(this.address);
+            // });
+            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), {}).map(res => res.json()).subscribe(data => {
+                this.address = data;
                 resolve(this.address);
             });
         });
     }
     saveAddress(address) {
         var params = address;
-        this.reqhttp.setHeader(this.config.url, 'Content-Type', 'application/json; charset=UTF-8');
-        this.reqhttp.setDataSerializer('json');
-        this.reqhttp.clearCookies();
+        // this.reqhttp.setHeader(this.config.url, 'Content-Type', 'application/json; charset=UTF-8');
+        // this.reqhttp.setDataSerializer('json');
+        // this.reqhttp.clearCookies();
         return new Promise(resolve => {
-            this.reqhttp.put(this.config.setUrl('PUT', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), params, {}).then(data => {
-                resolve(JSON.parse(data.data));
+            // this.reqhttp.put(this.config.setUrl('PUT', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), params, {}).then(data => {
+            //     resolve(JSON.parse(data.data));
+            // }, err => console.log(err));
+            this.http.put(this.config.setUrl('PUT', '/wp-json/wc/v2/customers/' + this.values.customerId + '?', false), params, {}).map(res => res.json()).subscribe(data => {
+                resolve(data);
             }, err => console.log(err));
         });
     }
@@ -429,7 +422,8 @@ export class Service {
             });
         }
         else if(sns == 'kakao'){
-            params.append("email", response);
+
+            params.append("email",response);
             return new Promise(resolve => {
                 this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-kakao_join', params, this.config.options).map(res => res.json()).subscribe(data => {
                     if (data.status) {

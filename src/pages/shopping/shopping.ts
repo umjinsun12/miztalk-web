@@ -13,9 +13,10 @@ import { WishlistPage } from '../account/wishlist/wishlist'
 import { PopoverPage } from '../about-popover/about-popover';
 import { ShoppingSearchPage } from '../shopping-search/shopping-search';
 import { ShoppingProductsPage } from '../shopping-products/shopping-products';
-
+import * as Clayful from 'clayful';
 
 /**
+ * 
  * Generated class for the ShoppingPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
@@ -88,7 +89,6 @@ export class ShoppingPage {
             this.filter.attribute_term = params.data.attributeId;
         }
         this.service.load(this.filter).then((results) => this.handleProducts(results));
-        
     }
 
 
@@ -227,7 +227,7 @@ export class ShoppingPage {
             this.has_more_items = false;
         }
         infiniteScroll.complete();
-    }
+    }g
 
     doRefresh(refresher){
         this.has_more_items = true;

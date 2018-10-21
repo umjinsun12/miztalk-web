@@ -33,10 +33,6 @@ export class MypagePage {
 
     constructor(public viewCtrl: ViewController, private appRate: AppRate, private socialSharing: SocialSharing, public nav: NavController, public service: Service, public values: Values, private emailComposer: EmailComposer, public config: Config
     ,public platform: Platform, public alertCtrl: AlertController ) {
-        
-        //if(document.querySelector(".tabbar"))
-        //this.tabBarElement = document.querySelector(".tabbar")['style'].display = 'none';
-        //this.showtab = false;
         if(this.values.isLoggedIn == false)
           this.showLogin = true;
         else

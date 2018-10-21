@@ -1,3 +1,4 @@
+import { ClayfulService } from './../services/shopping-services/clayful-service';
 import { TermsPage } from './../pages/account/terms/terms';
 import { AccountLogin } from './../pages/account/login/login';
 import { CommunityWritePage } from './../pages/community-write/community-write';
@@ -5,7 +6,6 @@ import { CommunityDetailPage } from './../pages/community-detail/community-detai
 import { HomeDetailPage } from './../pages/home-detail/home-detail';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { IonicStorageModule } from '@ionic/storage';
-import { OneSignal } from '@ionic-native/onesignal';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -13,7 +13,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { HttpModule } from '@angular/http';
 import { KeysPipe } from '../services/pipe/pipe';
-
 
 import {PopoverPage} from '../pages/about-popover/about-popover'
 
@@ -76,7 +75,7 @@ import { WishlistPage } from '../pages/account/wishlist/wishlist';
 
 import { HTTP } from '@ionic-native/http';
 
- 
+
 import { File } from '@ionic-native/file';
 import { Camera } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
@@ -91,8 +90,7 @@ import { Naver } from "ionic-plugin-naver";
 import { TermsUsePage } from '../pages/account/terms-use/terms-use';
 import { CommunityNoticePage } from '../pages/community-notice/community-notice';
 
-
-
+import { Angular2SocialLoginModule } from "angular2-social-login";
 
 
 @NgModule({
@@ -132,6 +130,7 @@ import { CommunityNoticePage } from '../pages/community-notice/community-notice'
   imports: [
     HttpModule,
     BrowserModule,
+    Angular2SocialLoginModule,
     IonicModule.forRoot(MyApp,{
       tabsPlacement: 'bottom',
       backButtonText: '',
@@ -174,7 +173,6 @@ import { CommunityNoticePage } from '../pages/community-notice/community-notice'
   ],
   providers: [
     NativeStorage,
-    OneSignal,
     CartService,
     WishlistService,
     CategoryService,
@@ -198,12 +196,12 @@ import { CommunityNoticePage } from '../pages/community-notice/community-notice'
     EmailComposer,
     IamportService,
     CmsService,
+    ClayfulService,
     File,
     ImagePicker,
     Naver,
     HTTP,
     Market,
-    //{ provide: Camera, useClass: CameraMock },
     Camera,
     KakaoTalk,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

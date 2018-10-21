@@ -47,6 +47,10 @@ export class Values {
   product_total : any;
   product_order : any = [];
   product_page_num : any;
+  clayful_token: any = "";
+  clayful_id: any = "";
+  clayful_data : any = {};
+  clayful_reg : boolean = false;
 
   constructor() {
   	this.filter = {};

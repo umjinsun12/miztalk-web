@@ -11,13 +11,17 @@ headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8
 export class Config {
 
     url: any = 'http://miztalk.kr';
-    cmsurl : any = 'http://116.120.58.68:3030';
+    cmsurl : any = 'http://localhost:3030';
     consumerKey: any = 'ck_afc32b36607b160d37aded122bb0932551d8ae84';
     consumerSecret: any = 'cs_277668a5edbe6822323fa707dc84f7f7f10a98f8';
     oneSignalAppId: any = 'e195fd9f-7f43-4b30-9b44-c39c24de497e';
     googleProjectId: any = '99217787851';
     webClientId: any = '456352511209-fbam1kgj6350b5ddfsdgfddbs1.apps.googleusercontent.com';
     appDir: any = 'ltr';
+
+
+    clayfulUrl : any = 'http://local.test.clayful.io:8000';
+    clayfulToken ; any = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImJmMjQ2ZGEwZTg1YzA0ZTEyZTE1N2JkNDM0YTI2NmI2ODkwMjIyMmM4ZmY2MzcyYjZlMDRjYTk4ZjViZjEzMzkiLCJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNTM5MDcxNjU1LCJzdG9yZSI6IkpZREdUVEU1Q1hYNS5aVk1ZVkNSWDNLNzgiLCJzdWIiOiJUQzZLWVNMVlQ3WjQifQ.Xel7OwDNx9FwLoNpMA5G_6Nv5wieHuPLpRhsrKLVWuA';
 
     appRateIosAppId: any = '12345678';
     appRateAndroidLink: any = 'https://play.google.com/store/apps/details?id=com.mstoreapp.wootab0002&hl=en';

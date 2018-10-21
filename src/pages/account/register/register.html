@@ -47,6 +47,7 @@
                 <div class="term-box">
                     <h4><ion-checkbox checked="true" class="term-chk" [(ngModel)]="termsChk" name="orderchk"> </ion-checkbox>미즈톡 이용약관에 동의 합니다.<a (click)="termsUse()">[약관확인]</a></h4>
                     <h4><ion-checkbox checked="true" class="term-chk" [(ngModel)]="termsInfoChk" name="orderchk"> </ion-checkbox>미즈톡 개인정보처리 방침에 동의 합니다.<a (click)="terms()">[약관확인]</a></h4>
+                    <h4><ion-checkbox checked="true" class="term-chk" [(ngModel)]="marketChk" name="orderchk"> </ion-checkbox>마케팅 이용정보 활용에 동의합니다.</h4>
                 </div>
             </ion-list>
             <div *ngIf="errors" class="margin-error-message">

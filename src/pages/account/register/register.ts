@@ -1,16 +1,13 @@
+import { ClayfulService } from './../../../services/shopping-services/clayful-service';
 import { TermsUsePage } from './../terms-use/terms-use';
 import { Component } from '@angular/core';
 import { Platform, NavController, AlertController, NavParams } from 'ionic-angular';
 import { Service } from '../../../services/shopping-services/service';
 import { Functions } from '../../../services/shopping-services/functions';
 import { Values } from '../../../services/shopping-services/values';
-import { OneSignal } from '@ionic-native/onesignal';
 import { TabsPage } from '../../tabs/tabs';
 import { TermsPage } from '../terms/terms';
 import {CmsService} from "../../../services/cms-service.service";
-//import { Post } from '../../post/post';
-//import { Facebook } from '@ionic-native/facebook';
-//import { GooglePlus } from '@ionic-native/google-plus';
 
 @Component({
     templateUrl: 'register.html'
@@ -44,6 +41,7 @@ export class AccountRegister {
     sendSms: boolean = false;
     verifyCode : any;
     isVerify:boolean = false;
+    marketChk:boolean = false;
 
 
     constructor(
@@ -52,10 +50,10 @@ export class AccountRegister {
       public platform: Platform,
       params: NavParams,
       public functions: Functions,
-      private oneSignal: OneSignal,
       public values: Values,
       public alertCtrl: AlertController,
-      public cmsService : CmsService) {
+      public cmsService : CmsService,
+      public clayfulService : ClayfulService) {
 
         this.Register = "Register";
         this.registerData = {};
@@ -169,15 +167,11 @@ export class AccountRegister {
             else{
               this.disableSubmit = true;
               this.Register = "등록중";
-              this.service.registerSnsCustomer(this.token,this.response_data, this.sns, phonenum, this.registerData.display_name).then(results =>{
-                console.log(results);
-                this.cmsService.activatePhone(phonenum, this.registerData.display_name).subscribe(re =>{
-                  this.service.load().then(results => {
-                    this.service.getPoint();
-                    this.functions.showAlert('성공','회원가입 성공');
-                    this.nav.popAll();
-                  });
-                });
+              this.clayfulService.memberReg(this.registerData.display_name, this.values.clayful_id, this.values.clayful_token, phonenum, this.marketChk).subscribe(result => {
+                this.functions.showAlert('성공','회원가입 성공');
+                this.values.isLoggedIn = true;
+                this.values.clayful_reg = true;
+                this.nav.pop();
               });
             }
         }
@@ -190,13 +184,6 @@ export class AccountRegister {
         } else if (!results.code) {
             this.countries.checkout_login;
             this.service.login(this.registerData).then((results) => this.loginStatus = results);
-            if (this.platform.is('cordova')) {
-                this.oneSignal.sendTags({
-                    email: this.registerData.email,
-                    pincode: this.registerData.billing_address.postcode,
-                    city: this.registerData.billing_address.city
-                });
-            }
             this.functions.showAlert("성공", "가입이 완료되었습니다.");
             this.nav.setRoot(TabsPage);
         }
@@ -220,14 +207,11 @@ export class AccountRegister {
             this.functions.showAlert('경고', '닉네임을 입력해주세요');
         }
         else{
-            this.service.nicknameChk(this.registerData.display_name).then(results =>{
-                console.log(results);
-                if(results){
-                    this.functions.showAlert('알림', '이미 사용중인 닉네임입니다.');
-                }else{
-                    this.functions.showAlert('알림', '사용하셔도 되는 닉네임입니다.');
-                    this.nameChk = true;
-                }
+            this.clayfulService.nicknameChk(this.registerData.display_name).then(results => {
+                this.functions.showAlert('알림', '사용하셔도 되는 닉네임입니다.');
+                this.nameChk = true;
+            }).catch((err) => {
+                this.functions.showAlert('알림', '이미 사용중인 닉네임입니다.');
             });
         }
     }

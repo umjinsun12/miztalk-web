@@ -25,7 +25,7 @@ export class Orders {
         this.count = 10;
         this.offset = 0;
         this.quantity = "1";
-        this.filter.customer = this.values.customerId.toString();
+        this.filter.customer = this.values.customerId;
         this.service.getOrders(this.filter)
             .then((results) => this.orders = results);
     }

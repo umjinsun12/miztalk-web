@@ -29,7 +29,7 @@ export class CheckoutService {
     shippingUpdate : any;
 
     constructor(private reqhttp: HTTP, private http: Http, private config: Config) {
-        //this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
+        this.reqhttp.setHeader(this.config.url, 'withCredentials', 'false');
     }
     updateOrderReview(form) {
         var params = new URLSearchParams();
@@ -48,8 +48,6 @@ export class CheckoutService {
         params.append("s_country", form.billing_country);
         params.append("s_state", form.billing_state);
         params.append("post_data", 'mshop_point=' + form.point);
-        console.log(params);
-        console.log(form);
         return new Promise(resolve => {
             this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-update_order_review', params, this.config.options).map(res => res.json())
                 .subscribe(data => {
@@ -61,8 +59,6 @@ export class CheckoutService {
     }
     checkout(form) {
         var params = new URLSearchParams();
-        console.log("form!!");
-        console.log(form);
         params.append("billing_first_name", form.billing_first_name);
         params.append("billing_last_name", form.billing_last_name);
         params.append("billing_company", form.billing_company);
@@ -87,6 +83,7 @@ export class CheckoutService {
         params.append("shipping_country", form.shipping_country);
         params.append("shipping_state", form.shipping_state);
         params.append("post_data", 'mshop_point=' + form.point);
+
         if(form.terms){
             params.append("terms", 'on');
             params.append("terms-field", '1');
@@ -329,13 +326,9 @@ export class CheckoutService {
     }
     getOrderSummary(id) {
         return new Promise(resolve => {
-            // this.reqhttp.clearCookies();
-            // this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders/' + id + '?', false), {}, {}).then(data => {
-            //     this.orderSummary = JSON.parse(data.data);
-            //     resolve(this.orderSummary);
-            // });
-            this.http.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders/' + id + '?', false), {}).map(res => res.json()).subscribe(data => {
-                this.orderSummary = data;
+            this.reqhttp.clearCookies();
+            this.reqhttp.get(this.config.setUrl('GET', '/wp-json/wc/v2/orders/' + id + '?', false), {}, {}).then(data => {
+                this.orderSummary = JSON.parse(data.data);
                 resolve(this.orderSummary);
             });
         });

@@ -1,3 +1,5 @@
+import { AccountRegister } from './../account/register/register';
+import { ClayfulService } from './../../services/shopping-services/clayful-service';
 import { Functions } from '../../services/shopping-services/functions';
 import { Storage } from '@ionic/storage';
 import { NativeStorage } from '@ionic-native/native-storage';
@@ -63,6 +65,8 @@ export class HomePage {
 
   versionChk: boolean = true;
 
+  private urlParameters: Array<any> = [];
+
 
   @ViewChild(Nav) nav: Nav;
 
@@ -71,7 +75,6 @@ export class HomePage {
     public wordpressService: WordpressService,
     public loadingCtrl: LoadingController,
     public values : Values,
-    public nativeStorage : NativeStorage,
     public storage : Storage,
     public functions: Functions,
     public service : CardnewsService,
@@ -80,10 +83,10 @@ export class HomePage {
     public platform: Platform,
     public appService : Service,
     public market : Market,
-    public alertCtrl: AlertController) {
+    public alertCtrl: AlertController,
+    public clayfulService : ClayfulService) {
       this.service.presentLoading('로딩중입니다.');
       this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
-
       if(this.versionChk == true){
         this.cmsService.versionChk().subscribe(results => {
           if(results.version == this.cmsService.appVersion){
@@ -102,7 +105,63 @@ export class HomePage {
       if (this.alertShown==false) {
         this.presentConfirm();
       }
-    }, 0)
+    }, 0);
+    if (document.URL.indexOf("?") > 0) {
+      let getURL = document.URL.split("#");
+      let splitURL = getURL[0].split("?");
+      let splitParams = splitURL[1].split("&");
+      let i: any;
+      for (i in splitParams){
+        let singleURLParam = splitParams[i].split('=');
+        if (singleURLParam[0] == "token"){
+          this.values.clayful_token = singleURLParam[1];
+        }
+        if (singleURLParam[0] == "customer"){
+          this.values.clayful_id = singleURLParam[1];
+        }
+        let urlParameter = {
+        'name': singleURLParam[0],
+        'value': singleURLParam[1]
+      };
+      this.urlParameters.push(urlParameter);
+      }
+      this.storage.set('token', this.values.clayful_token);
+      this.storage.set('customer', this.values.clayful_id);
+      this.clayfulService.memberLogin(this.values.clayful_id, this.values.clayful_token).subscribe(result => {
+        if(result.status == "error"){
+          this.functions.showAlert("에러", "로그인에 실패하였습니다. 다시 로그인 해주세요.");
+        }else{
+          if(result.msg.phone != null){
+            this.values.isLoggedIn = true;
+            this.functions.showAlert("성공", "로그인 되었습니다.");
+          }else{
+            this.navCtrl.push(AccountRegister);
+          }
+        }
+      })
+    }else{
+        this.storage.get('customer').then(cs_value => {
+          if(cs_value != null){
+              this.values.clayful_id = cs_value;
+              this.storage.get('token').then(token_value => {
+                  this.values.clayful_token = token_value;
+                  this.clayfulService.memberChk(this.values.clayful_id, this.values.clayful_token).then(result => {
+                      this.values.isLoggedIn = true;
+                      this.values.clayful_data = result;
+                      this.values.customerName = this.values.clayful_data.name;
+                      if(this.values.clayful_data.point == null)
+                        this.values.point = 0;
+                      else
+                        this.values.point = this.values.clayful_data.point;
+                  }).catch(error => {
+                      console.log(error);
+                      this.values.isLoggedIn = false;
+                  });
+              });
+          }
+        });
+    }
+    window.history.pushState('','','/');
   }
 
   ionViewWillLeave() {
@@ -218,6 +277,7 @@ export class HomePage {
     }
     return a;
 }
+
 
 
   ionViewWillEnter() {

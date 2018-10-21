@@ -23,81 +23,6 @@
 </ion-header>
    
   <ion-content class="products" #contentRef (ionScroll)="scrollingFun($event)">
-        <!--<div *ngIf="service?.banners" class="home-banners">
-          <ion-slides pager="false" loop="true" autoplay="15800" >
-            <ion-slide *ngFor='let value of service.banners'>
-              <img src="{{value}}">
-            </ion-slide>
-          </ion-slides>
-        </div>-->
-      <!--<div *ngIf="service?.products?.products" class="products-listing">
-          <div *ngIf="service?.products.products.length">
-              <ion-list>
-                          <div class="card-background-page">
-                <ion-row class="unlimited-items">
-                  
-                  <ion-card class="card-wrapper" *ngFor="let item of service.products.products" no-shadow>
-                    <div>
-                      <div class="stock">
-                          <img tappable src="{{item.images[0].src}}" (click)="getProduct(item.id)">
-                          <button ion-button color="danger" *ngIf="!item.in_stock">OUTOFSTOCK
-                          </button>
-                      </div>
-
-                      <div class="price-wrapper">
-
-                      <div tappable (click)="getProduct(item.id)" class="card-name">
-                      <ion-label *ngIf="item.title">{{item.title}}
-                      </ion-label>
-                      <ion-label *ngIf="item.name">{{item.name}}
-                      </ion-label>
-                      </div>
-                      <div class="price-list">
-                        <h3 class="price-regular" *ngIf="!item.sale_price">{{(1*item.price | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-                        </h3>
-                        <h3 class="price-special" *ngIf="item.sale_price">{{(1*item.sale_price | currency:values.currency:false:'1.0-0').replace('KRW','')}}원
-                        </h3>
-                        <h3 class="price-delete" primary *ngIf="item.sale_price">
-                          <del>{{(1*item.regular_price | currency:values.currency:false:'1.0-0').replace('KRW','')}}원</del>
-                        </h3>
-
-                      <div class="wishlist-wrapper">
-                        <ion-icon ios="ios-heart" md="md-heart" color="primary" class="wishlist-button-grid" *ngIf="values.wishlistId[item.id]" (click)="removeFromWishlist(item.id)"></ion-icon>
-                        <ion-icon ios="ios-heart-outline" md="md-heart-outline" color="primary" class="wishlist-button-grid" *ngIf="!values.wishlistId[item.id]" (click)="addToWishlist(item.id)"></ion-icon>
-                      </div>
-
-
-                        <button ion-button [disabled]='!item.in_stock' text-uppercase color="button-color" item-right clear *ngIf="values.cart[item.id] == undefined || values.cart[item.id] == 0" (click)="addToCart(item.id, item.type)">
-                          Add"  | translate}}
-                        </button>
-                        <button ion-button icon-only item-right clear color="button-color" *ngIf="values.cart[item.id] >= 1" (click)="deleteFromCart(item.id)">
-                          <ion-icon ios="ios-remove-circle-outline" md="ios-remove-circle-outline">
-                          </ion-icon>
-                        </button>
-                        <button ion-button item-right color="button-color" clear *ngIf="values.cart[item.id] >= 1">{{values.cart[item.id]}}
-                        </button>
-                        <button ion-button icon-only item-right clear color="button-color" *ngIf="values.cart[item.id] >= 1" (click)="updateToCart(item.id)">
-                          <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline">
-                          </ion-icon>
-                        </button
-                      </div>
-                      </div>
-                  </div>
-                    </ion-card>
-
-                </ion-row>
-              </div>
-              </ion-list>
-            </div>
-          </div>
-
-
-
-
-          <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
-              <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 상품을 로딩 중입니다."> </ion-infinite-scroll-content>
-          </ion-infinite-scroll>-->
-
 
           <ion-spinner *ngIf="!products && !values.related" name="crescent"> </ion-spinner>
           <ion-spinner *ngIf="loading" name="crescent"> </ion-spinner>
@@ -170,8 +95,6 @@
                                       <span class="price-regular" *ngIf="item.sale_price">{{(1*item.sale_price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="item.sale_price">원</span>
                                       <span class="price-delete" *ngIf="item.sale_price"><del>{{(1*item.regular_price | currency:values.currency:false:'1.0-0').replace('USD','')}}원</del></span>
                                     </ion-label>
-                      
-                                    <!--h3 *ngIf="item.average_rating == 0" style="font-size: 13px;margin:0 0 8px 10px" text-left>0 ratings</h3-->
                                 </ion-card>
                             </ion-col>
                         </ion-row>
