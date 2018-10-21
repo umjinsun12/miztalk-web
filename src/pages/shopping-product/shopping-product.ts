@@ -15,7 +15,7 @@ import { WordpressService } from '../../services/wordpress.service';
 import { CmsService } from '../../services/cms-service.service';
 import * as moment from 'moment';
 import { ImagePicker } from '@ionic-native/image-picker';
-import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from  'ng2-image-compress';
+import { ClayfulService } from './../../services/shopping-services/clayful-service';
 //import { Caimport { ModalController } from 'ionic-angular';rtPage } from '../cart/cart';
 
 
@@ -85,6 +85,7 @@ export class ShoppingProductPage {
     necessaryList : any = [];
     reviewList : any = [];
     disableSubmit : boolean = false;
+    clayfulProduct : any;
 
     fileimgs : any = [];
 
@@ -107,7 +108,7 @@ export class ShoppingProductPage {
         private camera: Camera,
         public toastCtrl: ToastController,
         public config: Config,
-        private imagePicker: ImagePicker,) {
+        public clayfulService : ClayfulService) {
         this.id = params.data;
         this.options = [];
         this.quantity = 1;
@@ -117,9 +118,11 @@ export class ShoppingProductPage {
         this.tabBarElement = document.querySelector(".tabbar")['style'];
         this.service.getProduct(this.id)
             .then((results) => this.handleProductResults(results));
+        this.clayfulService.getProduct(this.id).subscribe(results => {            
+            this.clayfulProduct = JSON.parse(results.data);
+            console.log(this.clayfulProduct);
+        })
     }
-
-   
 
     handleProductResults(results) {
         this.product = results;
@@ -155,7 +158,6 @@ export class ShoppingProductPage {
         this.getRelatedProducts();
         this.getUpsellProducts();
         this.getCrossSellProducts();
-
     }
     getVariationProducts() {
         this.service.getVariationProducts(this.product.id).then((results) => {

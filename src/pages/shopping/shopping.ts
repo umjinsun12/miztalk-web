@@ -13,7 +13,7 @@ import { WishlistPage } from '../account/wishlist/wishlist'
 import { PopoverPage } from '../about-popover/about-popover';
 import { ShoppingSearchPage } from '../shopping-search/shopping-search';
 import { ShoppingProductsPage } from '../shopping-products/shopping-products';
-import * as Clayful from 'clayful';
+import { ClayfulService } from './../../services/shopping-services/clayful-service';
 
 /**
  * 
@@ -52,7 +52,7 @@ export class ShoppingPage {
     categoryName: any;
     loading: boolean = false;
     data: any;
-    pos: number = 0;
+    pos: number = 1;
     public alertShown:boolean = false;
 
     private tabBarHeight;
@@ -60,7 +60,9 @@ export class ShoppingPage {
     private contentBox;
     related: any;
 
-    constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions, 
+    clayfulProducts: any;
+
+    constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions, public clayfulService : ClayfulService,
         public homeservice: Service,
         public platform : Platform,
         public alertCtrl: AlertController) {
@@ -88,7 +90,12 @@ export class ShoppingPage {
         if (params.data.attributeId) {
             this.filter.attribute_term = params.data.attributeId;
         }
-        this.service.load(this.filter).then((results) => this.handleProducts(results));
+        this.clayfulService.getProductList(1).subscribe(results => {
+            this.clayfulProducts = [];
+            results.contents.forEach(element => {
+                this.clayfulProducts.push(JSON.parse(element.data));
+            });
+        });
     }
 
 
@@ -188,7 +195,7 @@ export class ShoppingPage {
     }
     goCategory(id, name){
         let item = {
-            id : 0,
+            id : "",
             name : "",
             categories : []
         };
@@ -214,7 +221,16 @@ export class ShoppingPage {
     doInfinite(infiniteScroll) {
         this.pos += 1;
         this.filter.page = this.values.product_order[this.pos];
-        this.service.loadMore(this.filter).then((results) => this.handleMore(results, infiniteScroll));
+        this.clayfulService.getProductList(this.pos).subscribe(results => {
+            if(results.contents.length == 0)
+                this.has_more_items = false;
+            else{
+                results.contents.forEach(element => {
+                    this.clayfulProducts.push(JSON.parse(element.data));
+                });
+                infiniteScroll.complete();
+            }
+        });
     }
     handleMore(results, infiniteScroll) {
         if (results != undefined) {
@@ -231,15 +247,14 @@ export class ShoppingPage {
 
     doRefresh(refresher){
         this.has_more_items = true;
-        this.shuffle(this.values.product_order); 
-        this.pos = 0;
-        this.filter.page = this.values.product_order[this.pos];
-        this.service.load(this.filter).then((results) => this.handleRefreshProducts(results, refresher));
-    }
-    handleRefreshProducts(results, refresher){
-        console.log(results);
-        this.products = results;
-        refresher.complete();
+        this.pos = 1;
+        this.clayfulService.getProductList(1).subscribe(results => {
+            this.clayfulProducts = [];
+            results.contents.forEach(element => {
+                this.clayfulProducts.push(JSON.parse(element.data));
+            });        
+            refresher.complete();
+        });
     }
 
     setListView() {
@@ -315,18 +330,6 @@ export class ShoppingPage {
         this.nav.push(WishlistPage);
     }
     getFilter() {
-        /*let modal = this.modalCtrl.create(Filter, this.filter);
-        modal.onDidDismiss(data => {
-            if (this.values.applyFilter) {
-                this.filter = this.values.filter;
-                this.has_more_items = true;
-                this.filter.page = 1;
-                this.filter.opts = undefined;
-                this.filter.component = undefined;
-                this.service.load(this.filter).then((results) => this.handleFilterResults(results));
-            }
-        });
-        modal.present();*/
         console.log("Filter");
     }
     handleFilterResults(results) {

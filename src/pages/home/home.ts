@@ -87,15 +87,6 @@ export class HomePage {
     public clayfulService : ClayfulService) {
       this.service.presentLoading('로딩중입니다.');
       this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
-      if(this.versionChk == true){
-        this.cmsService.versionChk().subscribe(results => {
-          if(results.version == this.cmsService.appVersion){
-            this.versionChk = false;
-          }else{
-            this.presentVersion();
-          }
-        });
-      }
   }
 
 
@@ -293,7 +284,7 @@ export class HomePage {
   }
   goCategory(id, name){
     let item = {
-        id : 0,
+        id : "",
         name : "",
         categories : []
     };

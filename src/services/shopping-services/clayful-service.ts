@@ -80,7 +80,17 @@ export class ClayfulService {
             phone : phone,
             marketing : marketing
         }
-        return this.http.post(this.config.cmsurl + '/clayful/_memberReg',param).map(res => res.json())
+        return this.http.post(this.config.cmsurl + '/clayful/_memberReg',param).map(res => res.json());
+    }
+
+    getProduct(id){
+        return this.http.get(this.config.cmsurl + '/clayful/getProduct?id='+ id).map(res => res.json());
+    }
+    getProductList(page){
+        return this.http.get(this.config.cmsurl + '/clayful/productList?page='+page).map(res => res.json());
+    }
+    getProductListCategory(page, category){
+        return this.http.get(this.config.cmsurl + '/clayful/productList?page='+page + '&category=' + category).map(res => res.json());
     }
 
 }

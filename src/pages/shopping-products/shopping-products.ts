@@ -11,6 +11,7 @@ import { Service} from '../../services/shopping-services/service'
 import { WishlistPage } from '../account/wishlist/wishlist'
 import { PopoverPage } from '../about-popover/about-popover';
 import { ShoppingSearchPage } from '../shopping-search/shopping-search';
+import { ClayfulService } from './../../services/shopping-services/clayful-service';
 
 /**
  * Generated class for the ShoppingProductsPage page.
@@ -50,8 +51,10 @@ export class ShoppingProductsPage {
     private topOrBottom:string;
     private contentBox;
     related: any;
+    clayfulProducts : any;
+    pos: number = 1;
 
-  constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions, public homeservice: Service) {
+  constructor(public modalCtrl: ModalController, private viewCtrl: ViewController, public nav: NavController, public popoverCtrl: PopoverController, public service: CategoryService, params: NavParams, public values: Values, public functions: Functions, public homeservice: Service, public clayfulService : ClayfulService) {
     this.data = {};
         this.filter = {};
         this.q = "";
@@ -63,6 +66,7 @@ export class ShoppingProductsPage {
         this.subCategories = [];
         this.items = [];
         this.quantity = "1";
+        console.log(params);
         this.filter.category = params.data.id;
         this.categoryName = params.data.name;
         if (params.data.categories) {
@@ -77,7 +81,12 @@ export class ShoppingProductsPage {
         if (params.data.attributeId) {
             this.filter.attribute_term = params.data.attributeId;
         }
-        this.service.load(this.filter).then((results) => this.handleProducts(results));
+        this.clayfulService.getProductListCategory(1, params.data.id).subscribe(results => {
+            this.clayfulProducts = [];
+            results.contents.forEach(element => {
+                this.clayfulProducts.push(JSON.parse(element.data));
+            });
+        });
   }
 
   handleProducts(results) {
@@ -95,7 +104,7 @@ getCategory(id, slug, name) {
 
 goCategory(id, name){
     let item = {
-        id : 0,
+        id : "",
         name : "",
         categories : []
     };
@@ -134,30 +143,31 @@ getSearch() {
 }
 
 doInfinite(infiniteScroll) {
-    this.filter.page += 1;
-    this.service.loadMore(this.filter).then((results) => this.handleMore(results, infiniteScroll));
-}
-handleMore(results, infiniteScroll) {
-    if (results != undefined) {
-        for (var i = 0; i < results.length; i++) {
-            this.products.push(results[i]);
-        };
-    }
-    if (results.length == 0) {
-        this.has_more_items = false;
-    }
-    infiniteScroll.complete();
+    this.pos += 1;
+        this.filter.page = this.values.product_order[this.pos];
+        this.clayfulService.getProductListCategory(this.pos, this.filter.category).subscribe(results => {
+            if(results.contents.length == 0)
+                this.has_more_items = false;
+            else{
+                results.contents.forEach(element => {
+                    this.clayfulProducts.push(JSON.parse(element.data));
+                });
+                infiniteScroll.complete();
+            }
+        });
+
 }
 
 doRefresh(refresher){
     this.has_more_items = true;
-    this.filter.page = 1;
-    this.service.load(this.filter).then((results) => this.handleRefreshProducts(results, refresher));
-}
-handleRefreshProducts(results, refresher){
-    console.log(results);
-    this.products = results;
-    refresher.complete();
+    this.pos = 1;
+    this.clayfulService.getProductListCategory(1, this.filter.category).subscribe(results => {
+        this.clayfulProducts = [];
+        results.contents.forEach(element => {
+            this.clayfulProducts.push(JSON.parse(element.data));
+        });        
+        refresher.complete();
+    });
 }
 
 setListView() {

@@ -24,7 +24,7 @@
    
   <ion-content class="products" #contentRef (ionScroll)="scrollingFun($event)">
 
-          <ion-spinner *ngIf="!products && !values.related" name="crescent"> </ion-spinner>
+          <ion-spinner *ngIf="!clayfulProducts && !values.related" name="crescent"> </ion-spinner>
           <ion-spinner *ngIf="loading" name="crescent"> </ion-spinner>
 
           <div *ngIf="values?.mainad && values.mainad.length" class="home-banners">
@@ -35,25 +35,25 @@
 
           <div>
             <ion-row class="category-listing">
-              <ion-col class="col-3 category-title" (click)="goCategory(15, '육아·생활')">
+              <ion-col class="col-3 category-title" (click)="goCategory('baby', '육아·생활')">
                   <img src="assets/img/sh-ct-baby.png" class="category-icon">
                   <div class="category-text">
                     육아·생활
                   </div>
               </ion-col>
-              <ion-col class="col-3 category-title" (click)="goCategory(17, '주방·가전')">
+              <ion-col class="col-3 category-title" (click)="goCategory('kitchin', '주방·가전')">
                   <img src="assets/img/sp-ct-living.png" class="category-icon">
                   <div class="category-text">
                   주방·가전
                   </div>
               </ion-col>
-              <ion-col class="col-3 category-title" (click)="goCategory(18, '뷰티·다이어트')">
+              <ion-col class="col-3 category-title" (click)="goCategory('beauty', '뷰티·다이어트')">
                   <img src="assets/img/Sp_CT_Beuty.png" class="category-icon">
                   <div class="category-text">
                   뷰티·다이어트
                   </div>
               </ion-col>
-              <ion-col class="col-3 category-title" (click)="goCategory(19, '식품')">
+              <ion-col class="col-3 category-title" (click)="goCategory('food', '식품')">
                   <img src="assets/img/sp-ct-food.png"  class="category-icon">
                   <div class="category-text">
                   식품
@@ -69,31 +69,31 @@
 
 
 
-          <div *ngIf="products" class="products-listing">
-            <div *ngIf="!products.length && !loading" class="no-products">
+          <div *ngIf="clayfulProducts" class="products-listing">
+            <div *ngIf="!clayfulProducts.length && !loading" class="no-products">
                 <h2>상품이 없습니다.</h2>
             </div>
-            <div *ngIf="products.length && !loading">
+            <div *ngIf="clayfulProducts.length && !loading">
                 
                 <div *ngIf="!values.listview">
                     <div class="grid">
                         <ion-row class="row unlimited-items">
-                            <ion-col class="col" *ngFor="let item of products">
+                            <ion-col class="col" *ngFor="let item of clayfulProducts">
                                 <ion-card>
-                                    <ion-card-content class="stock"> <img tappable src="{{item.images[0].src}}" (click)="getProduct(item.id)" [ngClass]="{opacity: !item.in_stock}">
-                                        <div> <button ion-button color="danger" *ngIf="!item.in_stock">일시 품절</button> </div>
-                                        <ion-icon name="md-heart" class="wishlist-button-grid1" *ngIf="values.wishlistId[item.id]" (click)="removeFromWishlist(item.id)"></ion-icon>
-                                        <ion-icon name="md-heart-outline" class="wishlist-button-grid2" *ngIf="!values.wishlistId[item.id]" (click)="addToWishlist(item.id)"></ion-icon>
+                                    <ion-card-content class="stock"> <img tappable src="{{item.thumbnail.url}}" (click)="getProduct(item._id)" [ngClass]="{opacity: !item.in_stock}">
+                                        <div *ngIf="!item.variants.length"> <button ion-button color="danger" *ngIf="!item.variants[0].quantity==0">일시 품절</button> </div>
+                                        <ion-icon name="md-heart" class="wishlist-button-grid1" *ngIf="values.wishlistId[item._id]" (click)="removeFromWishlist(item._id)"></ion-icon>
+                                        <ion-icon name="md-heart-outline" class="wishlist-button-grid2" *ngIf="!values.wishlistId[item._id]" (click)="addToWishlist(item._id)"></ion-icon>
                                     </ion-card-content>
-                                    <div tappable (click)="getProduct(item.id)" class="card-name">
+                                    <div tappable (click)="getProduct(item._id)" class="card-name">
                                         <ion-label *ngIf="item.title">{{item.title}} </ion-label>
                                         <ion-label *ngIf="item.name">{{item.name}} </ion-label>
                                     </div>
                                     <ion-label style="margin-bottom:2px;margin-left: 4px;"> 
-                                      <span class="price-offer" *ngIf="item.in_stock && item.sale_price && ((item.regular_price - item.sale_price) / item.regular_price*100) >= '1'">{{(item.regular_price - item.sale_price) / item.regular_price*100 | number : '1.0-0'}}%</span>
-                                      <span class="price-regular" *ngIf="!item.sale_price">{{(1*item.price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="!item.sale_price">원</span>
-                                      <span class="price-regular" *ngIf="item.sale_price">{{(1*item.sale_price | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="item.sale_price">원</span>
-                                      <span class="price-delete" *ngIf="item.sale_price"><del>{{(1*item.regular_price | currency:values.currency:false:'1.0-0').replace('USD','')}}원</del></span>
+                                      <span class="price-offer" *ngIf="item.price.sale.raw && ((item.price.original.raw - item.price.sale.raw) / item.price.original.raw*100) >= '1'">{{(item.price.original.raw - item.price.sale.raw) / item.price.original.raw*100 | number : '1.0-0'}}%</span>
+                                      <span class="price-regular" *ngIf="!item.price.sale.raw">{{(1*item.price.original.raw | number:'1.0-0')}}</span><span class="price-won" *ngIf="!item.price.sale.raw">원</span>
+                                      <span class="price-regular" *ngIf="item.price.sale.raw">{{(1*item.price.sale.raw | number:'1.0-0')}}</span><span class="price-won" *ngIf="item.price.sale.raw">원</span>
+                                      <span class="price-delete" *ngIf="item.price.sale.raw"><del>{{(1*item.price.original.raw | number:'1.0-0')}}원</del></span>
                                     </ion-label>
                                 </ion-card>
                             </ion-col>

@@ -16,7 +16,7 @@
 
 
 
-    <div class="segment" *ngIf="product">
+    <div class="segment" *ngIf="clayfulProduct">
             <ion-segment [(ngModel)]="segment" (ionChange)="updateSchedule($event)">
                 <ion-segment-button tappable value="overview">
                     <ion-label text-uppercase>상세정보</ion-label>
@@ -38,28 +38,22 @@
 
   <ion-content class="product-page">
 
-    <ion-spinner *ngIf="!product" name="crescent"> </ion-spinner>
+    <ion-spinner *ngIf="!clayfulProduct" name="crescent"> </ion-spinner>
     
     <div *ngIf="showOverview">
-        <div *ngIf="product" class="product-details">
-            <div *ngIf="product.images">
-                <ion-slides #slides pager="true" loop="true" autoplay="5800">
-                    <ion-slide *ngFor="let item of product.images"> <img src="{{item.src}}" (click)="zoomPhoto(item.src)"> </ion-slide>
-                </ion-slides>
-                
+        <div *ngIf="clayfulProduct" class="product-details">
+            <div *ngIf="clayfulProduct.thumbnail.url">
+                <img class="product-img" src="{{clayfulProduct.thumbnail.url}}" (click)="zoomPhoto(clayfulProduct.thumbnail.url)">
             </div>
             <div class="body-index">
-                <h2 class="product-name"> {{product.name}} </h2>
+                <h2 class="product-name"> {{clayfulProduct.name}} </h2>
                 <ion-item class="price-label" no-lines>
-                    <span class="offer-price" *ngIf="((product.regular_price - product.sale_price) /product.regular_price*100) >= '1'">{{(product.regular_price - product.sale_price) /product.regular_price*100 | number : '1.0-0'}}%</span>
-                    <span class="price-regular" *ngIf="!product.sale_price">{{(product.price  | currency:values.currency:false:'1.0-0').replace('USD','')}} </span>
-                    <span class="price-regular" *ngIf="product.sale_price">{{(product.sale_price  | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="product.sale_price">원</span>
-                    <span class="price-delete" *ngIf="product.sale_price"><del>{{(product.regular_price  | currency:values.currency:false:'1.0-0').replace('USD','')}}원</del></span>
+                    <span class="offer-price" *ngIf="((clayfulProduct.price.original.raw - clayfulProduct.price.sale.raw) /clayfulProduct.price.original.raw*100) >= '1'">{{(clayfulProduct.price.original.raw - clayfulProduct.price.sale.raw) /clayfulProduct.price.original.raw*100 | number : '1.0-0'}}%</span>
+                    <span class="price-regular" *ngIf="!clayfulProduct.price.sale.raw">{{(clayfulProduct.price  | currency:values.currency:false:'1.0-0').replace('USD','')}} </span>
+                    <span class="price-regular" *ngIf="clayfulProduct.price.sale.raw">{{(clayfulProduct.price.sale.raw  | currency:values.currency:false:'1.0-0').replace('USD','')}}</span><span class="price-won" *ngIf="clayfulProduct.price.sale.raw">원</span>
+                    <span class="price-delete" *ngIf="clayfulProduct.price.sale.raw"><del>{{(clayfulProduct.price.original.raw  | currency:values.currency:false:'1.0-0').replace('USD','')}}원</del></span>
                 </ion-item>
-                <!--<div (click)="showMoreReviews()"> <button ion-button icon-only small class="rating-button-grid1" style="height:20px">
-        <ion-icon name="md-star"><span class="rating-count">{{product.average_rating | number:'1.1-1'}}</span></ion-icon> 
-      </button> <span style="color: #777;">{{product.rating_count}} ratings</span> </div>-->
-                <!--<h2 style="font-size: 14px;margin: 10px 16px 8px;color:#333;" *ngIf="product.total_sales != 0">{{product.total_sales}} items sold</h2>-->
+
                 <ion-grid class="rating-and-total-sales-grid">
                     <ion-row>
                         <!--<ion-col> <button class="share" ion-button color="button-color" (click)="addToCart(product.id)">
@@ -71,44 +65,32 @@
               <ion-icon name="ios-browsers"></ion-icon> Similar
             </button>
           </ion-col-->
-                        <ion-col> <button ion-button clear *ngIf="values.wishlistId[product.id]" (click)="removeFromWishlist(product.id)" item-right class="wishlist1" color="danger">
+                        <ion-col> <button ion-button clear *ngIf="values.wishlistId[clayfulProduct._id]" (click)="removeFromWishlist(clayfulProduct._id)" item-right class="wishlist1" color="danger">
               <ion-icon name="ios-heart"></ion-icon> 찜삭제
-            </button> <button ion-button clear *ngIf="!values.wishlistId[product.id]" (click)="addToWishlist(product.id)" item-right class="wishlist2" color="danger"> 
+            </button> <button ion-button clear *ngIf="!values.wishlistId[clayfulProduct._id]" (click)="addToWishlist(clayfulProduct._id)" item-right class="wishlist2" color="danger"> 
               <ion-icon name="ios-heart"></ion-icon> 찜하기
             </button> </ion-col>
                     </ion-row>
                 </ion-grid>
-                <!--variation product starts-->
-                <!--<div *ngIf="product?.attributes.length" class="description">
-                    <ion-item no-lines class="item-background" (click)="showSpecs()" *ngIf="!showSpecification"> Specifications
-                        <ion-icon item-right name="ios-arrow-down"></ion-icon>
-                    </ion-item>
-                    <ion-item no-lines class="item-background" (click)="showSpecs()" *ngIf="showSpecification"> Specifications
-                        <ion-icon item-right name="ios-arrow-up"></ion-icon>
-                    </ion-item>
-                    <ion-item text-wrap no-lines *ngIf="showSpecification">
-                        <div *ngFor="let attribute of product.attributes">
-                            <h3 class="sold-by">{{attribute.name}} - <span [innerHTML]="attribute.options[0]"></span></h3>
-                        </div>
-                    </ion-item> <br> </div>-->
-                <div *ngIf="product.description || product.short_description" class="description">
-                    <div *ngIf="product.short_description" class="description">
+
+                <div *ngIf="clayfulProduct.description || clayfulProduct.short_description" class="description">
+                    <div *ngIf="clayfulProduct.short_description" class="description">
                         <!--ion-item no-lines class="item-background"> Description </ion-item-->
                         <ion-item text-wrap no-lines>
-                            <div [innerHTML]="product.short_description"> </div>
+                            <div [innerHTML]="clayfulProduct.short_description"> </div>
                         </ion-item>
                     </div>
                     <div class="description">
                         <ion-item text-wrap no-lines>
-                            <div [innerHTML]="product.description"> </div>
+                            <div [innerHTML]="clayfulProduct.description"> </div>
                         </ion-item>
                     </div>
-                    <div *ngIf="product.description && !product.short_description" class="description">
+                    <div *ngIf="clayfulProduct.description && !clayfulProduct.short_description" class="description">
                         <ion-item text-wrap no-lines>
-                            <div [innerHTML]="product.description"> </div>
+                            <div [innerHTML]="clayfulProduct.description"> </div>
                         </ion-item>
                     </div>
-                    <ion-item no-lines class="show-more" *ngIf="!moreDescription && product.short_description">
+                    <ion-item no-lines class="show-more" *ngIf="!moreDescription && clayfulProduct.short_description">
                         <h2 (click)="showMore()"><span class="span1">더 보기</span></h2>
                     </ion-item>
                     <div class="copyright">
@@ -288,27 +270,22 @@
             </div>
         <ion-row>
             <ion-col>
-                <div *ngIf="variations?.length" class="variation-product">
-                        <div *ngIf="product.attributes.length == 1">
+                <div *ngIf="clayfulProduct.variants?.length" class="variation-product">
+                        <div *ngIf="clayfulProduct.options.length >= 1">
                             <ion-item>
                                 <ion-label> 옵션선택 </ion-label>
                                 <ion-select okText="확인" cancelText="취소" [(ngModel)]="options[0]" (ngModelChange)="chooseOption()">
-                                    <div *ngFor="let option of variations">
-                                        <div *ngIf="option.attributes.length == 1">
-                                            <ion-option value="{{'variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option}}">{{option.attributes[0].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
-                                        </div>
-                                        <div *ngIf="option.attributes.length == 2">
-                                            <ion-option value="{{'variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option + ':variation[attribute_pa_'+ option.attributes[1].name +']:' + option.attributes[1].option}}">{{option.attributes[0].option | uppercase}} - {{option.attributes[1].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
-                                        </div>
-                                        <div *ngIf="option.attributes.length == 3">
-                                            <ion-option value="{{'variation_id:' + option.id + ':variation[attribute_pa_'+ option.attributes[0].name +']:' + option.attributes[0].option + ':variation[attribute_pa_'+ option.attributes[1].name +']:' + option.attributes[1].option + ':variation[attribute_pa_'+ option.attributes[2].name +']:' + option.attributes[2].option}}">{{option.attributes[0].option | uppercase}} - {{option.attributes[1].option | uppercase}} - {{option.attributes[2].option | uppercase}} - {{(option.price | currency:values.currency:false:'1.0-0').replace('USD','')}} </ion-option>
-                                        </div>
+                                    <div *ngFor="let option of clayfulProduct.variants">
+                                            <ion-option value="option._id">
+                                                <span *ngFor="let type of option.types">{{type.variation.value}} </span>
+                                                - {{(option.price.sale.raw | currency:values.currency:false:'1.0-0').replace('USD','')}}
+                                            </ion-option>
                                     </div>
                                 </ion-select>
                             </ion-item>
                         </div>
-                        <div *ngIf="product.attributes.length >= 2">
-                            <ion-item *ngFor="let sel_option of product.attributes" class="nessary-option">
+                        <!--<div *ngIf="clayfulProduct.options.length >= 2">
+                            <ion-item *ngFor="let sel_option of clayfulProduct.variants" class="nessary-option">
                                 <ion-label> {{sel_option.name}} </ion-label>
                                     <ion-select okText="확인" cancelText="취소" [(ngModel)]="options[sel_option.position]" (ngModelChange)="chooseOption()">
                                         <div *ngFor="let option of variations">
@@ -318,7 +295,7 @@
                                         </div>
                                     </ion-select>
                             </ion-item>
-                        </div>
+                        </div>-->
                 </div>
             </ion-col>
         </ion-row>
@@ -392,12 +369,12 @@
           
           <ion-row  col-9 no-padding>
               <ion-col col-4 *ngIf="showOption" no-padding>
-                            <button ion-button full color="danger" text-uppercase [disabled]='disableSubmit' (click)="addCart(product.id)">
+                            <button ion-button full color="danger" text-uppercase [disabled]='disableSubmit' (click)="addCart(clayfulProduct._id)">
                         장바구니
                 </button>
               </ion-col>
               <ion-col no-padding>
-                <button ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="buyNow(product.id)">
+                <button ion-button full color="button-color" text-uppercase [disabled]='disableSubmit' (click)="buyNow(clayfulProduct._id)">
                     구매하기
                 </button>
             </ion-col>

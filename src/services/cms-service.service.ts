@@ -168,11 +168,7 @@ export class CmsService {
   activatePhone(phonenum, username){
     return this.http.get(this.config.cmsurl + '/sms/activateOtp?phonenum=' + phonenum + '&username=' + username).map(res => res.json());
   }
-
-  versionChk(){
-    return this.http.get(this.config.cmsurl + '/version').map(res => res.json());
-  }
-
+  
   dataURItoBlob(b64Data) {
     let contentType = 'image/png';
     let sliceSize = 512;
