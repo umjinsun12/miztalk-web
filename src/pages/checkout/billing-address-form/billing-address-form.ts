@@ -204,8 +204,6 @@ export class BillingAddressForm {
               order_id : results.order_id
           };
 
-          
-
           const param = {
             pay_method : this.form.payment_method.split('_')[1],
             merchant_uid : results.iamport.merchant_uid,

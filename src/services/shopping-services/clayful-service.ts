@@ -10,12 +10,14 @@ import * as Clayful from 'clayful';
 export class ClayfulService {
 
     postoptions: any = {};
+    Cart : any;
 
     constructor(private http: Http, private config : Config, private values: Values, ) {
         Clayful.config({
             client: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImM2NWRhYTNiYWM1MjZmOTRlOWY2YmZmYzYyMTc1ZGZiODU4NTRhMzllZGIwYjljOGZmNzllZWMwZGQwNGQzM2IiLCJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNTM5ODc2MTE0LCJzdG9yZSI6IktBMlJGRUtIVFhWUS5LNjdGN0tHRk4yRzQiLCJzdWIiOiI5SzRGWlpaUFdHV1YifQ.ScJFSxSrWjZl5WqLeCSXD9FyETebcnEGCDaVTA4_pcI',
             debugLanguage: 'ko'
         });
+        this.Cart = Clayful.Cart;
     }
 
     loginSns(vendor){
@@ -92,5 +94,4 @@ export class ClayfulService {
     getProductListCategory(page, category){
         return this.http.get(this.config.cmsurl + '/clayful/productList?page='+page + '&category=' + category).map(res => res.json());
     }
-
 }

@@ -276,7 +276,7 @@
                                 <ion-label> 옵션선택 </ion-label>
                                 <ion-select okText="확인" cancelText="취소" [(ngModel)]="options[0]" (ngModelChange)="chooseOption()">
                                     <div *ngFor="let option of clayfulProduct.variants">
-                                            <ion-option value="option._id">
+                                            <ion-option value="{{option._id}}">
                                                 <span *ngFor="let type of option.types">{{type.variation.value}} </span>
                                                 - {{(option.price.sale.raw | currency:values.currency:false:'1.0-0').replace('USD','')}}
                                             </ion-option>
@@ -299,23 +299,24 @@
                 </div>
             </ion-col>
         </ion-row>
-        <div *ngIf="variations?.length && selectOptionProduct?.length">
+        <div *ngIf="clayfulProduct.variants?.length && selectOptionProduct?.length">
         <ion-row *ngFor="let prod of selectOptionProduct" class="option-product" >
             <ion-col>
-                {{prod.name}}
-                <span class="close-btn"><ion-icon name="md-close" (click)="removeItem(prod.variation_id)"></ion-icon></span>
+                <span *ngIf="!clayfulProduct.options?.length">{{clayfulProduct.name}}</span>
+                <span *ngFor="let type of prod.types">{{type.variation.value}} </span>
+                <span *ngIf="clayfulProduct.options?.length" class="close-btn"><ion-icon name="md-close" (click)="removeItem(prod._id)"></ion-icon></span>
                 <ion-row>
                     <ion-col class="quantity-price">
-                        {{prod.price * prod.quantity}}원
+                        {{prod.price.sale.raw * prod.quantity}}원
                     </ion-col>
                     <ion-col no-padding>
                         <div class="quantity-item">
                             <ion-item>
-                                <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="deleteOptionQuantity(prod.variation_id)">
+                                <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="deleteOptionQuantity(prod._id)">
                                     <ion-icon ios="ios-remove-circle-outline" md="ios-remove-circle-outline"></ion-icon>
                                 </button>
                                 <button ion-button item-right color="button-color" clear>{{prod.quantity}}</button>
-                                <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="addOptionQuantity(prod.variation_id)">
+                                <button ion-button icon-only class="has-icon icon-only" no-margin item-right clear color="button-color" (click)="addOptionQuantity(prod._id)">
                                             <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
                                 </button>
                             </ion-item>
@@ -325,7 +326,7 @@
             </ion-col>
         </ion-row>
         </div>
-        <div *ngIf="!variations?.length && selectOptionProduct?.length">
+        <!--<div *ngIf="!clayfulProduct.options?.length && selectOptionProduct?.length">
                 <ion-row *ngFor="let prod of selectOptionProduct" class="option-product" >
                         <ion-col>
                             {{prod.name}}
@@ -349,7 +350,7 @@
                             </ion-row>
                         </ion-col>
                 </ion-row>
-        </div>
+        </div>-->
 
     <ion-row class="total-box">
             <ion-col class="total-char">

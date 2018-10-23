@@ -22,6 +22,7 @@ import { ClayfulService } from './../../services/shopping-services/clayful-servi
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Config } from '../../services/shopping-services/config';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   templateUrl: 'shopping-product.html',
@@ -116,49 +117,19 @@ export class ShoppingProductPage {
         this.AddToCart = "Add To Cart";
         if(document.querySelector(".tabbar"))
         this.tabBarElement = document.querySelector(".tabbar")['style'];
-        this.service.getProduct(this.id)
-            .then((results) => this.handleProductResults(results));
+        
         this.clayfulService.getProduct(this.id).subscribe(results => {            
             this.clayfulProduct = JSON.parse(results.data);
             console.log(this.clayfulProduct);
+            if(this.clayfulProduct.options.length == 0){
+                var obj = this.clayfulProduct.variants[0];
+                obj.quantity = 1;
+                this.selectOptionProduct.push(obj);
+                this.calculateTotal();
+            }
         })
     }
 
-    handleProductResults(results) {
-        this.product = results;
-        this.necessaryCnt = 0;
-        this.isNecessary = false;
-        console.log(this.product);
-        this.product.description = this.product.description.replace(/<p>/g,'').replace(/<\/p>/g, '').replace(/&nbsp;/g,'');
-        this.product.description = this.sanitizer.bypassSecurityTrustHtml(this.product.description);
-        console.log(this.product.description);
-        if ((this.product.type == 'variable') && this.product.variations.length) 
-            this.getVariationProducts();
-        else{
-            var text = '{';
-                var i;
-                for (i = 0; i < this.options.length; i++) {
-                    var res = this.options[i].split(":");
-                    for (var j = 0; j < res.length; j = j + 2) {
-                        text += '"' + res[j] + '":"' + res[j + 1] + '",';
-                    }
-                }
-                text += '"product_id":"' + this.product.id + '",';
-                text += '"quantity":"' + this.quantity + '"}';
-                var obj = JSON.parse(text);
-                console.log(this.product);
-                console.log(obj);
-                obj.price = this.product.sale_price;
-                obj.name = this.product.name;
-                this.selectOptionProduct.push(obj);
-                this.totalOptionPrice=this.product.sale_price;
-        }
-        moment.locale('ko');
-        this.getReviews();
-        this.getRelatedProducts();
-        this.getUpsellProducts();
-        this.getCrossSellProducts();
-    }
     getVariationProducts() {
         this.service.getVariationProducts(this.product.id).then((results) => {
           console.log(this.variations);
@@ -215,21 +186,19 @@ export class ShoppingProductPage {
 
     buyNow(id) {
         if(this.showOption == true){
-            if (this.product.type == 'variable' && this.options.length == 0) {
+            if (this.selectOptionProduct.length == 0) {
                 this.functions.showAlert('에러', '옵션을 선택하세요')
             } 
-            else if(!this.isNecessary && this.product.attributes.length >= 2){
-                this.functions.showAlert('에러', '필수 옵션을 모두 선택하세요')
-            }
             else {
-                var cnt = 0;
+                /*var cnt = 0;
                 for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
                     this.service.addToCart(this.selectOptionProduct[i]).then((results) => {
                         cnt += 1;
                         if(cnt == this.selectOptionProduct.length)
                             this.updateBuynowResults(cnt);
                     })
-                }
+                }*/
+                
             }
         }
         else{
@@ -238,7 +207,7 @@ export class ShoppingProductPage {
     }
     removeItem(id){
         for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
-            if(this.selectOptionProduct[i].variation_id == id){
+            if(this.selectOptionProduct[i]._id == id){
                 this.selectOptionProduct.splice(i, 1);
                 this.calculateTotal();
             }
@@ -264,49 +233,28 @@ export class ShoppingProductPage {
     }
 
     chooseOption(){
-        var text = '{';
-        var i;
-        for (i = 0; i < this.options.length; i++) {
-                var res = this.options[i].split(":");
-                for (var j = 0; j < res.length; j = j + 2) {
-                    text += '"' + res[j] + '":"' + res[j + 1] + '",';
+        for(var i= 0 ; i < this.clayfulProduct.variants.length ; i++){
+            if(this.clayfulProduct.variants[i]._id == this.options){
+                var flag = 0;
+                for(var j = 0 ; j < this.selectOptionProduct.length ; j++){
+                    if(this.selectOptionProduct[j]._id == this.options)
+                        flag = 1;
                 }
-        }
-        text += '"product_id":"' + this.product.id + '",';
-        text += '"quantity":"' + this.quantity + '"}';
-        var obj = JSON.parse(text);
-        var flag = 0;
-        for(i=0 ; i < this.selectOptionProduct.length ; i++)
-        {
-            if(obj.variation_id === this.selectOptionProduct[i].variation_id)
-                flag = 1;
-        }
-        for (let item in this.variations) {
-            if (this.variations[item].id == obj.variation_id) {
-                this.product.in_stock = this.variations[item].in_stock;
-                this.product.price = this.variations[item].price;
-                if(flag == 0){
-                    obj.price = this.variations[item].price;
-                    obj.name = this.variations[item].attributes[0].option;
-                    this.totalOptionPrice += parseInt(obj.price);
+                if(!flag){
+                    var obj = this.clayfulProduct.variants[i];
+                    obj.quantity = 1;
                     this.selectOptionProduct.push(obj);
                 }
+                break;
             }
         }
-        console.log(this.selectOptionProduct);
-        if(this.product.attributes.length < 2)
-            this.options[0] = [];
-        else{
-            console.log(this.options);
-            if(this.product.attributes.length == this.options.length){
-                this.isNecessary = true;
-            }
-        }
+        this.options[0] = [];
+        this.calculateTotal();
     }
 
     deleteOptionQuantity(id){
         for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
-            if(this.selectOptionProduct[i].variation_id == id){
+            if(this.selectOptionProduct[i]._id == id){
                 if(this.selectOptionProduct[i].quantity == 1)
                     this.selectOptionProduct[i].quantity = 1;
                 else{
@@ -322,7 +270,7 @@ export class ShoppingProductPage {
     }
     addOptionQuantity(id){
         for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
-            if(this.selectOptionProduct[i].variation_id == id){
+            if(this.selectOptionProduct[i]._id == id){
                 this.selectOptionProduct[i].quantity = parseInt(this.selectOptionProduct[i].quantity) + 1;
                 this.calculateTotal();
             }
@@ -332,7 +280,7 @@ export class ShoppingProductPage {
     calculateTotal(){
         this.totalOptionPrice = 0;
         for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
-            this.totalOptionPrice += parseInt(this.selectOptionProduct[i].price) * parseInt(this.selectOptionProduct[i].quantity);
+            this.totalOptionPrice += parseInt(this.selectOptionProduct[i].price.sale.raw) * parseInt(this.selectOptionProduct[i].quantity);
         } 
     }
 
@@ -371,7 +319,7 @@ export class ShoppingProductPage {
         pager: true
     }
     getReviews() {
-        this.cmsService.getReviews(1 ,this.id).subscribe((results) =>this.handleReviewList(results));
+        this.cmsService.getReviews(1 , this.clayfulProduct._id ).subscribe((results) =>this.handleReviewList(results));
     }
 
     handleReviewList(results){
