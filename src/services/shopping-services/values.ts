@@ -51,6 +51,9 @@ export class Values {
   clayful_id: any = "";
   clayful_data : any = {};
   clayful_reg : boolean = false;
+  clayful_cart : any = [];
+  clayful_checkout : any;
+  miztalk_url : any = "http://localhost:8100/";
 
   constructor() {
   	this.filter = {};

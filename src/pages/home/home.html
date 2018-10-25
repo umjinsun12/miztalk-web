@@ -27,7 +27,46 @@
 
 
 <ion-content>
-    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <div>
+            <ion-row class="category-listing">
+                    <ion-row>
+                        <ion-chip>
+                                <ion-label>부부공감</ion-label>
+                        </ion-chip>
+                        <ion-chip>
+                                <ion-label>트렌드</ion-label>
+                        </ion-chip>
+                        <ion-chip>
+                                <ion-label>A vs B</ion-label>
+                        </ion-chip>
+                    
+                        <ion-chip>
+                                <ion-label>육아생활</ion-label>
+                        </ion-chip>
+                        <ion-chip>
+                                <ion-label>제품리뷰</ion-label>
+                        </ion-chip>
+                    </ion-row>
+                    <ion-row>
+                        <ion-chip>
+                                <ion-label>인기상품</ion-label>
+                        </ion-chip>
+                        <ion-chip>
+                                <ion-label>19금이야기</ion-label>
+                        </ion-chip>
+                        <ion-chip>
+                                <ion-label>여행</ion-label>
+                        </ion-chip>
+                        <ion-chip>
+                                <ion-label>레시피</ion-label>
+                        </ion-chip>
+                        <ion-chip>
+                                <ion-label>다이어트</ion-label>
+                        </ion-chip>
+                    </ion-row>
+            </ion-row>
+        </div>
+    <!--<ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <div *ngIf="values?.maincard && values.maincard.length" class="home-banners">
@@ -99,10 +138,10 @@
                 <small class="category-name">{{item.categoryName}}</small>
               </li>
             </ul>-->
-          </ion-item>
+          <!--</ion-item>
       </ion-list>
 
         <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="morePagesAvailable">
             <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 카드뉴스를 로딩 중입니다."> </ion-infinite-scroll-content>
-        </ion-infinite-scroll>
+        </ion-infinite-scroll>-->
 </ion-content>

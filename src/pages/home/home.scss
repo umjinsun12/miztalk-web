@@ -69,6 +69,34 @@ ion-buttons{
 
 
 .category-listing{
+    .label-md{
+        padding: 0px;
+    }
+    .label-ios{
+        padding: 0px;
+    }
+
+    ion-row{
+        width: 100%;
+        padding : 2px;
+        .chip{
+            border-radius: 16px;
+            height: 32px;
+            font-size: 11px;
+            line-height: 32px;
+            color: red;
+            background: transparent;
+            border: 1px solid red;
+            margin: 2px 0;
+            width: 20%;
+            .label-ios{
+                padding: 0px;
+                margin:0px;
+            }
+        }
+    }
+    
+
     background-color: white;
     text-align: center;
     border-top: 1px solid #dcdddd;

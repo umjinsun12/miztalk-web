@@ -5,7 +5,6 @@ import { Component, ViewChild } from '@angular/core';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { md5 } from './md5';
 import { NavController, NavParams, FabContainer, LoadingController, PopoverController, ViewController, ToastController} from 'ionic-angular';
-import { ShoppingCartPage } from '../shopping-cart/shopping-cart';
 import { ModalController } from 'ionic-angular';
 import { Slides } from 'ionic-angular';
 import { PopoverPage} from '../about-popover/about-popover'
@@ -16,10 +15,7 @@ import { CmsService } from '../../services/cms-service.service';
 import * as moment from 'moment';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { ClayfulService } from './../../services/shopping-services/clayful-service';
-//import { Caimport { ModalController } from 'ionic-angular';rtPage } from '../cart/cart';
-
-
-
+import { ShoppingCartPage } from './../shopping-cart/shopping-cart';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Config } from '../../services/shopping-services/config';
 import { stringify } from '@angular/compiler/src/util';
@@ -161,21 +157,26 @@ export class ShoppingProductPage {
     }
     addCart(id) {
         if(this.showOption == true){
-            if (this.product.type == 'variable' && this.options.length == 0) {
+            if (this.selectOptionProduct.length == 0) {
                 this.functions.showAlert('에러', '옵션을 선택하세요')
-            } 
-            else if(!this.isNecessary && this.product.attributes.length >= 2){
-                this.functions.showAlert('에러', '필수 옵션을 모두 선택하세요')
             }
             else{
-                var cnt = 0;
-                for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
-                    this.service.addToCart(this.selectOptionProduct[i]).then((results) => {
-                        cnt += 1;
-                        this.functions.showAlert('알림','상품이 추가되었습니다.');
-                        if(cnt == this.selectOptionProduct.length)
-                            this.disableAddButton = false;
-                    });
+                if(this.values.isLoggedIn){
+                    for(let product of this.selectOptionProduct){
+                        this.clayfulService.addCartLogin(this.clayfulProduct._id, product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id)
+                        .then(result => {
+                            console.log(result);
+                            this.functions.showAlert('알림','상품이 장바구니에 추가되었습니다.');
+                        });
+                        this.values.count +=1;
+                    }
+                }else{
+                    this.functions.showAlert('알림', '현재는 비회원에게 지원하지 않는 기능입니다.');
+                    // for(let product of this.selectOptionProduct){
+                    //     this.clayfulService.addCartNonLogin(this.clayfulProduct._id,product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id);
+                    //     this.values.count +=1;
+                    // }
+                    // this.functions.showAlert('알림', '상품이 장바구니에 추가되었습니다.');
                 }
             }
         }
@@ -184,21 +185,28 @@ export class ShoppingProductPage {
         }
     }
 
+
     buyNow(id) {
         if(this.showOption == true){
             if (this.selectOptionProduct.length == 0) {
                 this.functions.showAlert('에러', '옵션을 선택하세요')
-            } 
+            }
             else {
-                /*var cnt = 0;
-                for(var i= 0 ; i < this.selectOptionProduct.length ; i++){
-                    this.service.addToCart(this.selectOptionProduct[i]).then((results) => {
-                        cnt += 1;
-                        if(cnt == this.selectOptionProduct.length)
-                            this.updateBuynowResults(cnt);
-                    })
-                }*/
-                
+                if(this.values.isLoggedIn){
+                    for(let product of this.selectOptionProduct){
+                        this.clayfulService.addCartLogin(this.clayfulProduct._id, product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id)
+                        .then(result => {
+                            this.nav.push(ShoppingCartPage);
+                        });
+                        this.values.count +=1;
+                    }
+                }else{
+                    this.functions.showAlert('알림', '현재는 비회원에게 지원하지 않는 기능입니다.');
+                    // for(let product of this.selectOptionProduct){
+                    //     this.clayfulService.addCartNonLogin(this.clayfulProduct._id,product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id);
+                    //     this.values.count += 1;
+                    // }
+                }
             }
         }
         else{

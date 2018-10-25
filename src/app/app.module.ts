@@ -93,6 +93,8 @@ import { CommunityNoticePage } from '../pages/community-notice/community-notice'
 import { Angular2SocialLoginModule } from "angular2-social-login";
 
 
+
+
 @NgModule({
   declarations: [
     PopoverPage,

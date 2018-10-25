@@ -1,3 +1,4 @@
+import { OrderSummary } from './../checkout/order-summary/order-summary';
 import { AccountRegister } from './../account/register/register';
 import { ClayfulService } from './../../services/shopping-services/clayful-service';
 import { Functions } from '../../services/shopping-services/functions';
@@ -67,6 +68,8 @@ export class HomePage {
 
   private urlParameters: Array<any> = [];
 
+  orderId:any;
+
 
   @ViewChild(Nav) nav: Nav;
 
@@ -85,6 +88,7 @@ export class HomePage {
     public market : Market,
     public alertCtrl: AlertController,
     public clayfulService : ClayfulService) {
+      this.orderId = null;
       this.service.presentLoading('로딩중입니다.');
       this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
   }
@@ -110,49 +114,79 @@ export class HomePage {
         if (singleURLParam[0] == "customer"){
           this.values.clayful_id = singleURLParam[1];
         }
+        if (singleURLParam[0] == "order"){
+          this.orderId = singleURLParam[1];
+        }
+        
         let urlParameter = {
         'name': singleURLParam[0],
         'value': singleURLParam[1]
       };
       this.urlParameters.push(urlParameter);
       }
-      this.storage.set('token', this.values.clayful_token);
-      this.storage.set('customer', this.values.clayful_id);
-      this.clayfulService.memberLogin(this.values.clayful_id, this.values.clayful_token).subscribe(result => {
-        if(result.status == "error"){
-          this.functions.showAlert("에러", "로그인에 실패하였습니다. 다시 로그인 해주세요.");
-        }else{
-          if(result.msg.phone != null){
-            this.values.isLoggedIn = true;
-            this.functions.showAlert("성공", "로그인 되었습니다.");
+      if(this.orderId == null){
+        this.storage.set('token', this.values.clayful_token);
+        this.storage.set('customer', this.values.clayful_id);
+        this.clayfulService.memberLogin(this.values.clayful_id, this.values.clayful_token).subscribe(result => {
+          if(result.status == "error"){
+            this.functions.showAlert("에러", "로그인에 실패하였습니다. 다시 로그인 해주세요.");
           }else{
-            this.navCtrl.push(AccountRegister);
-          }
-        }
-      })
-    }else{
-        this.storage.get('customer').then(cs_value => {
-          if(cs_value != null){
-              this.values.clayful_id = cs_value;
-              this.storage.get('token').then(token_value => {
-                  this.values.clayful_token = token_value;
-                  this.clayfulService.memberChk(this.values.clayful_id, this.values.clayful_token).then(result => {
-                      this.values.isLoggedIn = true;
-                      this.values.clayful_data = result;
-                      this.values.customerName = this.values.clayful_data.name;
-                      if(this.values.clayful_data.point == null)
-                        this.values.point = 0;
-                      else
-                        this.values.point = this.values.clayful_data.point;
-                  }).catch(error => {
-                      console.log(error);
-                      this.values.isLoggedIn = false;
-                  });
+            if(result.msg.phone != null){
+              this.values.isLoggedIn = true;
+              this.functions.showAlert("성공", "로그인 되었습니다.");
+              this.clayfulService.memberChk(this.values.clayful_id, this.values.clayful_token).then(result => {
+                this.values.clayful_data = result;
+                  this.values.customerName = this.values.clayful_data.name;
+                  if(this.values.clayful_data.point == null)
+                    this.values.point = 0;
+                  else
+                    this.values.point = this.values.clayful_data.point;
+              }).catch(err => {
+                this.values.point = 0;
               });
+            }else{
+              this.navCtrl.push(AccountRegister);
+            }
           }
-        });
+        })
+      }else{
+        this.getCustomerToken();
+      }
+    }else{
+        this.getCustomerToken();
     }
     window.history.pushState('','','/');
+  }
+
+  getCustomerToken(){
+    this.storage.get('customer').then(cs_value => {
+      if(cs_value != null){
+          this.values.clayful_id = cs_value;
+          this.storage.get('token').then(token_value => {
+              this.values.clayful_token = token_value;
+              this.clayfulService.memberChk(this.values.clayful_id, this.values.clayful_token).then(result => {
+                  this.values.isLoggedIn = true;
+                  this.values.clayful_data = result;
+                  this.values.customerName = this.values.clayful_data.name;
+                  if(this.values.clayful_data.point == null)
+                    this.values.point = 0;
+                  else
+                    this.values.point = this.values.clayful_data.point;
+                  if(this.orderId != null){
+                    if(this.orderId == "err"){
+                      this.functions.showAlert("에러", "주문에 실패하였습니다. 다시 주문해주세요.");
+                    }else{
+                      this.navCtrl.push(OrderSummary, this.orderId);
+                      this.orderId = null;
+                    }
+                  }
+              }).catch(error => {
+                  console.log(error);
+                  this.values.isLoggedIn = false;
+              });
+          });
+      }
+    });
   }
 
   ionViewWillLeave() {

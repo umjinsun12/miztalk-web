@@ -5,7 +5,7 @@ import { Functions } from '../../services/shopping-services/functions';
 import { Values } from '../../services/shopping-services/values';
 import { CategoryService } from '../../services/shopping-services/category-service';
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, PopoverController, ViewController, IonicPage, Platform, AlertController } from 'ionic-angular';
+import { NavController, NavParams, PopoverController, ViewController, IonicPage, Platform, AlertController} from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { Content } from 'ionic-angular';
 import { Service} from '../../services/shopping-services/service'
@@ -285,6 +285,11 @@ export class ShoppingPage {
             this.service.addToCart(obj).then((results) => this.updateCart(results));
         }
     }
+
+    scrollToTop() {
+        this.contentHandle.scrollToTop();
+      }
+
     updateCart(result) {
         console.log(result);
     }

@@ -67,14 +67,16 @@
               <ion-refresher-content></ion-refresher-content>
             </ion-refresher>
 
-
+            
+            <ion-fab right bottom>
+                    <button (click)="scrollToTop()" class="topicon" ion-fab mini><img src="assets/img/top-arrow-icon.png" class="Top_arrow_Icon" floating/></button>
+            </ion-fab>
 
           <div *ngIf="clayfulProducts" class="products-listing">
             <div *ngIf="!clayfulProducts.length && !loading" class="no-products">
                 <h2>상품이 없습니다.</h2>
             </div>
-            <div *ngIf="clayfulProducts.length && !loading">
-                
+            <div *ngIf="clayfulProducts.length && !loading">  
                 <div *ngIf="!values.listview">
                     <div class="grid">
                         <ion-row class="row unlimited-items">

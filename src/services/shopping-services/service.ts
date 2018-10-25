@@ -117,10 +117,6 @@ export class Service {
                         });
 
                     console.log(this.config);
-                    this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mshop-point-ex-get_mypoint', this.config.options).map(res => res.json())
-                        .subscribe(data => {
-                           this.values.point = data.free_point;
-                        });
 
                 this.http.get(this.config.WORDPRESS_REST_API_URL + '/posts/1746', this.config.options).map(res=> res.json())
                         .subscribe(data => {

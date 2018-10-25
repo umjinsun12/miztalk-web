@@ -17,34 +17,26 @@
         </div>
         <div *ngIf="orderSummary" class="summary">
             <ion-item no-lines>
-                <h2>주문번호 : {{orderSummary.number}} </h2>
-                <h2>주문날짜 : {{orderSummary.date_created | date:'medium'}} </h2>
-                <h2>합계  : {{(1*orderSummary.total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원 </h2>
-                <h2>결제방법  : {{orderSummary.payment_method_title}} </h2>
+                <h2>주문날짜 : {{orderSummary.createdAt.formatted}} </h2>
+                <h2>합계  : {{1*orderSummary.total.price.sale.raw | number:'1.0-0'}} 원 </h2>
+                <div *ngFor="let transtion of orderSummary.transactions">
+                    <h2 *ngIf="transtion.vbanks?.length">가상입금계좌은행  : {{transtion.vbanks[0].name}}</h2>
+                    <h2 *ngIf="transtion.vbanks?.length">입금계좌 : {{transtion.vbanks[0].number}} </h2>
+                    <h2 *ngIf="transtion.vbanks?.length">예금주 : {{transtion.vbanks[0].holder}} </h2>
+                </div>
             </ion-item>
         </div>
         <div class="order-details">
             <ion-item no-lines>
-                <ion-label class="side-header">주문 상세</ion-label>
+                <ion-label class="side-header">주문 삼품</ion-label>
             </ion-item>
-            <div *ngFor="let item of orderSummary.line_items | keys">
+            <div *ngFor="let item of orderSummary.items">
                 <ion-row>
                     <ion-col width-75>
-                        <ion-label no-margin>{{item.value.name}} - ({{item.value.quantity}}) </ion-label>
-                    </ion-col>
-                    <ion-col width-25 text-right>
-                        <ion-label no-margin>{{(1*item.value.subtotal | currency:values.currency:false:'1.0-0').replace('USD','')}} 원 </ion-label>
+                        <ion-label no-margin>{{item.product.name}} - {{item.quantity.raw}}개</ion-label>
                     </ion-col>
                 </ion-row>
             </div>
-            <ion-row>
-                <ion-col width-75>
-                    <ion-label no-margin>배송비  </ion-label>
-                </ion-col>
-                <ion-col width-25 text-right>
-                    <ion-label no-margin>{{(1*orderSummary.shipping_total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원 </ion-label>
-                </ion-col>
-            </ion-row>
             <!--<ion-row *ngIf="!orderSummary.shipping_tax == 0">
                 <ion-col width-75>
                     <ion-label no-margin>Shipping  Tax  </ion-label>
@@ -66,7 +58,7 @@
                     <ion-label class="side-header">총합 </ion-label>
                 </ion-col>
                 <ion-col width-25 text-right>
-                    <ion-label> <b>{{(1*orderSummary.total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원
+                    <ion-label> <b>합계  : {{1*orderSummary.total.price.sale.raw | number:'1.0-0'}} 원
               </b> </ion-label>
                 </ion-col>
             </ion-row>

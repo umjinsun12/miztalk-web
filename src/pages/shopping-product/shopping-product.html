@@ -41,6 +41,7 @@
     <ion-spinner *ngIf="!clayfulProduct" name="crescent"> </ion-spinner>
     
     <div *ngIf="showOverview">
+            
         <div *ngIf="clayfulProduct" class="product-details">
             <div *ngIf="clayfulProduct.thumbnail.url">
                 <img class="product-img" src="{{clayfulProduct.thumbnail.url}}" (click)="zoomPhoto(clayfulProduct.thumbnail.url)">

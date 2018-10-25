@@ -1,3 +1,5 @@
+import { BillingAddressForm } from './../checkout/billing-address-form/billing-address-form';
+import { ClayfulService } from './../../services/shopping-services/clayful-service';
 import { Functions } from '../../services/shopping-services/functions';
 import { Values } from '../../services/shopping-services/values';
 import { CartService } from '../../services/shopping-services/cart-service';
@@ -5,7 +7,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController, ToastController, AlertController } from 'ionic-angular';
 import { ShoppingProductPage } from '../shopping-product/shopping-product';
 import { ShoppingPage } from '../shopping/shopping';
-import { BillingAddressForm } from '../../pages/checkout/billing-address-form/billing-address-form';
+
 
 
 /**
@@ -20,7 +22,7 @@ import { BillingAddressForm } from '../../pages/checkout/billing-address-form/bi
 })
 export class ShoppingCartPage {
 
-    cart: any;
+    cart: any = {};
     status: any;
     obj: any;
     quantity: number;
@@ -41,7 +43,7 @@ export class ShoppingCartPage {
     tabBarElement: any;
     allpointchk: boolean = false;
 
-    constructor(public alertCtrl: AlertController,public viewCtrl: ViewController, public nav: NavController, public service: CartService, public values: Values, public params: NavParams, public functions: Functions, private toastCtrl: ToastController) {
+    constructor(public alertCtrl: AlertController,public viewCtrl: ViewController, public nav: NavController, public service: CartService, public values: Values, public params: NavParams, public functions: Functions, private toastCtrl: ToastController, public clayfulService: ClayfulService) {
         this.Apply = "적용";
         this.Checkout = "Checkout";
         this.quantity = 1;
@@ -50,27 +52,38 @@ export class ShoppingCartPage {
         this.tabBarElement = document.querySelector(".tabbar")['style'];
         this.options = [];
         this.obj = params.data;
-        this.service.loadCart()
-            .then((results) => this.handleCartInit(results));
+        this.cart = {
+            items : []
+        }
+        if(this.values.isLoggedIn){
+            this.clayfulService.getCartLogin().then(result => this.handleCartInit(result));
+        }else{
+            this.values.count = this.values.clayful_cart.length;
+            console.log(this.values.clayful_cart);
+            this.cart.items = this.values.clayful_cart;
+        }
     }
     handleCartInit(results) {
-        console.log(results);
         this.cart = results;
-        this.shipping = results.zone_shipping;
-        this.chosen_shipping = results.chosen_shipping;
-        this.coupon = 0;
+        this.values.count = this.cart.items.length;
+        console.log(this.cart);
     }
     handleCart(results) {
         this.cart = results;
+        console.log(this.cart);
     }
-    delete(key) {
-        console.log(key);
-        this.service.deleteItem(key).then((results) => this.handleCart(results));
+    delete(id) {
+        this.clayfulService.deleteCartItemLogin(id).then(result => {
+            this.clayfulService.getCartLogin().then(result => this.handleCart(result));
+        });
     }
     checkout() {
         this.disableSubmit = true;
         this.Checkout = "Please Wait";
 
+        this.values.clayful_checkout = this.cart;
+        console.log("cart 체크아웃 직전");
+        console.log(this.values.clayful_checkout);
 
         if(this.values.isLoggedIn == false){
             let alert = this.alertCtrl.create({
@@ -88,7 +101,7 @@ export class ShoppingCartPage {
                   {
                     text: '확인',
                     handler: () => {
-                        this.service.checkout().then((results) => this.handleBilling(results));
+                        this.nav.push(BillingAddressForm);
                     }
                   }
                 ]
@@ -98,20 +111,21 @@ export class ShoppingCartPage {
             });
         }
         else{
-            this.service.checkout().then((results) => this.handleBilling(results));
+            this.nav.push(BillingAddressForm);   
         }
-    }
-    handleBilling(results) {
-        this.disableSubmit = false;
-        this.Checkout = "구매";
-        if(this.disableSubmitCoupon)
-            results.point = this.cart.coupon;
-        this.nav.push(BillingAddressForm, results);
     }
 
     cartClear(){
-      for(let key in this.cart.cart_contents){
-        this.delete(key);
+      var cnt = 0;
+      for(var i=0 ; i < this.cart.items.length ; i++){
+          this.clayfulService.deleteCartItemLogin(this.cart.items[i]._id).then(result => {
+            cnt++;
+            if(cnt >= this.cart.items.length){
+                this.cart = {
+                    items : []
+                };
+            }
+        });
       }
     }
     

@@ -1,3 +1,4 @@
+import { ClayfulService } from './../../../services/shopping-services/clayful-service';
 import { Component, ViewChild, ElementRef} from '@angular/core';
 import { Values } from '../../../services/shopping-services/values';
 import { Functions } from '../../../services/shopping-services/functions';
@@ -14,6 +15,10 @@ import { IamportService } from 'iamport-ionic-inicis3';
 import {TabsPage} from '../../tabs/tabs';
 import {CmsService} from "../../../services/cms-service.service";
 import {TermsPage} from "../../account/terms/terms";
+
+declare var IMP;
+
+
 
 
 /**
@@ -65,6 +70,10 @@ export class BillingAddressForm {
   tabBarElement: any;
   payloading:any;
 
+  pointVerify: boolean = false;
+
+  cart:any;
+
   addrForm: FormGroup = this.builder.group({
     zip: ['', [Validators.required]],
     addr: ['', [Validators.required]],
@@ -85,10 +94,8 @@ export class BillingAddressForm {
       private builder: FormBuilder,
       public iamport: IamportService,
       public loadingCtrl: LoadingController,
-      public cmsService : CmsService) {
-
-
-
+      public cmsService : CmsService,
+      public clayfulService : ClayfulService) {
 
       this.PlaceOrder = "Place Order";
       this.buttonText1 = "Apply";
@@ -101,13 +108,12 @@ export class BillingAddressForm {
       if(document.querySelector(".tabbar"))
       this.tabBarElement = document.querySelector(".tabbar")['style'];
       this.billing.save_in_address_book = true;
-      this.getRegion(this.form.billing_country);
-      this.getRegion(this.form.shipping_country);
       this.form.shipping = true;
       this.shipping = {};
       this.shipping.save_in_address_book = true;
-
-
+      this.cart = this.values.clayful_checkout;
+      console.log("checkout cart");
+      console.log(this.cart);
 
       if(this.values.isLoggedIn){
           if(this.form.billing_country == "" || this.form.billing_country == undefined || this.form.billing_state =="" || this.form.billing_state == undefined || this.form.billing_postcode == "" || this.form.billing_postcode == undefined){
@@ -136,29 +142,7 @@ export class BillingAddressForm {
       this.form.shipping_state = this.form.billing_state;
       this.form.shipping_postcode = this.form.billing_postcode;
   }
-  getRegion(countryId) {
-      //this.form.billing_state = "";
-      this.states = this.form.state[countryId];
-      this.service.updateOrderReview(this.form).then((results) => this.handleOrderReviews(results));
-  }
-  handleOrderReviews(results) {
-      console.log(results);
-      this.OrderReview = results;
-      this.chosen_shipping = this.OrderReview.chosen_shipping;
 
-      console.log(this.form.payment);
-      if(this.OrderReview.totals.total == 0){
-        this.form.payment = {
-          'cod' : this.form.payment['cod']
-        };
-      }else{
-        this.form.payment = {
-          'bacs' : this.form.payment['bacs'],
-          'iamport_card' : this.form.payment['iamport_card'],
-          'iamport_trans' : this.form.payment['iamport_trans']
-        };
-      }
-  }
   checkout() {
       if (this.validateAddress()) {
           this.buttonSubmit = true;
@@ -175,82 +159,111 @@ export class BillingAddressForm {
               this.form.shipping_state = this.form.billing_state;
               this.form.shipping_postcode = this.form.billing_postcode;
           }
-          if (this.form.payment_method == 'bacs' || this.form.payment_method == 'cheque') {
-              this.payloading = this.loadingCtrl.create();
-              this.payloading.present();
-              this.service.checkout(this.form).then((results) => this.handleBilling(results));
-          }
-          else if(this.form.payment_method == 'cod'){
-              this.payloading = this.loadingCtrl.create();
-              this.payloading.present();
-              this.service.checkout(this.form).then((results) => this.handlePoint(results));
-          }
-          else if (this.form.payment_method == 'stripe') {
-              this.service.getStripeToken(this.form).then((results) => this.handleStripeToken(results));
-          } else {
-              console.log('paymethod');
-              this.payloading = this.loadingCtrl.create();
-              this.payloading.present();
-              this.service.checkout(this.form).then((results) => this.handlePayment(results));
-          }
+
+          //주문자 성함 this.form.billing_last_name
+          //주문자 번호 this.form.billing_first_name
+          //수령자 성함 this.form.shipping_last_name
+          //수령자 번호 this.form.shipping_fitst_name
+          //우편 번호 this.form.billing_postcode
+          //주소 this.form.billing_address_1
+          //상세주소 this.form.billing_address_2
+          //배송시 요청사항 this.form.billing_company
+        //결제 방법 this.form.payment_method
+        //포인트 this.form.user_point
+            this.payloading = this.loadingCtrl.create();
+            this.payloading.present();
+
+            console.log(this.form.payment_method);
+            if(this.values.isLoggedIn){
+                var payload = {
+                    currency: "KRW",
+                    paymentMethod: 'clayful-iamport',
+                    address: {
+                        shipping: {
+                            name : {
+                                full : this.form.shipping_last_name
+                            },
+                            country : "KR",
+                            city: this.form.billing_address_1,
+                            state: this.form.billing_address_1,
+                            postcode : this.form.billing_postcode,
+                            address1 : this.form.billing_address_1,
+                            address2 : this.form.billing_address_2,
+                            mobile : this.form.shipping_fitst_name
+                        },
+                        billing: {
+                            name: {
+                                full : this.form.billing_last_name
+                            },
+                            country : "KR",
+                            city: this.form.billing_address_1,
+                            state: this.form.billing_address_1,
+                            postcode : this.form.billing_postcode,
+                            address1 : this.form.billing_address_1,
+                            address2 : this.form.billing_address_2,
+                            mobile : this.form.billing_first_name
+                        }
+                    },
+                    request : this.form.billing_company
+                }
+
+                var productList = [];
+                for(var i=0 ; i < this.cart.items.length ; i++){
+                    productList.push({
+                        id : this.cart.items[i]._id,
+                        price : this.cart.items[i].price.sale.raw
+                    });
+                }
+                var userPoint = 1000;
+                this.clayfulService.checkoutOrderLogin(payload, productList, userPoint)
+                .then(result => this.handlePayment(result))
+                .catch(err => {
+                    if(err.msg == "none_point")
+                        this.functions.showAlert("에러", "포인트가 부족합니다.");
+                    else if(err.msg == "none_user")
+                        this.functions.showAlert("에러", "회원이 아닙니다.");
+                    else
+                        this.functions.showAlert("에러", "주문을 다시 진행해주세요.");
+                    this.payloading.dismiss();
+                    this.buttonSubmit = false;
+                });
+            }
+            else{
+                this.functions.showAlert("에러", "로그인");
+            }
       }
 
   }
-  handlePayment(results) {
-      if (results.result == 'success') {
-          let mdata = {
-              imp_uid : results.iamport.user_code,
-              merchant_uid : results.iamport.merchant_uid,
-              order_id : results.order_id
-          };
+  handlePayment(result) {
+      this.cart.items;
+    var product_name = null;
+    if(this.cart.items.length >= 2){
+        product_name = this.cart.items[0].product.name + ' 외 ' + String(parseInt(this.cart.items.length) - 1) + '개';
+    }else{
+        product_name = this.cart.items[0].product.name;
+    }
 
-          const param = {
-            pay_method : this.form.payment_method.split('_')[1],
-            merchant_uid : results.iamport.merchant_uid,
-            name : results.iamport.name,
-            amount : results.iamport.amount,
-            buyer_email : results.iamport.buyer_email,
-            buyer_name : results.iamport.buyer_name,
-            buyer_tel : results.iamport.buyer_tel,
-            buyer_addr : results.iamport.buyer_addr,
-            buyer_postcode : results.iamport.buyer_postcode,
-            app_scheme : 'ionicinicis3'
-          };
-          
-          // 아임포트 관리자 페이지 가입 후 발급된 가맹점 식별코드를 사용
-          this.iamport.payment("imp78559751", param )
-            .then((response)=> {
-              console.log(response);
-              if ( response.isSuccess() ) {
-                 this.payloading.dismiss();
-                  mdata.imp_uid = response.getResponse()['imp_uid'];
-                  console.log(mdata);
-                  this.service.checkPaymentResponse(mdata).then((payresults) => {
-                    console.log(payresults);
-                    var str = results.redirect;
-                    var pos1 = str.lastIndexOf("order-received/");
-                    var pos2 = str.lastIndexOf("?key=wc_order");
-                    var pos3 = pos2 - (pos1 + 15);
-                    var order_id = str.substr(pos1 + 15, pos3);
-                    this.nav.push(OrderSummary, order_id).then(()=>{
-                        const index = this.nav.getActive().index;
-                        this.nav.remove(1, index-1); 
-                    });
-                  });
-              }else{
-                  this.payloading.dismiss();
-                  this.functions.showAlert("실패", "주문이 실패하였습니다. 다시 시도해 주세요.")
-              }
-            })
-            .catch((err)=> {
-              this.payloading.dismiss();
-              alert(err)
-          });
-      }
-      else if (results.result == 'failure') {
-          this.functions.showAlert("STATUS", results.messages);
-          this.buttonSubmit = false;
-      }
+    const param = {
+        pg : 'html5_inicis',
+        pay_method : this.form.payment_method,
+        merchant_uid : result._id,
+        name : product_name,
+        amount : result.total.amount,
+        buyer_email : result.customer.email,
+        buyer_name : result.customer.name.full,
+        buyer_tel : result.customer.mobile,
+        buyer_addr : this.form.billing_address_1,
+        buyer_postcode : this.form.billing_postcode,
+        m_redirect_url : this.values.miztalk_url + "?order=" + result._id
+      };
+
+      IMP.request_pay(param, function(rsp){
+        if ( rsp.success ) {
+            window.open(this.values.miztalk_url + "?order=" + result._id);
+        } else {
+            window.open(this.values.miztalk_url + "?order=err");
+        }
+      });
   }
   checkoutStripe() {
       this.buttonSubmit = true;
@@ -339,15 +352,9 @@ export class BillingAddressForm {
           this.enableShippingMethods = true;
           this.enablePaymentMethods = true;
           this.fillShippingForm();
-          this.service.updateOrderReview(this.form).then((results) => this.handleOrderReviews(results));
       } else {
           this.functions.showAlert("Error", 'Login unsuccessful. try again');
       }
-  }
-  changePayment() {
-      this.form.payment_instructions = this.form.payment[this.form.payment_method].description;
-      this.buttonSubmit = false;
-      this.buttonText = "Continue to " + this.form.payment[this.form.payment_method].method_title;
   }
   terms() {
       //this.nav.push(TermsCondition, this.form.terms_content);
@@ -364,17 +371,6 @@ export class BillingAddressForm {
       }
   }
 
-  updateShipping(method) {
-      this.form.shipping_method = method;
-      this.chosen_shipping = method;
-      this.service.updateShipping(method).then((results) => this.handleShipping(results));
-  }
-  handleShipping(results) {
-      this.service.updateOrderReview(this.form).then((results) => this.handleOrderReviews(results));
-  }
-  updateOrderReview() {
-      this.service.updateOrderReview(this.form).then((results) => this.handleOrderReviews(results));
-  }
   showPassword() {
       this.showPasswordEnable = true;
   }
@@ -523,6 +519,26 @@ export class BillingAddressForm {
             })
         }
     });
+  }
+
+  pointInsert(){
+      if(this.form.user_point==0 || this.form.user_point== undefined){
+          this.functions.showAlert("알림", "포인트를 입력해주세요");
+      }
+      else if(this.form.user_point > this.values.point){
+          this.functions.showAlert("알림", "이용가능 포인트가 부족합니다.");
+      }
+      else if(this.form.user_point % 100 > 0){
+          this.functions.showAlert("알림","포인트는 100원 단위로 입력만 가능합니다. 다시한번 적용 버튼을 눌러주세요.");
+          this.form.user_point = this.form.user_point - this.form.user_point % 100;
+      }else{
+          this.functions.showAlert("알림", "포인트가 적용되었습니다.")
+          this.pointVerify = true;
+      }
+  }
+  pointCancle(){
+    this.form.user_point = 0;
+    this.pointVerify = false;
   }
 
   onChangeTime(){

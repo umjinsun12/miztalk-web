@@ -16,15 +16,15 @@
                     <ion-label color="side-heading-color">상품정보</ion-label>
                 </ion-item>
 
-                <div *ngIf="OrderReview?.cart && enableShippingMethods">
+                <div *ngIf="cart?.items">
                     <div class="cart-items">
-                        <div class="cart-list" *ngFor="let item of OrderReview.cart.cart_contents | keys">
+                        <div class="cart-list" *ngFor="let item of cart.items">
                                 <ion-item no-lines>
-                                    <ion-thumbnail item-left> <img src="{{item.value.thumb}}"> </ion-thumbnail>
-                                    <h2 wrap-text class="item-name" style="position: absolute;top: 5px;max-width: 50%;font-weight:600">{{item.value.name}}</h2>
-                                    <h3 wrap-text style="position: absolute;right:15px;bottom: 20px;font-size:14px;font-weight:600"><span style="font-size: 14px">{{(1*item.value.line_subtotal | currency:values.currency:false:'1.0-0').replace('USD','')}}원</span></h3>
+                                    <ion-thumbnail item-left> <img src="{{item.product.thumbnail.url}}"> </ion-thumbnail>
+                                    <h2 wrap-text class="item-name" style="position: absolute;top: 5px;max-width: 50%;font-weight:600">{{item.product.name}} - {{item.variant.types[0].variation.value}}</h2>
+                                    <h3 wrap-text style="position: absolute;right:15px;bottom: 20px;font-size:14px;font-weight:600"><span style="font-size: 14px">{{1*item.total.price.sale.raw | number:'1.0-0'}}원</span></h3>
                                     <div class="add-remove-button">
-                                    <button ion-button item-right color="button-color" clear style="border: 0; margin: 0 5px;background: #f2f2f2;color: #000;">수량 : {{item.value.quantity}}
+                                    <button ion-button item-right color="button-color" clear style="border: 0; margin: 0 5px;background: #f2f2f2;color: #000;">수량 : {{item.quantity.raw}}
                                     </button> 
                                     </div> 
                                 </ion-item>
@@ -36,32 +36,32 @@
                                 <ion-label no-margin>상품 합계</ion-label>
                             </ion-col>
                             <ion-col col-4 text-right>
-                                <ion-label no-margin>{{(1*OrderReview.totals.subtotal  | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-label>
+                                <ion-label no-margin>{{1*cart.total.price.sale.raw | number:'1.0-0'}} 원</ion-label>
                             </ion-col>
                         </ion-row>
-                        <ion-row *ngIf="OrderReview.totals.shipping_total != 0">
+                        <ion-row>
                             <ion-col col-8 class="col1">
                                 <ion-label>배송비 </ion-label>
                             </ion-col>
                             <ion-col col-4 text-right>
-                                <ion-label>{{(1*OrderReview.totals.shipping_total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-label>
+                                <ion-label>{{1*cart.total.shipping.fee.sale.raw | number:'1.0-0'}} 원</ion-label>
                             </ion-col>
                         </ion-row>
-                        <ion-row *ngIf="OrderReview.totals.fee_total != 0">
+                        <!--<ion-row *ngIf="OrderReview.totals.fee_total != 0">
                                 <ion-col col-8 class="col1">
                                     <ion-label>포인트 사용 </ion-label>
                                 </ion-col>
                                 <ion-col col-4 text-right>
                                     <ion-label>{{(1*OrderReview.totals.fee_total | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</ion-label>
                                 </ion-col>
-                            </ion-row>
+                            </ion-row>-->
                         <ion-row class="grand-total">
                             <ion-col col-8>
                                 <ion-label no-margin> <b>총 합계
                         </b> </ion-label>
                             </ion-col>
                             <ion-col col-4 text-right>
-                                <ion-label no-margin style="font-size:16px"> <b>{{(1*OrderReview.totals.total  | currency:values.currency:false:'1.0-0').replace('USD','')}} 원
+                                <ion-label no-margin style="font-size:16px"> <b>{{1*cart.total.amount.raw | number:'1.0-0'}} 원
                         </b> </ion-label>
                             </ion-col>
                     </ion-row>
@@ -138,6 +138,14 @@
                     <ion-label *ngIf="enableBillingAddress" col-3>배송 시<br>요청사항 </ion-label>
                     <ion-input *ngIf="enableBillingAddress" required type="text" [(ngModel)]="form.billing_company" name="company"> </ion-input>
                 </ion-row>
+                
+                <ion-row class="orderer-row" *ngIf="values.isLoggedIn">
+                        <ion-label col-3>포인트사용</ion-label>
+                        <ion-input [disabled]="pointVerify" required type="text" [(ngModel)]="form.user_point" name="user_point"> </ion-input>
+                        <button *ngIf="!pointVerify" (click)="pointInsert()" style="height:30px">적용하기</button>
+                        <button *ngIf="pointVerify" (click)="pointCancle()" style="height:30px">취소하기</button>
+                        <div *ngIf="!pointVerify" style="margin-left: 10px">포인트 : {{values.point}}</div>
+                    </ion-row>
             </ion-list>
 
 
@@ -145,20 +153,35 @@
     </div>
    
     <!--  -->
-    <div *ngIf="enablePaymentMethods" class="payment-methods">
+    <div class="payment-methods">
         <ion-item class="payment-method-header" no-lines>
             <ion-label>결제 방법 선택</ion-label>
         </ion-item>
-        <div *ngIf="form.payment">
-            <ion-list no-margin text-wrap radio-group [(ngModel)]="form.payment_method" (ngModelChange)="changePayment()">
-                <ion-item *ngFor="let method of form.payment | keys">
-                    <ion-label class="payment-method-title">{{method.value.title}} </ion-label>
-                    <ion-radio value="{{method.value.id}}"> </ion-radio>
+        <div>
+            <ion-list no-margin text-wrap radio-group [(ngModel)]="form.payment_method">
+                <ion-item>
+                    <ion-label class="payment-method-title">실시간 계좌이체</ion-label>
+                    <ion-radio value="trans"> </ion-radio>
                 </ion-item>
+                <ion-item>
+                    <ion-label class="payment-method-title">카드</ion-label>
+                    <ion-radio value="card"> </ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label class="payment-method-title">가상계좌 발급</ion-label>
+                    <ion-radio value="vbank"> </ion-radio>
+                </ion-item>
+                <!--<ion-item>
+                    <ion-label class="payment-method-title">네이버 페이</ion-label>
+                    <ion-radio value="naverpay"> </ion-radio>
+                </ion-item>-->
             </ion-list>
-            <div *ngIf="form.payment_method != 'stripe'" class="side-heading-background">
-                <ion-label class="payment-instructions">{{form.payment_instructions}} </ion-label>
-                <ion-row class="check-box-bottom" style="margin-top:0" *ngIf="form.show_terms">
+
+            
+
+            
+            <div class="side-heading-background">
+                <ion-row class="check-box-bottom" style="margin-top:0">
               <ion-col no-lines class="col1">
                   <ion-checkbox checked="true" [(ngModel)]="form.terms" name="terms"> </ion-checkbox>
               </ion-col>
@@ -176,36 +199,11 @@
               </ion-row>
 
 
-                <div class="button-margin"> <button ion-button color="button-color" text-uppercase [disabled]="buttonSubmit" block secondary type="submit" class="button button-block button-default" (click)="checkout()">결제하기
+                <div class="button-margin"> 
+                    <button ion-button color="button-color" text-uppercase [disabled]="buttonSubmit" block secondary type="submit" class="button button-block button-default" (click)="checkout()">결제하기
         </button> </div>
             </div>
+
         </div>
-        <div *ngIf="form.payment_method =='stripe'" class="side-heading-background stripe-payment">
-            <ion-label [innerHTML]="form.payment.stripe.description"> </ion-label>
-            <form #f="ngForm" class="stripe-payment">
-                <ion-item no-lines style="margin-bottom: 5px;">
-                    <ion-label color="side-heading-color">Stripe Card Details </ion-label>
-                </ion-item>
-                <div class="Address-form">
-                    <ion-label>Card Number </ion-label>
-                    <ion-input required type="text" [(ngModel)]="form.stripe_number" name="stripe_number" placeholder="Card number"> </ion-input>
-                    <ion-label>Expiry Month </ion-label>
-                    <ion-input required type="text" [(ngModel)]="form.stripe_exp_month" name="stripe_exp_year" placeholder="Expiry month"> </ion-input>
-                    <ion-label>Expiry Year </ion-label>
-                    <ion-input required type="text" [(ngModel)]="form.stripe_exp_year" name="stripe_exp_year" placeholder="Expiry year"> </ion-input>
-                    <ion-label>Card Code </ion-label>
-                    <ion-input required type="text" [(ngModel)]="form.stripe_code" name="stripe_code" placeholder="CVV"> </ion-input>
-                </div>
-            </form>
-            <ion-row class="check-box-bottom" style="margin-top:0" *ngIf="form.show_terms">
-              <ion-col no-lines class="col1">
-                  <ion-checkbox checked="true" [(ngModel)]="form.terms" name="terms"> </ion-checkbox>
-              </ion-col>
-              <ion-col class="col2">
-                  <ion-label>I Agree <a  (click)="terms()">Terms & Conditions</a> </ion-label>
-              </ion-col>
-            </ion-row>
-            <div class="button-margin"> <button ion-button color="button-color" text-uppercase *ngIf="form.payment_method =='stripe'" [disabled]="buttonSubmit" (click)="checkout()" block secondary type="submit" class="button button-block button-default">PlaceOrder
-      </button> </div>
-        </div> <br> </div>
+         </div>
 </ion-content>
