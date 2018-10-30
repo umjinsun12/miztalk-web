@@ -74,32 +74,7 @@ export class CardnewsService {
     }
 
 
-    getRandomCardnews(){
-        return new Promise(resolve =>{
-            this.getAllCategory().then((results) => {
-                this.categoryContent = results;
-                let pagenum;
-                this.cardnews_order = [];
-                this.categoryContent.forEach(item => {
-                    this.categoryArray[item.id] = item.name;
-                    if(item.id == 20){
-                        pagenum = Math.ceil(item.count/10);
-                        for(let i=0; i < pagenum-1 ; i++){
-                            this.cardnews_order.push(i+1);
-                        }
-                    }
-                });
-
-                this.shuffle(this.cardnews_order);
-                this.cardnews_order.push(pagenum);
-                console.log(this.cardnews_order);
-                this.getPostEmbedbyCategory(this.cardnewsCategoryId, this.cardnews_order[0]).then((posts) => {
-                    this.shuffle(posts);
-                    resolve(posts);
-                });
-            });
-        });
-    }
+    
 
     getDetailCards(postid){
         return new Promise(resolve =>{

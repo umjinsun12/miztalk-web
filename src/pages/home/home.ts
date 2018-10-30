@@ -49,6 +49,7 @@ export class HomePage {
   cardnews_order: any = [];
   cardpos:number = 1;
   posts: any;
+  page:number = 1;
   
   morePagesAvailable: boolean = true;
   loggedUser: boolean = false;
@@ -70,6 +71,10 @@ export class HomePage {
 
   orderId:any;
 
+  contentCategory:any = [];
+
+  selectCategory:number = 643;
+
 
   @ViewChild(Nav) nav: Nav;
 
@@ -89,13 +94,48 @@ export class HomePage {
     public alertCtrl: AlertController,
     public clayfulService : ClayfulService) {
       this.orderId = null;
-      this.service.presentLoading('로딩중입니다.');
-      this.service.getRandomCardnews().then((results) => this.handlePostResults(results));
+      this.contentCategory = [
+        {name:"메인컨텐츠", id:643},
+        {name:"AvsB", id:641},
+        {name:"다이어트", id:23},
+        {name:"레시피", id:21},
+        {name:"생활", id:165},
+        {name:"부부공감", id:172},
+        {name:"여행", id:638},
+        {name:"육아생활", id:20},
+        {name:"인기상품", id:640},
+        {name:"제품리뷰", id:639}
+      ]
+      this.service.presentLoading("로딩중입니다.");
+      this.page = 1;
+      this.service.getPostEmbedbyCategory(this.selectCategory, this.page).then(results => this.handleResults(results));
+  }
+
+  selectCategoryEvent(categoryId){
+    this.page = 1;
+    this.has_more_items = true;
+    if(this.selectCategory == categoryId)
+      this.selectCategory = 643
+    else
+      this.selectCategory = categoryId;
+    this.service.getPostEmbedbyCategory(this.selectCategory, this.page).then(results => this.handleResults(results));
+  }
+
+
+  handleResults(results){
+    this.posts = results;
+    for(let post of this.posts){
+      post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
+      if(post._embedded['wp:featuredmedia'] != undefined){
+          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+      }
+    }
+    this.service.dismissLoading();
+    console.log(results);
   }
 
 
   ionViewDidEnter(){
-    this.appService.getPoint();
     this.platform.registerBackButtonAction(() => {
       if (this.alertShown==false) {
         this.presentConfirm();
@@ -316,16 +356,15 @@ export class HomePage {
     if(this.values.isLoggedIn)
       this.navCtrl.push(PointDetailPage);
   }
-  goCategory(id, name){
+
+  goCategory(id){
     let item = {
         id : "",
         name : "",
         categories : []
     };
-    item.categories.push(id);
     item.id = id;
-    item.name = name;
-    this.navCtrl.push(ShoppingProductsPage,item);
+    this.navCtrl.push(EventDetailPage,item);
 }
 
   
@@ -369,28 +408,17 @@ export class HomePage {
   }
 
   doRefresh(refresher) {
-    this.shuffle(this.values.maincard);
     this.has_more_items = true;
-    this.service.getRandomCardnews().then((results) => this.handleRefresh(results, refresher));
+    this.page = 1;
+    this.service.getPostEmbedbyCategory(this.selectCategory, this.page).then(results => this.handleRefresh(results, refresher));
   };
 
   handleRefresh(results, refresher){
     this.posts = results;
-    this.service.filter.page = 0;
-    console.log(this.posts);
     for(let post of this.posts){
       post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-      if(post._embedded['wp:featuredmedia'][0].media_details != undefined){
-          post.thumnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
-      }
-
-      for(let categoryID of post.categories){
-        if(categoryID == 20)
-            continue;
-        else{
-            post.categoryName = this.service.categoryArray[categoryID];
-            break;
-        }
+      if(post._embedded['wp:featuredmedia'] != undefined){
+          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
       }
     }
     refresher.complete();
@@ -398,8 +426,11 @@ export class HomePage {
   
 
   doInfinite(infiniteScroll) {
-    console.log(infiniteScroll);
-    this.service.loadMore().then((results) => this.handleMore(results, infiniteScroll));
+    this.page += 1;
+    this.service.getPostEmbedbyCategory(this.selectCategory, this.page).then(results => this.handleMore(results, infiniteScroll)).catch(err => {
+      this.has_more_items = false;
+      infiniteScroll.complete();
+    });
   }
 
   handleMore(results, infiniteScroll) {
@@ -407,19 +438,11 @@ export class HomePage {
           this.has_more_items = false;
       }
       else{
+        console.log("dasfsdf");
         for(let post of results){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
-          if(post._embedded['wp:featuredmedia'][0] != undefined){
-              post.thumnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
-          }
-
-          for(let categoryID of post.categories){
-            if(categoryID == 20)
-                continue;
-            else{
-                post.categoryName = this.service.categoryArray[categoryID];
-                break;
-            }
+          if(post._embedded['wp:featuredmedia'] != undefined){
+              post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
           }
           this.posts.push(post);
         }

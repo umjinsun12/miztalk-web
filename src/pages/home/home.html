@@ -5,11 +5,11 @@
       <ion-icon name="md-menu"></ion-icon>
     </button>
 
-    <ion-buttons>
+    <!--<ion-buttons>
     <button ion-button icon-only (click)="getSearch()" style="color:#fff;margin-left:6px;margin-right:6px;">
         <ion-icon ios="md-search" md="md-search" style="font-size:30px;"></ion-icon>
     </button>
-    </ion-buttons>
+    </ion-buttons>-->
 
     <ion-title>
         <img src="assets/img/logo-main.png" srcset="assets/img/logo-main@2x.png 2x,assets/img/logo-main@3x.png 3x" height=30>
@@ -30,42 +30,60 @@
         <div>
             <ion-row class="category-listing">
                     <ion-row>
-                        <ion-chip>
-                                <ion-label>부부공감</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==172) ? 'select-chip' : ''" (click)="selectCategoryEvent(172)">
+                                <ion-label>#부부공감</ion-label>
                         </ion-chip>
-                        <ion-chip>
-                                <ion-label>트렌드</ion-label>
-                        </ion-chip>
-                        <ion-chip>
-                                <ion-label>A vs B</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==641) ? 'select-chip' : ''" (click)="selectCategoryEvent(641)">
+                                <ion-label>#AvsB</ion-label>
                         </ion-chip>
                     
-                        <ion-chip>
-                                <ion-label>육아생활</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==20) ? 'select-chip' : ''" (click)="selectCategoryEvent(20)">
+                                <ion-label>#육아생활</ion-label>
                         </ion-chip>
-                        <ion-chip>
-                                <ion-label>제품리뷰</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==639) ? 'select-chip' : ''" (click)="selectCategoryEvent(639)">
+                                <ion-label>#제품리뷰</ion-label>
                         </ion-chip>
                     </ion-row>
                     <ion-row>
-                        <ion-chip>
-                                <ion-label>인기상품</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==640) ? 'select-chip' : ''" (click)="selectCategoryEvent(640)">
+                                <ion-label>#인기상품</ion-label>
                         </ion-chip>
-                        <ion-chip>
-                                <ion-label>19금이야기</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==638) ? 'select-chip' : ''" (click)="selectCategoryEvent(638)">
+                                <ion-label>#여행</ion-label>
                         </ion-chip>
-                        <ion-chip>
-                                <ion-label>여행</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==21) ? 'select-chip' : ''" (click)="selectCategoryEvent(21)">
+                                <ion-label>#레시피</ion-label>
                         </ion-chip>
-                        <ion-chip>
-                                <ion-label>레시피</ion-label>
-                        </ion-chip>
-                        <ion-chip>
-                                <ion-label>다이어트</ion-label>
+                        <ion-chip [ngClass]="(selectCategory==23) ? 'select-chip' : ''" (click)="selectCategoryEvent(23)">
+                                <ion-label>#다이어트</ion-label>
                         </ion-chip>
                     </ion-row>
             </ion-row>
         </div>
+
+        <ion-refresher (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+              </ion-refresher>
+
+            <div>
+                <ion-row>
+                    <ion-col col-12 *ngFor="let post of posts" class="main-content" (click)="goCategory(post.id)">
+                            <img class="thumbnail" src="{{post.thumbnail}}">
+                            <div class="content">
+                                <div class="title">{{post.title.rendered}}</div>
+                                <div class="content-line">ㅡ</div>
+                                <div class="summary" [innerHTML]="post.acf.summary"></div>
+                            </div>
+                    </ion-col>
+                </ion-row>
+            </div>
+
+            <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
+                    <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 컨텐츠를 로딩 중입니다."> </ion-infinite-scroll-content>
+                </ion-infinite-scroll>
+
+
+
     <!--<ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>

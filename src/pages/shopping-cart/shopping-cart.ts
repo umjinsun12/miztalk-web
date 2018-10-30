@@ -73,6 +73,7 @@ export class ShoppingCartPage {
         console.log(this.cart);
     }
     delete(id) {
+        this.values.count -= 1;
         this.clayfulService.deleteCartItemLogin(id).then(result => {
             this.clayfulService.getCartLogin().then(result => this.handleCart(result));
         });
@@ -117,6 +118,7 @@ export class ShoppingCartPage {
 
     cartClear(){
       var cnt = 0;
+      this.values.count=0;
       for(var i=0 ; i < this.cart.items.length ; i++){
           this.clayfulService.deleteCartItemLogin(this.cart.items[i]._id).then(result => {
             cnt++;

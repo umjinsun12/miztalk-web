@@ -102,6 +102,7 @@
                         </ion-row>
                     </div><br> </div>
             </div>
+            
             <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
                 <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="더 많은 상품을 불러오는 중입니다."> </ion-infinite-scroll-content>
             </ion-infinite-scroll>

@@ -20,10 +20,10 @@ export class CardnewsService {
     filter:any={};
     has_more_items: boolean = true;
     constructor(private http: Http, private config: Config, private loadingController: LoadingController) {
-        this.cardnewsCategoryId = 20;
+        //this.cardnewsCategoryId = 20;
         this.cardnews_order = [];
         this.categoryArray = {};
-        this.filter.page = 0;
+        //this.filter.page = 0;
     }
 
 
@@ -44,12 +44,15 @@ export class CardnewsService {
 
     getPostEmbedbyCategory(category, page:number = 1){
         return new Promise(resolve => {
-            this.http.get( this.config.WORDPRESS_REST_API_URL + "/posts?_embed&categories=" + category + "&page=" + page).map(res => res.json())
-                .subscribe(data => {
-                    console.log("reqeust data : " + this.config.WORDPRESS_REST_API_URL + "/posts?_embed&categories=" + category + "&page=" + page);
+            this.http.get( this.config.WORDPRESS_REST_API_URL + "/posts?_embed&categories=" + category + "&page=" + page)
+            .map(res => res.json())
+                .subscribe((data) => {
+                    console.log(data);
                     this.posts = data;
                     resolve(this.posts);
-                })
+                }, (error) => {
+                    resolve(error);
+                });
         });
     }
 
@@ -74,32 +77,7 @@ export class CardnewsService {
     }
 
 
-    getRandomCardnews(){
-        return new Promise(resolve =>{
-            this.getAllCategory().then((results) => {
-                this.categoryContent = results;
-                let pagenum;
-                this.cardnews_order = [];
-                this.categoryContent.forEach(item => {
-                    this.categoryArray[item.id] = item.name;
-                    if(item.id == 20){
-                        pagenum = Math.ceil(item.count/10);
-                        for(let i=0; i < pagenum-1 ; i++){
-                            this.cardnews_order.push(i+1);
-                        }
-                    }
-                });
-
-                this.shuffle(this.cardnews_order);
-                this.cardnews_order.push(pagenum);
-                console.log(this.cardnews_order);
-                this.getPostEmbedbyCategory(this.cardnewsCategoryId, this.cardnews_order[0]).then((posts) => {
-                    this.shuffle(posts);
-                    resolve(posts);
-                });
-            });
-        });
-    }
+    
 
     getDetailCards(postid){
         return new Promise(resolve =>{
