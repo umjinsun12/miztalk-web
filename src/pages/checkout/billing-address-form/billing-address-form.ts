@@ -229,12 +229,65 @@ export class BillingAddressForm {
                 });
             }
             else{
-                this.functions.showAlert("에러", "로그인");
+                var payloadNon = {
+                    currency: "KRW",
+                    paymentMethod: 'clayful-iamport',
+                    items : [],
+                    customer:{
+                        name: {
+                            full: this.form.shipping_last_name
+                        },
+                        mobile: this.form.shipping_fitst_name,
+                        phone: this.form.shipping_fitst_name,
+                        country: "KR",
+                        currency: "KRW"
+                    },
+                    address: {
+                        shipping: {
+                            name : {
+                                full : this.form.shipping_last_name
+                            },
+                            country : "KR",
+                            city: this.form.billing_address_1,
+                            state: this.form.billing_address_1,
+                            postcode : this.form.billing_postcode,
+                            address1 : this.form.billing_address_1,
+                            address2 : this.form.billing_address_2,
+                            mobile : this.form.shipping_fitst_name
+                        },
+                        billing: {
+                            name: {
+                                full : this.form.billing_last_name
+                            },
+                            country : "KR",
+                            city: this.form.billing_address_1,
+                            state: this.form.billing_address_1,
+                            postcode : this.form.billing_postcode,
+                            address1 : this.form.billing_address_1,
+                            address2 : this.form.billing_address_2,
+                            mobile : this.form.billing_first_name
+                        }
+                    },
+                    request : this.form.billing_company
+                }
+                for(var k= 0 ;k < this.cart.items.length ; k++){
+                    var item = {
+                        _id : this.cart.items[k].product._id,
+                        product : this.cart.items[k].product._id,
+                        variant : this.cart.items[k].variant._id,
+                        quantity : this.cart.items[k].quantity.raw,
+                        shippingMethod : this.cart.items[k].shippingMethod._id
+                    }
+                    payloadNon.items.push(item);
+                }
+
+                this.clayfulService.checkoutOrderNonLogin(payloadNon).then(results => this.handlePayment(results));
             }
       }
 
   }
   handlePayment(result) {
+      console.log(result);
       this.cart.items;
     var product_name = null;
     if(this.cart.items.length >= 2){

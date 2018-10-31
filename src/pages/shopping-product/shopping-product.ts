@@ -171,12 +171,11 @@ export class ShoppingProductPage {
                         this.values.count +=1;
                     }
                 }else{
-                    this.functions.showAlert('알림', '현재는 비회원에게 지원하지 않는 기능입니다.');
-                    // for(let product of this.selectOptionProduct){
-                    //     this.clayfulService.addCartNonLogin(this.clayfulProduct._id,product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id);
-                    //     this.values.count +=1;
-                    // }
-                    // this.functions.showAlert('알림', '상품이 장바구니에 추가되었습니다.');
+                    for(let product of this.selectOptionProduct){
+                        this.clayfulService.addCartNonLogin(this.clayfulProduct._id,product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id);
+                        this.values.count +=1;
+                    }
+                    this.functions.showAlert('알림', '상품이 장바구니에 추가되었습니다.');
                 }
             }
         }
@@ -201,11 +200,11 @@ export class ShoppingProductPage {
                         this.values.count +=1;
                     }
                 }else{
-                    this.functions.showAlert('알림', '현재는 비회원에게 지원하지 않는 기능입니다.');
-                    // for(let product of this.selectOptionProduct){
-                    //     this.clayfulService.addCartNonLogin(this.clayfulProduct._id,product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id);
-                    //     this.values.count += 1;
-                    // }
+                    for(let product of this.selectOptionProduct){
+                        this.clayfulService.addCartNonLogin(this.clayfulProduct._id,product._id, product.quantity, this.clayfulProduct.shipping.methods[0]._id);
+                        this.values.count += 1;
+                    }
+                    this.nav.push(ShoppingCartPage);
                 }
             }
         }

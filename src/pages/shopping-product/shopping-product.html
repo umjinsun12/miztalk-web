@@ -44,7 +44,7 @@
             
         <div *ngIf="clayfulProduct" class="product-details">
             <div *ngIf="clayfulProduct.thumbnail.url">
-                <img class="product-img" src="{{clayfulProduct.thumbnail.url}}" (click)="zoomPhoto(clayfulProduct.thumbnail.url)">
+                <img class="product-img" src="{{clayfulProduct.thumbnail.url}}">
             </div>
             <div class="body-index">
                 <h2 class="product-name"> {{clayfulProduct.name}} </h2>
@@ -86,11 +86,7 @@
                             <div [innerHTML]="clayfulProduct.description"> </div>
                         </ion-item>
                     </div>
-                    <div *ngIf="clayfulProduct.description && !clayfulProduct.short_description" class="description">
-                        <ion-item text-wrap no-lines>
-                            <div [innerHTML]="clayfulProduct.description"> </div>
-                        </ion-item>
-                    </div>
+                    
                     <ion-item no-lines class="show-more" *ngIf="!moreDescription && clayfulProduct.short_description">
                         <h2 (click)="showMore()"><span class="span1">더 보기</span></h2>
                     </ion-item>

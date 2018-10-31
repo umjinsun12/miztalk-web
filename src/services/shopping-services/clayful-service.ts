@@ -15,7 +15,7 @@ export class ClayfulService {
 
     constructor(private http: Http, private config : Config, private values: Values) {
         Clayful.config({
-            client: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImM2NWRhYTNiYWM1MjZmOTRlOWY2YmZmYzYyMTc1ZGZiODU4NTRhMzllZGIwYjljOGZmNzllZWMwZGQwNGQzM2IiLCJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNTM5ODc2MTE0LCJzdG9yZSI6IktBMlJGRUtIVFhWUS5LNjdGN0tHRk4yRzQiLCJzdWIiOiI5SzRGWlpaUFdHV1YifQ.ScJFSxSrWjZl5WqLeCSXD9FyETebcnEGCDaVTA4_pcI',
+            client: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Ijg5NzBjNjUwNDM0ZTFmZWI1ZjJiOTk2NGRmZWE2MTI2ZGVhZmZiY2FhYWUwZGFlODQ1ZGY1ODUwYjgyNmI2YWYiLCJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNTQwNzI2MDM0LCJzdG9yZSI6IktBMlJGRUtIVFhWUS4yUzRLQkRSTkhEM0UiLCJzdWIiOiJBQ0hHMzJNMkdGRDYifQ.zwcwlKliypKYUxvRiIuMdEDDK5-R01Ms917GTyyv-dQ',
             debugLanguage: 'ko'
         });
         this.Cart = Clayful.Cart;
@@ -166,14 +166,30 @@ export class ClayfulService {
                 }
             });
         });
-    }
+    }    
 
     getCartNonLogin(){
+        console.log(this.values.clayful_cart);
         var payload = {
-
+            items : []
+        }
+        for(var i= 0 ; i < this.values.clayful_cart.length ; i++){
+            var item = {
+                _id : this.values.clayful_cart[i].product,
+                product : this.values.clayful_cart[i].product,
+                variant : this.values.clayful_cart[i].variant,
+                quantity : this.values.clayful_cart[i].quantity,
+                shippingMethod : this.values.clayful_cart[i].shippingMethod
+            }
+            payload.items.push(item);
         }
         return new Promise((resolve, reject) => {
-            //this.Cart.get
+            this.Cart.getAsNonRegisteredForMe(payload, (err, result) =>{
+                if(err)
+                    reject(err);
+                else
+                    resolve(result.data.cart);
+            });
         });
     }
 
@@ -191,6 +207,17 @@ export class ClayfulService {
                 else
                     resolve(result);
             });
+        });
+    }
+
+    checkoutOrderNonLogin(payload){
+        return new Promise((resolve, reject) => {
+            this.Cart.checkoutAsNonRegisteredForMe('order', payload, (err, result) => {
+                if(err)
+                    reject(err);
+                else
+                    resolve(result.data.order);
+            })
         });
     }
 

@@ -146,6 +146,7 @@ export class HomePage {
       let splitURL = getURL[0].split("?");
       let splitParams = splitURL[1].split("&");
       let i: any;
+      this.values.clayful_id = "";
       for (i in splitParams){
         let singleURLParam = splitParams[i].split('=');
         if (singleURLParam[0] == "token"){
@@ -190,7 +191,11 @@ export class HomePage {
           }
         })
       }else{
-        this.getCustomerToken();
+        if(this.values.clayful_id != ""){
+          this.getCustomerToken();
+        }else{
+          this.functions.showAlert("알림","주문이 접수되었습니다. 감사합니다.");
+        }
       }
     }else{
         this.getCustomerToken();

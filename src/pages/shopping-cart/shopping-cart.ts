@@ -59,8 +59,8 @@ export class ShoppingCartPage {
             this.clayfulService.getCartLogin().then(result => this.handleCartInit(result));
         }else{
             this.values.count = this.values.clayful_cart.length;
-            console.log(this.values.clayful_cart);
-            this.cart.items = this.values.clayful_cart;
+            //this.cart.items = this.values.clayful_cart;
+            this.clayfulService.getCartNonLogin().then(result => this.handleCartInit(result));
         }
     }
     handleCartInit(results) {
@@ -74,9 +74,20 @@ export class ShoppingCartPage {
     }
     delete(id) {
         this.values.count -= 1;
-        this.clayfulService.deleteCartItemLogin(id).then(result => {
-            this.clayfulService.getCartLogin().then(result => this.handleCart(result));
-        });
+        if(this.values.isLoggedIn){
+            this.clayfulService.deleteCartItemLogin(id).then(result => {
+                this.clayfulService.getCartLogin().then(result => this.handleCart(result));
+            });
+        }else{
+            for(var i=0 ; i < this.cart.items.length ; i++){
+                if(this.cart.items[i]._id == id){
+                    this.cart.items.splice(i,1);
+                }
+                if(this.values.clayful_cart[i].product == id){
+                    this.values.clayful_cart.splice(i,1);
+                }
+            }
+        }
     }
     checkout() {
         this.disableSubmit = true;

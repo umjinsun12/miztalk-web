@@ -26,7 +26,8 @@
                   <div class="cart-list" *ngFor="let item of cart.items">
                         <ion-item no-lines>
                           <ion-thumbnail item-left (click)="getProduct(item.value.product_id)"> <img src="{{item.product.thumbnail.url}}"> </ion-thumbnail>
-                          <h2 class="item-name" style="position: absolute;top: 15px;width:200px">{{item.product.name}} - {{item.variant.types[0].variation.value}}</h2>
+                          <h2 class="item-name" style="position: absolute;top: 15px;width:200px" *ngIf="item.variant.types.length != 0">{{item.product.name}} - {{item.variant.types[0].variation.value}}</h2>
+                          <h2 class="item-name" style="position: absolute;top: 15px;width:200px" *ngIf="item.variant.types.length == 0">{{item.product.name}}</h2>
                           <h3 wrap-text style="position: absolute;right: 10px;bottom: 20px;font-size:  14px"><span style="font-size: 14px">{{1*item.total.price.sale.raw | number:'1.0-0'}}원</span></h3>
                           <div class="add-remove-button"> 
                               <!--<button ion-button icon-only class="has-icon icon-only" no-margin item-right clear (click)="deleteFromCart(item.value.product_id, item.key)">

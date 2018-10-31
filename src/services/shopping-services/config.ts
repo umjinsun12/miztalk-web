@@ -11,7 +11,7 @@ headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8
 export class Config {
 
     url: any = 'http://miztalk.kr';
-    cmsurl : any = 'http://localhost:3030';
+    cmsurl : any = 'http://183.111.126.192:3030';
     consumerKey: any = 'ck_afc32b36607b160d37aded122bb0932551d8ae84';
     consumerSecret: any = 'cs_277668a5edbe6822323fa707dc84f7f7f10a98f8';
     oneSignalAppId: any = 'e195fd9f-7f43-4b30-9b44-c39c24de497e';
@@ -21,7 +21,7 @@ export class Config {
 
 
     clayfulUrl : any = 'http://local.test.clayful.io:8000';
-    clayfulToken ; any = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImJmMjQ2ZGEwZTg1YzA0ZTEyZTE1N2JkNDM0YTI2NmI2ODkwMjIyMmM4ZmY2MzcyYjZlMDRjYTk4ZjViZjEzMzkiLCJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNTM5MDcxNjU1LCJzdG9yZSI6IkpZREdUVEU1Q1hYNS5aVk1ZVkNSWDNLNzgiLCJzdWIiOiJUQzZLWVNMVlQ3WjQifQ.Xel7OwDNx9FwLoNpMA5G_6Nv5wieHuPLpRhsrKLVWuA';
+    clayfulToken ; any = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Ijg5NzBjNjUwNDM0ZTFmZWI1ZjJiOTk2NGRmZWE2MTI2ZGVhZmZiY2FhYWUwZGFlODQ1ZGY1ODUwYjgyNmI2YWYiLCJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNTQwNzI2MDM0LCJzdG9yZSI6IktBMlJGRUtIVFhWUS4yUzRLQkRSTkhEM0UiLCJzdWIiOiJBQ0hHMzJNMkdGRDYifQ.zwcwlKliypKYUxvRiIuMdEDDK5-R01Ms917GTyyv-dQ';
 
     appRateIosAppId: any = '12345678';
     appRateAndroidLink: any = 'https://play.google.com/store/apps/details?id=com.mstoreapp.wootab0002&hl=en';
