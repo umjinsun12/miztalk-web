@@ -102,34 +102,26 @@ export class AccountLogin {
     this.showPasswordEnable = false; 
   }
   facebookLogin() {
-       this.facebookSpinner = true;
-       this.payloading.present();
 
        this.clayfulService.loginSns('facebook').then((response) => {
            window.location.href = String(response);
        }).catch(reject => {
-            this.payloading.dismiss();
            console.log(reject);
            this.facebookSpinner = false;
        });
     }
     naverLogin(){
-        this.payloading.present();
         this.clayfulService.loginSns('naver').then((response) => {
             window.location.href = String(response);
         }).catch(reject => {
-             this.payloading.dismiss();
             console.log(reject);
             this.facebookSpinner = false;
         });
     }
     kakaoLogin(){
-      this.payloading.present();
-      this.payloading.present();
         this.clayfulService.loginSns('kakao').then((response) => {
             window.location.href = String(response);
         }).catch(reject => {
-             this.payloading.dismiss();
             console.log(reject);
             this.facebookSpinner = false;
         });
