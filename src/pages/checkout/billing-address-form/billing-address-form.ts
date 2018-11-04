@@ -126,6 +126,7 @@ export class BillingAddressForm {
           this.enableShippingMethods = true;
           this.enablePaymentMethods = true;
           this.form.biterms = true;
+          this.form.user_point = 0;
           }
       }
       else if(!this.values.isLoggedIn){
@@ -205,7 +206,7 @@ export class BillingAddressForm {
                         }
                     },
                     request : this.form.billing_company
-                }
+                };
 
                 var productList = [];
                 for(var i=0 ; i < this.cart.items.length ; i++){
@@ -214,7 +215,7 @@ export class BillingAddressForm {
                         price : this.cart.items[i].price.sale.raw
                     });
                 }
-                var userPoint = 1000;
+                var userPoint = this.form.user_point;
                 this.clayfulService.checkoutOrderLogin(payload, productList, userPoint)
                 .then(result => this.handlePayment(result))
                 .catch(err => {

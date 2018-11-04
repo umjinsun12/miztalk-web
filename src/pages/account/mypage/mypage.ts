@@ -113,6 +113,8 @@ export class MypagePage {
             this.nav.pop();
         }
     }
+
+
     login() {
         this.values.cartLoadEnable = false;
         this.nav.push(AccountLogin);

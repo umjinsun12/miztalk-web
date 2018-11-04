@@ -71,6 +71,8 @@ export class HomePage {
 
   orderId:any;
 
+  productId:any;
+
   contentCategory:any = [];
 
   selectCategory:number = 643;
@@ -105,10 +107,12 @@ export class HomePage {
         {name:"육아생활", id:20},
         {name:"인기상품", id:640},
         {name:"제품리뷰", id:639}
-      ]
+      ];
       this.service.presentLoading("로딩중입니다.");
       this.page = 1;
       this.service.getPostEmbedbyCategory(this.selectCategory, this.page).then(results => this.handleResults(results));
+
+      this.clayfulService.idgenerate('eddd');
   }
 
   selectCategoryEvent(categoryId){
@@ -158,6 +162,9 @@ export class HomePage {
         if (singleURLParam[0] == "order"){
           this.orderId = singleURLParam[1];
         }
+        if (singleURLParam[0] == "product"){
+          this.productId = singleURLParam[1];
+        }
         
         let urlParameter = {
         'name': singleURLParam[0],
@@ -165,7 +172,12 @@ export class HomePage {
       };
       this.urlParameters.push(urlParameter);
       }
-      if(this.orderId == null){
+      if(this.productId != null){
+        this.navCtrl.push(ShoppingProductPage, this.productId);
+        this.productId = null;
+        this.getCustomerToken();
+      }
+      else if(this.orderId == null){
         this.storage.set('token', this.values.clayful_token);
         this.storage.set('customer', this.values.clayful_id);
         this.clayfulService.memberLogin(this.values.clayful_id, this.values.clayful_token).subscribe(result => {
@@ -221,7 +233,7 @@ export class HomePage {
                     if(this.orderId == "err"){
                       this.functions.showAlert("에러", "주문에 실패하였습니다. 다시 주문해주세요.");
                     }else{
-                      this.navCtrl.push(OrderSummary, this.orderId);
+                      this.functions.showAlert("알림","주문이 접수되었습니다. 감사합니다.");
                       this.orderId = null;
                     }
                   }

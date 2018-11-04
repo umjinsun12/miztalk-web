@@ -4,7 +4,16 @@ import { ProductService } from '../../services/shopping-services/product-service
 import { Component, ViewChild } from '@angular/core';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { md5 } from './md5';
-import { NavController, NavParams, FabContainer, LoadingController, PopoverController, ViewController, ToastController} from 'ionic-angular';
+import {
+  NavController,
+  NavParams,
+  FabContainer,
+  LoadingController,
+  PopoverController,
+  ViewController,
+  ToastController,
+  IonicPage
+} from 'ionic-angular';
 import { ModalController } from 'ionic-angular';
 import { Slides } from 'ionic-angular';
 import { PopoverPage} from '../about-popover/about-popover'
@@ -20,6 +29,11 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Config } from '../../services/shopping-services/config';
 import { stringify } from '@angular/compiler/src/util';
 
+@IonicPage({
+  name: 'shopping-product',
+  segment: 'shop/:id',
+  defaultHistory : ['page-shopping']
+})
 @Component({
   templateUrl: 'shopping-product.html',
 })
@@ -306,7 +320,6 @@ export class ShoppingProductPage {
             this.quantity = this.quantity - 1;
     }
 
-
     updateBuynowResults(a) {
         this.disableBuyNow = false;
         this.nav.push(ShoppingCartPage);
@@ -435,24 +448,13 @@ export class ShoppingProductPage {
             this.service.getRelatedProducts(this.product.cross_sell_ids).then((results) => this.crossSell = results);
         }
     }
-    share(product, network: string, fab: FabContainer) {
-        var options = {
-            message: 'Hey check this product', // not supported on some apps (Facebook, Instagram)
-            subject: product.title, // fi. for email
-            files: ['', ''], // an array of filenames either locally or remotely
-            url: product.permalink,
-            chooserTitle: 'Pick an app' // Android only, you can override the default share sheet title
-        }
-        let loading = this.loadingCtrl.create({
-            content: `Posting to ${network}`,
-            duration: (Math.random() * 1000) + 500
-        });
-        loading.onWillDismiss(() => {
-            fab.close();
-        });
-        loading.present();
-        this.socialSharing.shareWithOptions(options);
+
+
+    share(product_id) {
+      console.log(product_id);
+      this.functions.showAlert("알림", "링크가 복사 되었습니다.");
     }
+
     showMoreReviews() {
         this.showRelated = false;
         this.showOverview = false;

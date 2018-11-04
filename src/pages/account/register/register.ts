@@ -168,7 +168,7 @@ export class AccountRegister {
               this.disableSubmit = true;
               this.Register = "등록중";
               this.clayfulService.memberReg(this.registerData.display_name, this.values.clayful_id, this.values.clayful_token, phonenum, this.marketChk).subscribe(result => {
-                this.functions.showAlert('성공','회원가입 성공');
+                this.functions.showAlert('성공','회원가입이 완료되었습니다.');
                 this.values.isLoggedIn = true;
                 this.values.clayful_reg = true;
                 this.nav.pop();

@@ -232,19 +232,14 @@ export class Service {
 
     logout() {
         return new Promise(resolve => {
-            this.storage.clear();
-            this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-logout', this.config.options).subscribe(data => {
-                this.values.isLoggedIn = false;
-                this.values.customerName = "";
-                this.values.point = 0;
-                this.http.get(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-cart', this.config.options).map(res => res.json()).subscribe(data => {
-                    this.cart = data;
-                    this.values.updateCart(this.cart);
-                });
-                resolve(this.cart);
-            });
+          this.storage.clear();
+          this.values.isLoggedIn = false;
+          this.values.customerName = "";
+          this.values.point = 0;
+          this.values.clayful_cart = [];
         });
     }
+
     passwordreset(email, nonce, url) {
         var params = new URLSearchParams();
         params.append("user_login", email);

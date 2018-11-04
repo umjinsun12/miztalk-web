@@ -23,22 +23,22 @@ export class ClayfulService {
     }
 
     loginSns(vendor){
-        const Customer = Clayful.Customer;
-        return new Promise((resolve, reject) => {
-            Customer.authenticateBy3rdParty(vendor, function(err, result){
-                if(err)
-                    reject(err);
+          return new Promise((resolve, reject) => {
+            this.http.get(this.config.cmsurl + '/clayful/loginSns?vendor=' + vendor).map(res => res.json())
+              .subscribe(response => {
+                if(response.status == "error")
+                  reject(response.status);
                 else
-                    resolve(result.data.redirect);
-            });
-        });
+                  resolve(response.redirect);
+              });
+          });
     }
 
     memberLogin(id, token){
         var param = {
             "id" : id,
             "token" : token
-        }
+        };
         return this.http.post(this.config.cmsurl + '/clayful/_memberLogin', param).map(res => res.json());
     }
 
@@ -81,9 +81,8 @@ export class ClayfulService {
             name : name,
             id : id,
             token : token,
-            phone : phone,
-            marketing : marketing
-        }
+            phone : phone
+        };
         return this.http.post(this.config.cmsurl + '/clayful/_memberReg',param).map(res => res.json());
     }
 
@@ -97,6 +96,8 @@ export class ClayfulService {
         return this.http.get(this.config.cmsurl + '/clayful/productList?page='+page + '&category=' + category).map(res => res.json());
     }
 
+
+
     addCartLogin(productId, variantId, quantity, shippingMethod){
         var options = {
             customer : this.values.clayful_token
@@ -106,27 +107,27 @@ export class ClayfulService {
             variant : variantId,
             quantity : quantity,
             shippingMethod : shippingMethod
-        }
+        };
 
         return new Promise((resolve,reject) => {
-                this.Cart.addItemForMe(payload, options, (err, result) => {
-                    if(err)
-                        reject(err);
-                    else
-                        resolve(result.data);
-                });
+                this.http.post(this.config.cmsurl + '/clayful/addCartItem',
+                  {payload: payload, options:options}).map(res => res.json())
+                  .subscribe(result => {
+                    resolve(result.data);
+                  });
         });
     }
+
+
     deleteCartItemLogin(itemId){
         var options = {
             customer : this.values.clayful_token
-        }
-        return new Promise((resolve, reject) => {
-            this.Cart.deleteItemForMe(itemId, options, (err, result) => {
-                if(err)
-                    reject(err);
-                else
-                    resolve(result.data);
+        };
+        return new Promise((resolve, reject) =>{
+          this.http.post(this.config.cmsurl + '/clayful/deleteCartItem',
+            {itemId:itemId, options : options}).map(res => res.json())
+            .subscribe(result => {
+              resolve(result.data);
             });
         });
     }
@@ -137,7 +138,7 @@ export class ClayfulService {
             variant : variantId,
             quantity : quantity,
             shippingMethod : shippingMethod
-        }
+        };
         this.values.clayful_cart.push(payload);
     }
 
@@ -146,33 +147,41 @@ export class ClayfulService {
             customer : this.values.clayful_token
         };
         var payload = {
-            /*address : {
-                shipping : {
-                    city : "서울특별시",
-                    address1 : "강남구"
-                },
-                billing :{
-                    city : "서울특별시",
-                    address1 : "강남구"
-                }
-            },*/
-        }
+          address:{
+            shipping : {
+              country : "KR",
+              city : "서울특별시",
+              address1 : "서울특별시 강동구",
+              postcode : "05397"
+            }
+          },
+        };
         return new Promise((resolve, reject) =>{
-            this.Cart.getForMe(payload, options, (err, result) => {
-                if(err)
-                    reject(err);
-                else{
-                    resolve(result.data.cart);
+            this.http.post(this.config.cmsurl + '/clayful/getCart',
+              {payload : payload, options : options}).map(res => res.json())
+              .subscribe(result => {
+                if(result.status == "error"){
+                  reject(result);
+                }else{
+                  resolve(result.cart);
                 }
-            });
+              });
         });
-    }    
+    }
 
     getCartNonLogin(){
         console.log(this.values.clayful_cart);
         var payload = {
+          address:{
+            shipping : {
+              country : "KR",
+              city : "서울특별시",
+              address1 : "서울특별시 강동구",
+              postcode : "05397"
+            }
+          },
             items : []
-        }
+        };
         for(var i= 0 ; i < this.values.clayful_cart.length ; i++){
             var item = {
                 _id : this.values.clayful_cart[i].product,
@@ -180,16 +189,14 @@ export class ClayfulService {
                 variant : this.values.clayful_cart[i].variant,
                 quantity : this.values.clayful_cart[i].quantity,
                 shippingMethod : this.values.clayful_cart[i].shippingMethod
-            }
+            };
             payload.items.push(item);
         }
         return new Promise((resolve, reject) => {
-            this.Cart.getAsNonRegisteredForMe(payload, (err, result) =>{
-                if(err)
-                    reject(err);
-                else
-                    resolve(result.data.cart);
-            });
+            this.http.post(this.config.cmsurl + '/clayful/getAsNonRegisteredForMe', {payload : payload}).map(res => res.json())
+              .subscribe(result => {
+                resolve(result.data.cart);
+              });
         });
     }
 
@@ -200,7 +207,7 @@ export class ClayfulService {
                 id : this.values.clayful_id,
                 productList : JSON.stringify(productList),
                 userPoint : userPoint
-            }
+            };
             this.http.post(this.config.cmsurl + '/clayful/checkoutLogin', param).map(res => res.json()).subscribe(result => {
                 if(result.status == "error")
                     reject(result);
@@ -217,7 +224,8 @@ export class ClayfulService {
                     reject(err);
                 else
                     resolve(result.data.order);
-            })
+            });
+
         });
     }
 
@@ -227,14 +235,14 @@ export class ClayfulService {
         };
 
         return new Promise((resolve, reject) => {
-            this.Order.getForMe(id, options, function(err, result) {
-                if (err) {
-                    reject(err.code);
+            this.http.post(this.config.cmsurl + '/clayful/getOrder', {id : id, options: options}).map(res => res.json())
+              .subscribe(result => {
+                if(result){
+                  reject(result);
                 }
-                var headers = result.headers;
                 var data = result.data;
                 resolve(data);
-            });
+              });
         });
     }
 
@@ -249,4 +257,11 @@ export class ClayfulService {
         });
     }
 
+    idgenerate(product_id){
+      var id = 0;
+      console.log(product_id);
+
+
+      return id;
+    }
 }

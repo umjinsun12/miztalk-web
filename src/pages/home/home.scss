@@ -87,9 +87,10 @@ ion-buttons{
             height: 32px;
             font-size: 11px;
             line-height: 32px;
-            color: #c8c8c8;
+            color: #e83d4d;
             background: transparent;
-            border: 1px solid #c8c8c8;
+            //border: 1px solid #c8c8c8;
+            border: 1px solid #e83d4d;
             margin: 2px 0;
             width: 25%;
             font-weight: 500;
@@ -99,8 +100,9 @@ ion-buttons{
             }
         }
         .select-chip{
-            color: #e83d4d;
+            color: white;
             border: 1px solid #e83d4d;
+            background-color: #e83d4d;
         }
     }
     
@@ -164,7 +166,7 @@ page-home {
     }
 
     .main-content{
-        border-top: 1px solid #dcdddd;
+        border-bottom: 7px solid black;
         padding: 0px;
         .thumbnail{
             width: 100%;
