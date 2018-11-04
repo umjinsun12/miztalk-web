@@ -4,6 +4,7 @@ import { Service } from '../../../services/shopping-services/service';
 import { Values } from '../../../services/shopping-services/values';
 import { Functions } from '../../../services/shopping-services/functions';
 import { OrderDetails } from '../order-details/order-details';
+import {ClayfulService} from "../../../services/shopping-services/clayful-service";
 
 @Component({
     templateUrl: 'orders.html',
@@ -19,16 +20,28 @@ export class Orders {
     id: any;
     filter: any;
     status: any;
-    constructor(public nav: NavController, public service: Service, public values: Values, public functions: Functions) {
+    constructor(public nav: NavController, public service: Service, public values: Values, public functions: Functions, public clayfulService : ClayfulService) {
         this.filter = {};
         this.filter.page = 1;
         this.count = 10;
         this.offset = 0;
         this.quantity = "1";
         this.filter.customer = this.values.customerId;
-        this.service.getOrders(this.filter)
-            .then((results) => this.orders = results);
+
+        this.clayfulService.getOrderList().then(results => this.handleOrder(results));
     }
+
+    handleOrder(results){
+      this.orders = results;
+      this.orders.forEach(order => {
+        if(order.items.length == 1)
+          order.prodname = order.items[0].product.name;
+        else
+          order.prodname = order.items[0].product.name + " 외 "+ (parseInt(order.items.length) - 1) + "개";
+      });
+    }
+
+
     doInfinite(infiniteScroll) {
         this.filter.page += 1;
         this.service.getOrders(this.filter)

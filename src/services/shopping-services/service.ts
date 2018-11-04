@@ -203,11 +203,13 @@ export class Service {
                     this.values.avatar = data.data.avatar_url;
                     params = new URLSearchParams();
                     params.append("customer_id", this.values.customerId.toString());
+
                     this.http.post(this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp-get_wishlist', params, this.config.options).map(res => res.json()).subscribe(data => {
                         for (let item in data) {
                             this.values.wishlistId[data[item].id] = data[item].id;
                         }
                     });
+
                     this.nativeStorage.setItem('loginData', {
                         username: loginData.username,
                         password: loginData.password,

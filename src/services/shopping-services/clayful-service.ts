@@ -257,6 +257,17 @@ export class ClayfulService {
         });
     }
 
+    getOrderList(){
+      var options = {
+        customer : this.values.clayful_token
+      };
+      return new Promise((resolve, reject) => {
+        this.http.post(this.config.cmsurl + '/clayful/orderList', {options:options}).map(res => res.json()).subscribe(result => {
+          resolve(result.data);
+        });
+      });
+    }
+
     idgenerate(product_id){
       var id = 0;
       console.log(product_id);

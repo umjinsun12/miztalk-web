@@ -19,45 +19,53 @@
                 <ion-item>
                     <div class="row-line">
                         <ion-row>
-                            <ion-col>
-                                <h2> 주문번호 </h2>
+                            <ion-col col-3>
+                                <h2 class="title"> 주문명 </h2>
                             </ion-col>
                             <ion-col>
-                                <h2> {{item.number}} </h2>
-                            </ion-col>
-                        </ion-row>
-                        <ion-row>
-                            <ion-col>
-                                <h2> 주문날짜 </h2>
-                            </ion-col>
-                            <ion-col>
-                                <h2> {{item.date_created | date: 'yyyy년 MM월 dd일'}} </h2>
+                                <h2> {{item.prodname}} </h2>
                             </ion-col>
                         </ion-row>
                         <ion-row>
-                            <ion-col>
-                                <h2> 주문가격 </h2>
+                            <ion-col col-3>
+                                <h2 class="title"> 주문날짜 </h2>
                             </ion-col>
                             <ion-col>
-                                <h2>{{(1*item.total  | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</h2>
+                                <h2> {{item.createdAt.raw | date: 'yyyy년 MM월 dd일'}} </h2>
                             </ion-col>
                         </ion-row>
                         <ion-row>
-                            <ion-col>
-                                <h2> 주문상태 </h2>
+                            <ion-col col-3>
+                                <h2 class="title"> 주문가격 </h2>
                             </ion-col>
                             <ion-col>
-                                <h2 style="color: green" text-capitalize *ngIf="item.status == 'processing'"> 처리중(결제완료) </h2>
-                                <h2 style="color: green" text-capitalize *ngIf="item.status == 'completed'"> 배송완료 </h2>
-                                <h2 style="color: green" text-capitalize *ngIf="item.status == 'refunded'"> 환불완료 </h2>
-                                <h2 style="color: red" text-capitalize *ngIf="item.status == 'cancelled'"> 주문취소 </h2>
-                                <h2 style="color: red" text-capitalize *ngIf="item.status == 'failed'"> 주문실패 </h2>
-                                <h2 style="color: #c3ad00" text-capitalize *ngIf="item.status == 'on-hold'"> 주문대기 </h2>
-                                <h2 style="color: #c3ad00" text-capitalize *ngIf="item.status == 'pending'"> 결제대기 </h2>
+                                <h2>{{(1*item.total.price.sale.raw  | number:'1.0-0')}} 원</h2>
                             </ion-col>
                         </ion-row>
+                        <ion-row>
+                            <ion-col col-3>
+                                <h2 class="title"> 주문상태 </h2>
+                            </ion-col>
+                            <ion-col>
+                                <h2 style="color: green" text-capitalize *ngIf="item.status == 'placed'"> 접수완료 </h2>
+                                <h2 style="color: yellow" text-capitalize *ngIf="item.status == 'cancelled'"> 주문취소 </h2>
+                                <h2 style="color: green" text-capitalize *ngIf="item.status == 'paid'"> 결제완료 </h2>
+                                <h2 style="color: red" text-capitalize *ngIf="item.status == 'refunded'"> 환불완료 </h2>
+                                <h2 style="color: red" text-capitalize *ngIf="item.status == 'under-refunded'"> 환불완료 </h2>
+                            </ion-col>
+                        </ion-row>
+                      <ion-row *ngIf="item.fulfillments.length != 0">
+                        <ion-col col-3>
+                          <h2 class="title"> 배송상태 </h2>
+                        </ion-col>
+                          <ion-col>
+                            <h2 style="color: yellow" text-capitalize *ngIf="item.fulfillments[0].status == 'pending'"> 배송대기 </h2>
+                            <h2 style="color: yellowgreen" text-capitalize *ngIf="item.fulfillments[0].status == 'shipped'"> 배송중 </h2>
+                            <h2 style="color: green" text-capitalize *ngIf="item.fulfillments[0].status == 'arrived'"> 배송완료 </h2>
+                          </ion-col>
+                      </ion-row>
                     </div>
-                    <ion-row class="row-buttons">
+                    <!--<ion-row class="row-buttons">
                         <ion-col no-padding width-50> <button ion-button icon-left clear no-margin color="button-color" small text-uppercase icon-only class="has-icon icon-only" (click)="getOrderDetails(item.id)">
               <ion-icon name="ios-eye">
               </ion-icon>
@@ -69,12 +77,12 @@
               취소 
             </button> 
         </ion-col>
-                    </ion-row>
+                    </ion-row>-->
                 </ion-item>
             </div>
-            <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
+            <!--<ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_more_items">
                 <ion-infinite-scroll-content loadingSpinner="crescent" loadingText="'로딩중입니다..'"> </ion-infinite-scroll-content>
-            </ion-infinite-scroll>
+            </ion-infinite-scroll>-->
         </div>
     </div>
 </ion-content>
