@@ -171,6 +171,12 @@ export class AccountRegister {
                 this.functions.showAlert('성공','회원가입이 완료되었습니다.');
                 this.values.isLoggedIn = true;
                 this.values.clayful_reg = true;
+                this.values.clayful_data = result;
+                this.values.customerName = this.values.clayful_data.name;
+                if(this.values.clayful_data.point == null)
+                  this.values.point = 0;
+                else
+                  this.values.point = this.values.clayful_data.point;
                 this.nav.pop();
               });
             }

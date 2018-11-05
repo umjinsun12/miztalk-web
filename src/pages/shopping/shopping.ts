@@ -243,7 +243,7 @@ export class ShoppingPage {
             this.has_more_items = false;
         }
         infiniteScroll.complete();
-    }g
+    }
 
     doRefresh(refresher){
         this.has_more_items = true;
@@ -312,7 +312,8 @@ export class ShoppingPage {
     addToWishlist(id) {
         if (this.values.isLoggedIn) {
             this.values.wishlistId[id] = true;
-            this.service.addToWishlist(id).then((results) => this.update(results, id));
+            //this.service.addToWishlist(id).then((results) => this.update(results, id));
+            this.clayfulService.addWishList(id);
         } else {
             this.functions.showAlert("에러", "마이페이지에서 로그인을 먼저 해주세요.");
         }
@@ -324,7 +325,8 @@ export class ShoppingPage {
     }
     removeFromWishlist(id) {
         this.values.wishlistId[id] = false;
-        this.service.deleteItem(id).then((results) => this.updateWish(results, id));
+        //this.service.deleteItem(id).then((results) => this.updateWish(results, id));
+        this.clayfulService.deleteWishList(id);
     }
     updateWish(results, id) {
         if (results.status == "success") {

@@ -268,6 +268,44 @@ export class ClayfulService {
       });
     }
 
+
+    getWishList(){
+      return new Promise((resolve, reject) => {
+        this.http.get(this.config.cmsurl + '/clayful/getWishlist?id=' + this.values.clayful_id).map(res => res.json()).subscribe(result => {
+          for(var i=0 ; i < result.data.length ; i++){
+            this.values.wishlistId[result.data[i]] = true;
+          }
+          resolve(result.data);
+        })
+      });
+    }
+
+    addWishList(productId){
+      var payload  = {
+        id : this.values.clayful_id,
+        productId : productId
+      };
+      this.http.post(this.config.cmsurl + '/clayful/addWishlist', payload).map(res => res.json()).subscribe(result => {
+        this.values.wishlistId = [];
+        for(var i=0 ; i < result.data.length ; i++){
+          this.values.wishlistId[result.data[i]] = true;
+        }
+      });
+    }
+
+    deleteWishList(productId){
+      var payload = {
+        id : this.values.clayful_id,
+        productId : productId
+      };
+      this.http.post(this.config.cmsurl + '/clayful/deleteWishlist', payload).map(res => res.json()).subscribe(result => {
+        this.values.wishlistId = [];
+        for(var i=0 ; i < result.data.length ; i++){
+          this.values.wishlistId[result.data[i]] = true;
+        }
+      });
+    }
+
     idgenerate(product_id){
       var id = 0;
       console.log(product_id);

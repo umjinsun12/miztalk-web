@@ -220,7 +220,8 @@ onCancel($event) {
 addToWishlist(id) {
     if (this.values.isLoggedIn) {
         this.values.wishlistId[id] = true;
-        this.service.addToWishlist(id).then((results) => this.update(results, id));
+        //this.service.addToWishlist(id).then((results) => this.update(results, id));
+      this.clayfulService.addWishList(id);
     } else {
         this.functions.showAlert("Warning", "You must login to add product to wishlist");
     }
@@ -232,7 +233,8 @@ update(results, id) {
 }
 removeFromWishlist(id) {
     this.values.wishlistId[id] = false;
-    this.service.deleteItem(id).then((results) => this.updateWish(results, id));
+    this.clayfulService.deleteWishList(id);
+    //this.service.deleteItem(id).then((results) => this.updateWish(results, id));
 }
 updateWish(results, id) {
     if (results.status == "success") {

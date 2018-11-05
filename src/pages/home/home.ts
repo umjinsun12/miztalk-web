@@ -131,7 +131,7 @@ export class HomePage {
     for(let post of this.posts){
       post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
       if(post._embedded['wp:featuredmedia'] != undefined){
-          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].source_url;
       }
     }
     this.service.dismissLoading();
@@ -188,6 +188,7 @@ export class HomePage {
               this.values.isLoggedIn = true;
               this.functions.showAlert("성공", "로그인 되었습니다.");
               this.clayfulService.memberChk(this.values.clayful_id, this.values.clayful_token).then(result => {
+                this.values.isLoggedIn = true;
                 this.values.clayful_data = result;
                   this.values.customerName = this.values.clayful_data.name;
                   if(this.values.clayful_data.point == null)
@@ -229,6 +230,8 @@ export class HomePage {
                     this.values.point = 0;
                   else
                     this.values.point = this.values.clayful_data.point;
+
+                  this.clayfulService.getWishList();
                   if(this.orderId != null){
                     if(this.orderId == "err"){
                       this.functions.showAlert("에러", "주문에 실패하였습니다. 다시 주문해주세요.");
@@ -337,7 +340,7 @@ export class HomePage {
     for(let post of this.posts){
       post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
       if(post._embedded['wp:featuredmedia'] != undefined){
-          post.thumnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+          post.thumnail = post['_embedded']['wp:featuredmedia'][0].source_url;
       }
 
       for(let categoryID of post.categories){
@@ -435,7 +438,7 @@ export class HomePage {
     for(let post of this.posts){
       post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
       if(post._embedded['wp:featuredmedia'] != undefined){
-          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+          post.thumbnail = post['_embedded']['wp:featuredmedia'][0].source_url;
       }
     }
     refresher.complete();
@@ -459,7 +462,7 @@ export class HomePage {
         for(let post of results){
           post.excerpt.rendered = post.excerpt.rendered.split('<a')[0] + "</p>";
           if(post._embedded['wp:featuredmedia'] != undefined){
-              post.thumbnail = post['_embedded']['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
+              post.thumbnail = post['_embedded']['wp:featuredmedia'][0].source_url;
           }
           this.posts.push(post);
         }

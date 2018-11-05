@@ -18,23 +18,23 @@
           
         <h4 text-center no-lines>찜한상품이 비어있습니다.</h4> <button ion-button class="butt" item-center medium color="button-color" text-uppercase (click)="gohome()">되돌아가기</button> </div>
       <div *ngIf="wishlist.length">
-          <div *ngFor="let item of wishlist | keys" class="wish-list">
+          <div *ngFor="let item of wishlist" class="wish-list">
               <ion-item no-lines>
-                  <ion-thumbnail item-left (click)="getProduct(item.value.id)"> <img src="{{item.value.image_thumb}}">
-                      <div class="stock"> <button ion-button *ngIf="item.value.stock_status == 'outofstock'">No Stock</button> </div>
+                  <ion-thumbnail item-left (click)="getProduct(item._id)"> <img src="{{item.thumbnail.url}}">
                   </ion-thumbnail>
-                  <h2 wrap-text class="item-name">{{item.value.name}} </h2>
-                  <div [innerHTML]="item.value.short_description" class="short-description" *ngIf="item.value.short_description"> </div>
-                  <div [innerHTML]="item.value.description" class="short-description" *ngIf="!item.value.short_description"> </div>
-                  <h4 wrap-text><span>가격</span> : {{(item.value.price  | currency:values.currency:false:'1.0-0').replace('USD','')}} 원</h4>
+                  <h2 wrap-text class="item-name">{{item.name}} </h2>
+                  <!--<div [innerHTML]="item.value.short_description" class="short-description" *ngIf="item.value.short_description"> </div>-->
+                  <!--<div [innerHTML]="item.value.description" class="short-description" *ngIf="!item.value.short_description"> </div>-->
+                  <h4 wrap-text><span>가격</span> : {{(item.price.sale.raw  | number:'1.0-0')}} 원</h4>
                   <!--<div> <button ion-button icon-only small class="rating-button-grid1" style="height:19px">
               <ion-icon name="md-star"><span class="rating-count">{{item.value.average_rating | number:'1.1-1'}}</span></ion-icon> 
             </button> <span style="color: #777;font-size:15px;">{{item.value.review_count}} ratings</span> </div>-->
               </ion-item>
               <ion-row class="edit-buttons">
-                  <ion-col> <button ion-button full [disabled]="item.value.stock_status == 'outofstock' || disableAddtoCartFromWishlist" no-padding no-margin clear text-uppercase (click)="addToCartFromWishlist(item.value.id, item.value.type)"> <ion-icon name="md-cart"></ion-icon> 장바구니 추가
+                  <ion-col> <button ion-button full no-padding no-margin clear text-uppercase  (click)="getProduct(item._id)">
+                    <ion-icon name="md-cart"></ion-icon> 구매하기
             </button> </ion-col>
-                  <ion-col> <button ion-button full [disabled]="disableDeleteWishlist" no-padding no-margin clear text-uppercase (click)="removeFromWishlist(item.value.id)">
+                  <ion-col> <button ion-button full [disabled]="disableDeleteWishlist" no-padding no-margin clear text-uppercase (click)="removeFromWishlist(item._id)">
               <ion-icon name="ios-trash"></ion-icon> 삭제
             </button> </ion-col>
               </ion-row>
